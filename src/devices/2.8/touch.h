@@ -60,7 +60,7 @@ void xtouch_loadTouchConfig(XTouchPanelConfig &config)
     // Deserialize the JSON document
     DeserializationError error = deserializeJson(doc, file);
     if (error)
-        Serial.println(F("Failed to read file, using default configuration"));
+        Serial.println(F("[XTouch][Touch] Failed to read touch config"));
 
     config.xCalM = doc["xCalM"].as<float>();
     config.yCalM = doc["yCalM"].as<float>();
@@ -110,7 +110,7 @@ void xtouch_touch_setup()
     }
     else
     {
-        Serial.println("[XTouch][TOUCH] Touch Setup");
+        Serial.println(F("[XTouch][TOUCH] Touch Setup"));
         TS_Point p;
         int16_t x1, y1, x2, y2;
         lv_obj_clean(lv_scr_act());

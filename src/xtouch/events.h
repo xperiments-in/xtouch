@@ -15,23 +15,14 @@ void xtouch_events_onResetConfig(lv_msg_t *m)
 }
 void xtouch_events_onUnPair(lv_msg_t *m)
 {
-    Serial.println("xtouch_events_onUnPair");
     xtouch_ssdp_unpair();
 }
 void xtouch_events_onSSDP(lv_msg_t *m)
 {
-    // restartESPDefaults();
-    // String options = (const char *)lv_msg_get_payload(m);
-    Serial.println("xtouch_events_onSSDP");
-    Serial.println(xTouchConfig.xTouchSerialNumber);
     xtouch_ssdp_loop_exit = true;
 }
 void xtouch_events_onCodeEntered(lv_msg_t *m)
 {
-    // restartESPDefaults();
-    // String options = (const char *)lv_msg_get_payload(m);
-    Serial.println("xtouch_events_onCodeEntered");
-    Serial.println(xTouchConfig.xTouchAccessCode);
     xtouch_ssdp_loop_exit = true;
 }
 

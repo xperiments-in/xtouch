@@ -15,12 +15,12 @@ void xtouch_filesystem_listDir(fs::FS &fs, const char *dirname, uint8_t levels)
     File root = fs.open(dirname);
     if (!root)
     {
-        Serial.println("[XTouch][SD] Failed to open directory");
+        Serial.println(F("[XTouch][SD] Failed to open directory"));
         return;
     }
     if (!root.isDirectory())
     {
-        Serial.println("[XTouch][SD] Not a directory");
+        Serial.println(F("[XTouch][SD] Not a directory"));
         return;
     }
 
@@ -29,7 +29,7 @@ void xtouch_filesystem_listDir(fs::FS &fs, const char *dirname, uint8_t levels)
     {
         if (file.isDirectory())
         {
-            Serial.print("[XTouch][SD]  DIR : ");
+            Serial.print(F("[XTouch][SD]  DIR : "));
             Serial.println(file.name());
             if (levels)
             {
@@ -38,9 +38,9 @@ void xtouch_filesystem_listDir(fs::FS &fs, const char *dirname, uint8_t levels)
         }
         else
         {
-            Serial.print("[XTouch][SD]  FILE: ");
+            Serial.print(F("[XTouch][SD]  FILE: "));
             Serial.print(file.name());
-            Serial.print("[XTouch][SD]  SIZE: ");
+            Serial.print(F("[XTouch][SD]  SIZE: "));
             Serial.println(file.size());
         }
         file = root.openNextFile();
@@ -52,11 +52,11 @@ void xtouch_filesystem_createDir(fs::FS &fs, const char *path)
     Serial.printf("[XTouch][SD] Creating Dir: %s\n", path);
     if (fs.mkdir(path))
     {
-        Serial.println("[XTouch][SD] Dir created");
+        Serial.println(F("[XTouch][SD] Dir created"));
     }
     else
     {
-        Serial.println("[XTouch][SD] mkdir failed");
+        Serial.println(F("[XTouch][SD] mkdir failed"));
     }
 }
 
@@ -65,11 +65,11 @@ void xtouch_filesystem_removeDir(fs::FS &fs, const char *path)
     Serial.printf("[XTouch][SD] Removing Dir: %s\n", path);
     if (fs.rmdir(path))
     {
-        Serial.println("[XTouch][SD] Dir removed");
+        Serial.println(F("[XTouch][SD] Dir removed"));
     }
     else
     {
-        Serial.println("[XTouch][SD] rmdir failed");
+        Serial.println(F("[XTouch][SD] rmdir failed"));
     }
 }
 
@@ -80,11 +80,10 @@ void xtouch_filesystem_readFile(fs::FS &fs, const char *path)
     File file = fs.open(path);
     if (!file)
     {
-        Serial.println("[XTouch][SD] Failed to open file for reading");
+        Serial.println(F("[XTouch][SD] Failed to open file for reading"));
         return;
     }
 
-    Serial.print("Read from file: ");
     while (file.available())
     {
         Serial.write(file.read());
@@ -99,16 +98,16 @@ void xtouch_filesystem_writeFile(fs::FS &fs, const char *path, const char *messa
     File file = fs.open(path, FILE_WRITE);
     if (!file)
     {
-        Serial.println("[XTouch][SD] Failed to open file for writing");
+        Serial.println(F("[XTouch][SD] Failed to open file for writing"));
         return;
     }
     if (file.print(message))
     {
-        Serial.println("[XTouch][SD] File written");
+        Serial.println(F("[XTouch][SD] File written"));
     }
     else
     {
-        Serial.println("[XTouch][SD] Write failed");
+        Serial.println(F("[XTouch][SD] Write failed"));
     }
     file.close();
 }
@@ -120,16 +119,16 @@ void xtouch_filesystem_appendFile(fs::FS &fs, const char *path, const char *mess
     File file = fs.open(path, FILE_APPEND);
     if (!file)
     {
-        Serial.println("[XTouch][SD] Failed to open file for appending");
+        Serial.println(F("[XTouch][SD] Failed to open file for appending"));
         return;
     }
     if (file.print(message))
     {
-        Serial.println("[XTouch][SD] Message appended");
+        Serial.println(F("[XTouch][SD] Message appended"));
     }
     else
     {
-        Serial.println("[XTouch][SD] Append failed");
+        Serial.println(F("[XTouch][SD] Append failed"));
     }
     file.close();
 }
@@ -139,11 +138,11 @@ void xtouch_filesystem_renameFile(fs::FS &fs, const char *path1, const char *pat
     Serial.printf("[XTouch][SD] Renaming file %s to %s\n", path1, path2);
     if (fs.rename(path1, path2))
     {
-        Serial.println("[XTouch][SD] File renamed");
+        Serial.println(F("[XTouch][SD] File renamed"));
     }
     else
     {
-        Serial.println("[XTouch][SD] Rename failed");
+        Serial.println(F("[XTouch][SD] Rename failed"));
     }
 }
 
@@ -152,11 +151,11 @@ void xtouch_filesystem_deleteFile(fs::FS &fs, const char *path)
     Serial.printf("[XTouch][SD] Deleting file: %s\n", path);
     if (fs.remove(path))
     {
-        Serial.println("[XTouch][SD] File deleted");
+        Serial.println(F("[XTouch][SD] File deleted"));
     }
     else
     {
-        Serial.println("[XTouch][SD] Delete failed");
+        Serial.println(F("[XTouch][SD] Delete failed"));
     }
 }
 
@@ -166,7 +165,7 @@ void xtouch_filesystem_writeJson(fs::FS &fs, const char *filename, DynamicJsonDo
     File configFile = fs.open(filename, FILE_WRITE);
     if (!configFile)
     {
-        Serial.println("[XTouch][SD] Failed to open file");
+        Serial.println(F("[XTouch][SD] Failed to open file"));
         return;
     }
 
@@ -182,7 +181,7 @@ DynamicJsonDocument xtouch_filesystem_readJson(fs::FS &fs, const char *filename,
     File configFile = fs.open(filename);
     if (!configFile)
     {
-        Serial.println("[XTouch][SD] Failed to open config file");
+        Serial.println(F("[XTouch][SD] Failed to open config file"));
         if (defaultsToArray)
         {
             return doc.createNestedArray();
@@ -196,7 +195,7 @@ DynamicJsonDocument xtouch_filesystem_readJson(fs::FS &fs, const char *filename,
     DeserializationError error = deserializeJson(doc, configFile);
     if (error)
     {
-        Serial.println("[XTouch][SD] Failed to parse config file");
+        Serial.println(F("[XTouch][SD] Failed to parse config file"));
         configFile.close();
         return doc; // Return an empty JSON document
     }

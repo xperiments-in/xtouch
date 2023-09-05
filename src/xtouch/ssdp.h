@@ -31,7 +31,6 @@ bool xtouch_ssdp_is_paired()
     DynamicJsonDocument pairDoc = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
     if (pairDoc.isNull())
     {
-        Serial.println("Pair file is null");
         return false;
     }
 
@@ -72,7 +71,7 @@ void xtouch_ssdp_load_pair()
 
 void xtouch_ssdp_unpair()
 {
-    Serial.println("Unpairing device");
+    Serial.println("[XTOUCH][SSDP] Unpairing device");
     DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
     pairFile.remove("paired");
     xtouch_filesystem_writeJson(SD, xtouch_ssdp_pair, pairFile);
@@ -81,9 +80,7 @@ void xtouch_ssdp_unpair()
 
 void xtouch_ssdp_save_pair(String usn, String accessCode)
 {
-    Serial.println("Saving pair");
-    Serial.println(usn);
-    Serial.println(accessCode);
+    Serial.println("[XTOUCH][SSDP] Saving pair");
     DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
 
     pairFile["paired"] = usn;
@@ -159,9 +156,6 @@ void xtouch_ssdp_parseResponse(String input)
     }
     ssdpjson[keyIndex] = doc;
     xtouch_filesystem_writeJson(SD, xtouch_ssdp_devices, ssdpjson);
-
-    serializeJson(ssdpjson, Serial);
-    Serial.println("----");
 
     String output = "";
     for (JsonPair keyValue : ssdpjson.as<JsonObject>())

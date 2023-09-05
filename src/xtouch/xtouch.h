@@ -164,7 +164,6 @@ void xtouch_device_move_axis(String axis, double value, int speed)
 
 void xtouch_device_onLightToggleCommand(lv_msg_t *m)
 {
-    Serial.println("Toggle light----------------------------------------------------------->");
     String deviceTopic = String("device/") + xTouchConfig.xTouchSerialNumber;
     String requestTopic = deviceTopic + String("/request");
     String on;

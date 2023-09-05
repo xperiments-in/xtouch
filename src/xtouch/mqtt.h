@@ -40,11 +40,6 @@ String xtouch_mqtt_parse_printer_type(String type_str)
     {
         return type_str;
     }
-    else
-    {
-        Serial.println("*************************PRINTER TYPE");
-        Serial.println(type_str);
-    }
     return "";
 }
 
@@ -111,8 +106,6 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
             incomingJson["print"].containsKey("spd_mag"))
         {
 
-            Serial.print(F("-------------------------------------------[XTouch][MQTT] gcode_state: "));
-            Serial.print(bambuStatus.print_status);
             sendMsg(XTOUCH_ON_PRINT_STATUS);
         }
 
@@ -136,9 +129,9 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
 
         if (incomingJson["print"].containsKey("stg_cur"))
         {
-            Serial.println(F("[XTouch][MQTT] stg_cur"));
-            Serial.println(incomingJson["print"]["stg_cur"].as<int>());
-            Serial.println(F("[XTouch][MQTT] stg_cur B"));
+            // Serial.println(F("[XTouch][MQTT] stg_cur"));
+            // Serial.println(incomingJson["print"]["stg_cur"].as<int>());
+            // Serial.println(F("[XTouch][MQTT] stg_cur B"));
         }
 
         if (incomingJson["print"].containsKey("lights_report"))
@@ -206,14 +199,14 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
 
         if (incomingJson["print"].containsKey("big_fan1_speed"))
         {
-            Serial.println(F("big_fan1_speed"));
-            Serial.println(incomingJson["print"]["big_fan1_speed"].as<int>());
+            // Serial.println(F("big_fan1_speed"));
+            // Serial.println(incomingJson["print"]["big_fan1_speed"].as<int>());
         }
 
         if (incomingJson["print"].containsKey("big_fan2_speed"))
         {
-            Serial.println(F("big_fan2_speed"));
-            Serial.println(incomingJson["print"]["big_fan2_speed"].as<int>());
+            // Serial.println(F("big_fan2_speed"));
+            // Serial.println(incomingJson["print"]["big_fan2_speed"].as<int>());
         }
 
         if (incomingJson["print"].containsKey("hw_switch_state"))
@@ -331,8 +324,6 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
                 if (incomingJson.containsKey("printer_type"))
                 {
                     strcpy(bambuStatus.printer_type, xtouch_mqtt_parse_printer_type(incomingJson["printer_type"].as<String>()).c_str());
-                    Serial.println("++++++++++++++++++++++++++++");
-                    Serial.println(bambuStatus.printer_type);
                 }
             }
         }
@@ -566,10 +557,7 @@ void xtouch_mqtt_setup()
     xtouch_wiFiClientSecure.setInsecure();
     xtouch_pubSubClient.setBufferSize(4096);
     IPAddress ip;
-    Serial.println("xTouchConfig.xTouchSerialNumber");
-    Serial.println(xTouchConfig.xTouchSerialNumber);
     ip.fromString(ssdp[xTouchConfig.xTouchSerialNumber]["ip"].as<String>());
-    Serial.println(ip.toString());
     xtouch_pubSubClient.setServer(ip, 8883);
     xtouch_pubSubClient.setCallback(xtouch_mqtt_parseMessage);
     xtouch_pubSubClient.setKeepAlive(10);

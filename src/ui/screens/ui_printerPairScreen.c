@@ -97,5 +97,4 @@ void ui_printerPairScreen_screen_init(void)
     lv_obj_set_style_text_font(ui_printerPairScreenSubmitIcon, &ui_font_xlcd, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_printerPairScreenSubmitButton, ui_event_printerPairScreenSubmitButton, LV_EVENT_ALL, NULL);
-    // lv_msg_subsribe_obj(XTOUCH_ON_SSDP, ui_printerPairScreenSubmitButton, NULL);
 }
