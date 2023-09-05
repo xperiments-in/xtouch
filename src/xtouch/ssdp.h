@@ -11,7 +11,6 @@
 WiFiUDP xtouch_ssdp_udp;
 
 char xtouch_ssdp_packetBuffer[XTOUCH_SSDP_PACKET_SIZE];
-bool xtouch_ssdp_loop_exit = false;
 const char *xtouch_ssdp_devices = "/ssdp-devices.json";
 const char *xtouch_ssdp_pair = "/ssdp-pair.json";
 

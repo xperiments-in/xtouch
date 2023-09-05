@@ -19,11 +19,11 @@ void xtouch_events_onUnPair(lv_msg_t *m)
 }
 void xtouch_events_onSSDP(lv_msg_t *m)
 {
-    xtouch_ssdp_loop_exit = true;
+    xtouch_pair_loop_exit = true;
 }
 void xtouch_events_onCodeEntered(lv_msg_t *m)
 {
-    xtouch_ssdp_loop_exit = true;
+    xtouch_pair_loop_exit = true;
 }
 
 void xtouch_setupGlobalEvents()
