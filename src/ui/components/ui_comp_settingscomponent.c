@@ -5,30 +5,6 @@ void setScreenTimerTimeout()
 {
 }
 
-void ui_event_comp_settingsComponent_auxFanInput(lv_event_t *e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    if (event_code == LV_EVENT_CLICKED)
-    {
-        onSettingsAuxFan(e);
-    }
-}
-void ui_event_comp_settingsComponent_chamberInput(lv_event_t *e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    if (event_code == LV_EVENT_CLICKED)
-    {
-        onSettingsChamberSensor(e);
-    }
-}
-void ui_event_comp_settingsComponent_resetDeviceButton(lv_event_t *e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    if (event_code == LV_EVENT_CLICKED)
-    {
-        onSettingsResetDevice(e);
-    }
-}
 void ui_event_comp_settingsComponent_unpairButton(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -38,12 +14,21 @@ void ui_event_comp_settingsComponent_unpairButton(lv_event_t *e)
     }
 }
 
-void ui_event_comp_settingsComponent_resetSettingsButton(lv_event_t *e)
+void ui_event_comp_settingsComponent_resetDeviceButton(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     if (event_code == LV_EVENT_CLICKED)
     {
-        onSettingsReset(e);
+        onSettingsResetDevice(e);
+    }
+}
+
+void ui_event_comp_settingsComponent_clearAccesCodeCacheButton(lv_event_t *e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    if (event_code == LV_EVENT_CLICKED)
+    {
+        onSettingsClearAccesCodeCache(e);
     }
 }
 
@@ -130,6 +115,23 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_pad_bottom(cui_unpairButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(cui_unpairButton, lv_color_hex(0x000), LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    lv_obj_t *cui_clearAccesCodeCacheButton;
+    cui_clearAccesCodeCacheButton = lv_label_create(cui_settingsComponent);
+    lv_obj_set_width(cui_clearAccesCodeCacheButton, lv_pct(100));
+    lv_obj_set_height(cui_clearAccesCodeCacheButton, LV_SIZE_CONTENT); /// 1
+    lv_label_set_text(cui_clearAccesCodeCacheButton, LV_SYMBOL_SETTINGS " Clear Access Code Cache");
+    lv_obj_add_flag(cui_clearAccesCodeCacheButton, LV_OBJ_FLAG_CLICKABLE);                                                                                                                                                                                                      /// Flags
+    lv_obj_clear_flag(cui_clearAccesCodeCacheButton, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
+    lv_obj_set_scrollbar_mode(cui_clearAccesCodeCacheButton, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_set_style_radius(cui_clearAccesCodeCacheButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(cui_clearAccesCodeCacheButton, lv_color_hex(0xFF682A), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(cui_clearAccesCodeCacheButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(cui_clearAccesCodeCacheButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(cui_clearAccesCodeCacheButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(cui_clearAccesCodeCacheButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(cui_clearAccesCodeCacheButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(cui_clearAccesCodeCacheButton, lv_color_hex(0x000), LV_PART_MAIN | LV_STATE_DEFAULT);
+
     lv_obj_t *cui_reseDeviceButton;
     cui_reseDeviceButton = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_reseDeviceButton, lv_pct(100));
@@ -147,35 +149,18 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_pad_bottom(cui_reseDeviceButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(cui_reseDeviceButton, lv_color_hex(0x000), LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_t *cui_resetSettingsButton;
-    cui_resetSettingsButton = lv_label_create(cui_settingsComponent);
-    lv_obj_set_width(cui_resetSettingsButton, lv_pct(100));
-    lv_obj_set_height(cui_resetSettingsButton, LV_SIZE_CONTENT); /// 1
-    lv_label_set_text(cui_resetSettingsButton, LV_SYMBOL_SETTINGS " Restore Defaults");
-    lv_obj_add_flag(cui_resetSettingsButton, LV_OBJ_FLAG_CLICKABLE);                                                                                                                                                                                                      /// Flags
-    lv_obj_clear_flag(cui_resetSettingsButton, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
-    lv_obj_set_scrollbar_mode(cui_resetSettingsButton, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_set_style_radius(cui_resetSettingsButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(cui_resetSettingsButton, lv_color_hex(0xFF682A), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(cui_resetSettingsButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(cui_resetSettingsButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(cui_resetSettingsButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(cui_resetSettingsButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(cui_resetSettingsButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(cui_resetSettingsButton, lv_color_hex(0x000), LV_PART_MAIN | LV_STATE_DEFAULT);
-
     lv_obj_t **children = lv_mem_alloc(sizeof(lv_obj_t *) * _UI_COMP_SETTINGSCOMPONENT_NUM);
     children[UI_COMP_SETTINGSCOMPONENT_SETTINGSCOMPONENT] = cui_settingsComponent;
     children[UI_COMP_SETTINGSCOMPONENT_INFO] = cui_info;
     children[UI_COMP_SETTINGSCOMPONENT_INFO_INFOLABEL] = cui_infoLabel;
     children[UI_COMP_SETTINGSCOMPONENT_UNPAIRBUTTON] = cui_unpairButton;
     children[UI_COMP_SETTINGSCOMPONENT_RESETDEVICEBUTTON] = cui_reseDeviceButton;
-    children[UI_COMP_SETTINGSCOMPONENT_RESETSETTINGSBUTTON] = cui_resetSettingsButton;
+    children[UI_COMP_SETTINGSCOMPONENT_RESETSETTINGSBUTTON] = cui_clearAccesCodeCacheButton;
     lv_obj_add_event_cb(cui_settingsComponent, get_component_child_event_cb, LV_EVENT_GET_COMP_CHILD, children);
     lv_obj_add_event_cb(cui_settingsComponent, del_component_child_event_cb, LV_EVENT_DELETE, children);
-    lv_obj_add_event_cb(cui_reseDeviceButton, ui_event_comp_settingsComponent_resetDeviceButton, LV_EVENT_ALL, children);
     lv_obj_add_event_cb(cui_unpairButton, ui_event_comp_settingsComponent_unpairButton, LV_EVENT_ALL, children);
-    lv_obj_add_event_cb(cui_resetSettingsButton, ui_event_comp_settingsComponent_resetSettingsButton, LV_EVENT_ALL, children);
+    lv_obj_add_event_cb(cui_clearAccesCodeCacheButton, ui_event_comp_settingsComponent_clearAccesCodeCacheButton, LV_EVENT_ALL, children);
+    lv_obj_add_event_cb(cui_reseDeviceButton, ui_event_comp_settingsComponent_resetDeviceButton, LV_EVENT_ALL, children);
     ui_comp_settingsComponent_create_hook(cui_settingsComponent);
     return cui_settingsComponent;
 }

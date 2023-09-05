@@ -85,32 +85,21 @@ void onControlAxis(lv_event_t *e) { lv_msg_send(XTOUCH_CONTROL_AXIS_SWITCH, NULL
 
 /* Settings */
 
-void onSettingsAuxFan(lv_event_t *e)
-{
-    xTouchConfig.xTouchAuxFanEnabled = !xTouchConfig.xTouchAuxFanEnabled;
-    lv_msg_send(XTOUCH_CONFIG_UPDATE, NULL);
-}
-void onSettingsChamberSensor(lv_event_t *e)
-{
-    xTouchConfig.xTouchChamberSensorEnabled = !xTouchConfig.xTouchChamberSensorEnabled;
-    lv_msg_send(XTOUCH_CONFIG_UPDATE, NULL);
-}
 void onSettingsResetDeviceConfirm() { lv_msg_send(XTOUCH_SETTINGS_RESET_DEVICE, NULL); }
 void onSettingsResetDevice(lv_event_t *e)
 {
     ui_confirmPanel_show(LV_SYMBOL_WARNING " Confirm REBOOT", onSettingsResetDeviceConfirm);
 }
 
-void onSettingsResetConfirm() { lv_msg_send(XTOUCH_SETTINGS_RESET, NULL); }
-void onSettingsReset(lv_event_t *e)
-{
-    ui_confirmPanel_show(LV_SYMBOL_WARNING " Confirm Restore Defaults", onSettingsResetConfirm);
-}
-
 void onSettingsUnPairConfirm() { lv_msg_send(XTOUCH_SETTINGS_UNPAIR, NULL); }
 void onSettingsUnPair(lv_event_t *e)
 {
     ui_confirmPanel_show(LV_SYMBOL_WARNING " Confirm UNPAIR Device", onSettingsUnPairConfirm);
+}
+void onSettingsClearAccesCodeCacheConfirm() { lv_msg_send(XTOUCH_SETTINGS_CLEAR_ACCESS_CODE_CACHE, NULL); }
+void onSettingsClearAccesCodeCache(lv_event_t *e)
+{
+    ui_confirmPanel_show(LV_SYMBOL_WARNING " Clear Access Code Cache", onSettingsClearAccesCodeCacheConfirm);
 }
 
 /* filament */
