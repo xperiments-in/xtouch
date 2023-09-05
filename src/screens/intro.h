@@ -59,6 +59,7 @@ void xtouch_intro_show(void)
     ui_introScreen_screen_init();
     lv_disp_load_scr(introScreen);
     lv_timer_handler();
+    lv_task_handler();
 }
 
 #endif

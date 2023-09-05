@@ -57,7 +57,7 @@ bool xtouch_wifi_setup()
             lv_label_set_text(introScreenCaption, statusText);
             lv_obj_set_style_text_color(introScreenCaption, statusColor, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_timer_handler();
-            delay(500);
+            delay(32);
         }
 
         status = WiFi.status();
@@ -66,7 +66,7 @@ bool xtouch_wifi_setup()
     lv_label_set_text(introScreenCaption, LV_SYMBOL_WIFI " Connected to SSID");
     lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0x555555), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_timer_handler();
-    delay(500);
+    delay(1000);
     Serial.print(F("[XTOUCH][CONNECTION] Connected to the WiFi network with IP: "));
     Serial.println(WiFi.localIP());
 

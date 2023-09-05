@@ -470,6 +470,7 @@ void xtouch_mqtt_connect()
     lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " CONNECTING MQTT");
     lv_timer_handler();
     lv_task_handler();
+    delay(32);
     while (!xtouch_pubSubClient.connected())
     {
         // String clientId = "XTOUCH-CLIENT";
@@ -487,6 +488,7 @@ void xtouch_mqtt_connect()
             }
             xtouch_mqtt_firstConnectionDone = true;
 
+            xtouch_ssdp_save_pair(xTouchConfig.xTouchSerialNumber, xTouchConfig.xTouchAccessCode);
             break;
         }
         else
@@ -540,10 +542,8 @@ void xtouch_mqtt_connect()
         }
         lv_timer_handler();
         lv_task_handler();
+        delay(32);
     }
-    Serial.println(F("[XTouch][MQTT] ---- CONNECTED ---- ENDDD"));
-
-    xtouch_ssdp_save_pair(xTouchConfig.xTouchSerialNumber, xTouchConfig.xTouchAccessCode);
 }
 
 void xtouch_mqtt_setup()
@@ -551,6 +551,7 @@ void xtouch_mqtt_setup()
     lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " CONNECTING MQTT");
     lv_timer_handler();
     lv_task_handler();
+    delay(32);
 
     DynamicJsonDocument ssdp = xtouch_ssdp_load();
     xtouch_mqtt_topic_setup();
@@ -584,6 +585,8 @@ void xtouch_mqtt_setup()
     /* filament */
     lv_msg_subscribe(XTOUCH_COMMAND_EXTRUDE_UP, (lv_msg_subscribe_cb_t)xtouch_device_onNozzleUp, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_EXTRUDE_DOWN, (lv_msg_subscribe_cb_t)xtouch_device_onNozzleDown, NULL);
+
+    xtouch_mqtt_connect();
 }
 
 void xtouch_mqtt_loop()
