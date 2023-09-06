@@ -28,7 +28,6 @@ void ui_event_accessCodeScreenSubmit(lv_event_t *e)
 
     if (code == LV_EVENT_CANCEL)
     {
-        LV_LOG_USER("LV_EVENT_CANCEL");
         lv_keyboard_mode_t lv_keyboard_mode = lv_keyboard_get_mode(ui_accessCodeScreenKeyboard);
         bool isKeyboardNumber = lv_keyboard_mode == LV_KEYBOARD_MODE_NUMBER;
         lv_keyboard_set_mode(ui_accessCodeScreenKeyboard, isKeyboardNumber ? LV_KEYBOARD_MODE_TEXT_LOWER : LV_KEYBOARD_MODE_NUMBER);
