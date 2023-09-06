@@ -53,9 +53,16 @@ void xtouch_screen_dispFlush(lv_disp_drv_t *disp, const lv_area_t *area, lv_colo
 
     lv_disp_flush_ready(disp);
 }
+
 void xtouch_screen_setupScreenTimer()
 {
     xtouch_screen_onScreenOffTimer = lv_timer_create(xtouch_screen_onScreenOff, SCREENTIMER, NULL);
+    lv_timer_pause(xtouch_screen_onScreenOffTimer);
+}
+
+void xtouch_screen_startScreenTimer()
+{
+    lv_timer_resume(xtouch_screen_onScreenOffTimer);
 }
 
 void xtouch_screen_touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)

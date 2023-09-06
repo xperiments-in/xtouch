@@ -487,6 +487,7 @@ void xtouch_mqtt_connect()
             if (!xtouch_mqtt_firstConnectionDone)
             {
                 loadScreen(0);
+                xtouch_screen_startScreenTimer();
             }
             xtouch_mqtt_firstConnectionDone = true;
 
