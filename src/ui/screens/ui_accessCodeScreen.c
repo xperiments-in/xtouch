@@ -32,8 +32,8 @@ void ui_event_accessCodeScreenSubmit(lv_event_t *e)
         lv_keyboard_mode_t lv_keyboard_mode = lv_keyboard_get_mode(ui_accessCodeScreenKeyboard);
         bool isKeyboardNumber = lv_keyboard_mode == LV_KEYBOARD_MODE_NUMBER;
         lv_keyboard_set_mode(ui_accessCodeScreenKeyboard, isKeyboardNumber ? LV_KEYBOARD_MODE_TEXT_LOWER : LV_KEYBOARD_MODE_NUMBER);
-        lv_obj_set_height(ui_accessCodeScreenKeyboard, isKeyboardNumber ? 120 : 190);
-        lv_obj_set_y(ui_accessCodeInput, isKeyboardNumber ? 70 : 0);
+        lv_obj_set_height(ui_accessCodeScreenKeyboard, isKeyboardNumber ? 160 : 190);
+        lv_obj_set_y(ui_accessCodeInput, isKeyboardNumber ? 30 : 0);
     }
 }
 void ui_accessCodeScreen_screen_init(void)
