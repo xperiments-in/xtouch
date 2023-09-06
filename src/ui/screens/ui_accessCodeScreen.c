@@ -37,6 +37,7 @@ void ui_accessCodeScreen_screen_init(void)
     lv_obj_set_style_pad_bottom(ui_accessCodeScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(ui_accessCodeScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_accessCodeScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_accessCodeScreen, lv_color_hex(0x000000), LV_PART_ITEMS | LV_STATE_DEFAULT);
 
     // lv_obj_t *ui_accessCodeScreenKeyboard;
     ui_accessCodeScreenKeyboard = lv_keyboard_create(ui_accessCodeScreen);
