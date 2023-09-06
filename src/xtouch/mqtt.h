@@ -579,8 +579,8 @@ void xtouch_mqtt_setup()
     ip.fromString(ssdp[xTouchConfig.xTouchSerialNumber]["ip"].as<String>());
     xtouch_pubSubClient.setServer(ip, 8883);
     xtouch_pubSubClient.setCallback(xtouch_mqtt_parseMessage);
-    xtouch_pubSubClient.setSocketTimeout(5);
-    xtouch_pubSubClient.setKeepAlive(5);
+    xtouch_pubSubClient.setSocketTimeout(30);
+    xtouch_pubSubClient.setKeepAlive(30);
     /* home */
     lv_msg_subscribe(XTOUCH_COMMAND_LIGHT_TOGGLE, (lv_msg_subscribe_cb_t)xtouch_device_onLightToggleCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_STOP, (lv_msg_subscribe_cb_t)xtouch_device_onStopCommand, NULL);

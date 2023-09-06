@@ -1,0 +1,168 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XTouch Web Installer</title>
+    <style>
+      /** variables */
+      :root {
+        /*orig*/
+
+        --color-black: black;
+        --color-cod-gray: #101010;
+        --color-white: white;
+        --color-error: rgb(191, 95, 95);
+        --color-primary-rgba: 0, 192, 251;
+        --color-primary: #666666;
+        --color-secondary-rgba: 234, 182, 56;
+        --color-secondary: #eab638;
+        --esp-tools-button-color: #cccccc;
+        --esp-tools-button-text-color: #101010;
+        --improv-primary-color: #484;
+      }
+
+      esp-web-install-button :host {
+        --mdc-theme-primary: #2aff00;
+      }
+      ewt-install-dialog:host {
+        --mdc-theme-primary: #2aff00;
+      }
+      html,
+      body {
+        background-color: var(--color-cod-gray);
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+      }
+      .tiles {
+        display: flex;
+        flex-direction: column;
+
+        justify-content: center;
+        left: 50%;
+        position: fixed;
+        top: 50%;
+        -webkit-transform: translateX(-50%) translateY(-50%) rotate(22.5deg);
+      }
+      .tiles__line {
+        -webkit-animation: runner 20s linear infinite;
+        display: flex;
+        transform: translateX(25%);
+      }
+      .tiles__line:nth-child(2) {
+        -webkit-animation-duration: 64s;
+      }
+      .tiles__line:nth-child(3) {
+        -webkit-animation-duration: 44s;
+      }
+
+      @keyframes runner {
+        to {
+          -webkit-transform: translateX(-25%);
+        }
+      }
+      .tiles__line-img {
+        --tile-margin: 3vw;
+        background-position: 50% 50%;
+        background-size: cover;
+        border-radius: 50%;
+        flex: none;
+        height: 30vh;
+        margin: var(--tile-margin);
+        width: 30vh;
+        background-color: var(--color-primary);
+        opacity: 0.3;
+      }
+      .tiles__line-img--large {
+        border-radius: 20vh;
+        width: 100vh;
+        opacity: 0.1;
+      }
+
+      .xhost__webusb {
+        position: relative;
+        background-color: white;
+        padding: 64px;
+        display: table-cell;
+        border-radius: 16px;
+        text-align: center;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+      }
+
+      .xhost__webusb svg {
+        display: block;
+        margin-top: 32px;
+      }
+
+      .xhost__webusb-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tiles">
+      <div class="tiles__line">
+        <div class="tiles__line-img tiles__line-img--large"></div>
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img tiles__line-img--large"></div>
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img"></div>
+      </div>
+      <div class="tiles__line">
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img tiles__line-img--large"></div>
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img tiles__line-img--large"></div>
+      </div>
+      <div class="tiles__line">
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img tiles__line-img--large"></div>
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img tiles__line-img--large"></div>
+        <div class="tiles__line-img"></div>
+      </div>
+      <div class="tiles__line">
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img tiles__line-img--large"></div>
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img"></div>
+        <div class="tiles__line-img tiles__line-img--large"></div>
+        <div class="tiles__line-img"></div>
+      </div>
+    </div>
+
+    <script
+      type="module"
+      src="https://unpkg.com/esp-web-tools@9.4.0/dist/web/install-button.js?module"
+    ></script>
+
+    <div class="xhost__webusb-container">
+      <div class="xhost__webusb">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="143"
+          height="24"
+          style="enable-background: new 0 0 143 24"
+          xml:space="preserve"
+        >
+          <path
+            d="M3.1 10h20.6l.6-.5V6l-.6-.5H3.1V0h24.6c.4 0 .8.1 1.2.3.4.2.8.5 1.1.8.3.3.6.7.8 1.1.2.4.3.8.3 1.2V11c0 .8-.1 1.5-.4 2.1-.2.6-.6 1.1-1 1.4-.4.4-.9.6-1.4.8-.5.2-1.1.2-1.6.2H9.9V24H3.1V10zM38.5 5.5h-3.8V0h10.6v24h-6.8V5.5zM54.3 14.7V1.9h-6.2V0h15.4v1.9h-6.4v12.8zM67.7 14.7c-.4 0-.7 0-1.1-.1-.3-.1-.6-.2-.9-.4-.2-.2-.4-.3-.5-.6-.1-.2-.2-.5-.2-.9V2c0-.4.1-.7.2-.9.1-.2.3-.4.5-.6.3-.2.5-.3.9-.4.4-.1.7-.1 1.1-.1h12.2c.3 0 .7 0 1 .1.3.1.6.2.9.4.2.2.4.5.6.7.1.2.2.5.2.8v10.7c0 .3-.1.6-.2.8-.2.3-.4.5-.6.7-.3.2-.5.3-.9.4-.3.1-.7.1-1 .1H67.7zm.1-1.9h12v-11h-12v11zM86.8 14.7c-.4 0-.7 0-1.1-.1-.3-.1-.6-.2-.9-.4-.2-.2-.4-.3-.5-.6-.1-.2-.2-.5-.2-.9V0h2.7v12.8h12V0h2.8v12.7c0 .3-.1.6-.2.8-.2.3-.4.5-.6.7-.3.2-.5.3-.9.4-.3.1-.7.1-1 .1H86.8zM105.9 14.7c-.4 0-.7 0-1.1-.1-.3-.1-.6-.2-.9-.4-.2-.2-.4-.3-.5-.6-.1-.2-.2-.5-.2-.9V2c0-.4.1-.7.2-.9.1-.2.3-.4.5-.6.3-.2.5-.3.9-.4.3-.1.7-.1 1.1-.1h12.2c.3 0 .7 0 1 .1.3.1.6.2.9.4.2.2.4.4.6.7.1.2.2.5.2.8v1.8H118v-2h-12v11h12v-1.9h2.8v1.8c0 .3-.1.6-.2.8-.2.3-.4.5-.6.7-.3.2-.5.3-.9.4-.3.1-.7.1-1 .1h-12.2zM137.1 14.7V8.4h-12v6.3h-2.8V0h2.8v6.5h12V0h2.8v14.7z"
+          />
+        </svg>
+        <div style="padding: 16px">Installer</div>
+        <esp-web-install-button
+          manifest="webusb.manifest.json"
+        ></esp-web-install-button>
+      </div>
+    </div>
+  </body>
+</html>
