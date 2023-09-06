@@ -50,6 +50,7 @@ void setup()
   {
     xtouch_ssdp_load_pair();
   }
+  xtouch_ssdp_stop();
 
   xtouch_intro_show();
   xtouch_mqtt_setup();
