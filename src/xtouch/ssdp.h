@@ -19,7 +19,7 @@ DynamicJsonDocument xtouch_ssdp_load()
     return xtouch_filesystem_readJson(SD, xtouch_ssdp_devices, false);
 }
 
-void xtouch_ssdp_clear_devices()
+void xtouch_ssdp_clear_device_list()
 {
     DynamicJsonDocument pairDoc(32);
     xtouch_filesystem_writeJson(SD, xtouch_ssdp_devices, pairDoc);
@@ -80,12 +80,15 @@ void xtouch_ssdp_unpair()
 void xtouch_ssdp_save_pair(String usn, String accessCode)
 {
     Serial.println("[XTOUCH][SSDP] Saving pair");
+    Serial.println(usn);
+    Serial.println(accessCode);
     DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
 
     pairFile["paired"] = usn;
     pairFile[usn] = accessCode;
 
     xtouch_filesystem_writeJson(SD, xtouch_ssdp_pair, pairFile);
+    Serial.println("[XTOUCH][SSDP] Saving pair Done");
 }
 
 void xtouch_ssdp_parseResponse(String input)
@@ -116,8 +119,12 @@ void xtouch_ssdp_parseResponse(String input)
             value.trim();
 
             // Check if the key is one of the desired keys
-            if (key == "location" || key == "usn" || key == "devmodel.bambu.com" || key == "devconnect.bambu.com" || key == "devbind.bambu.com")
+            if (key == "location" || key == "usn" || key == "devmodel.bambu.com" || key == "devconnect.bambu.com" || key == "devbind.bambu.com" || key == "devname.bambu.com")
             {
+                if (key == "devname.bambu.com")
+                {
+                    key = "name";
+                }
                 if (key == "devmodel.bambu.com")
                 {
                     key = "model";
@@ -155,19 +162,6 @@ void xtouch_ssdp_parseResponse(String input)
     }
     ssdpjson[keyIndex] = doc;
     xtouch_filesystem_writeJson(SD, xtouch_ssdp_devices, ssdpjson);
-
-    String output = "";
-    for (JsonPair keyValue : ssdpjson.as<JsonObject>())
-    {
-        output = output + keyValue.key().c_str() + "\n";
-    }
-
-    if (!output.isEmpty())
-    {
-        output.remove(output.length() - 1);
-        lv_roller_set_options(ui_printerPairScreenRoller, output.c_str(), LV_ROLLER_MODE_NORMAL);
-        lv_obj_clear_flag(ui_printerPairScreenSubmitButton, LV_OBJ_FLAG_HIDDEN);
-    }
 }
 
 void xtouch_ssdp_loop()
@@ -184,20 +178,38 @@ void xtouch_ssdp_loop()
     }
 }
 
+void xtouch_ssdp_onButtonTimer(lv_timer_t *timer)
+{
+    DynamicJsonDocument ssdpjson = xtouch_ssdp_load();
+    String output = "";
+    for (JsonPair keyValue : ssdpjson.as<JsonObject>())
+    {
+        String name = keyValue.value()["name"].as<String>();
+        output = output + LV_SYMBOL_CHARGE + " " + name + "   " + LV_SYMBOL_USB + " " + keyValue.key().c_str() + "\n";
+    }
+
+    if (!output.isEmpty())
+    {
+        output.remove(output.length() - 1);
+        lv_roller_set_options(ui_printerPairScreenRoller, output.c_str(), LV_ROLLER_MODE_NORMAL);
+        lv_obj_clear_flag(ui_printerPairScreenSubmitButton, LV_OBJ_FLAG_HIDDEN);
+    }
+}
+
+void xtouch_ssdp_setupButtonTimer()
+{
+    xtouch_ssdp_onButtonTimerTimer = lv_timer_create(xtouch_ssdp_onButtonTimer, 10000, NULL);
+    lv_timer_set_repeat_count(xtouch_ssdp_onButtonTimerTimer, 1);
+}
+
 void xtouch_ssdp_start()
 {
     xtouch_ssdp_udp.begin(XTOUCH_SSDP_UDP_PORT);
-
-    // lv_label_set_text(introScreenCaption, LV_SYMBOL_SETTINGS " Pairing device");
-    // lv_timer_handler();
 }
 
 void xtouch_ssdp_stop()
 {
     xtouch_ssdp_udp.stop();
-    // lv_label_set_text(introScreenCaption, LV_SYMBOL_SETTINGS " Device paired");
-    // lv_timer_handler();
-    // delay(1500);
 }
 
 #endif
