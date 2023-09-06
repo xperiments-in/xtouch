@@ -93,7 +93,6 @@ void xtouch_ssdp_save_pair(String usn, String accessCode)
     pairFile[usn] = accessCode;
 
     xtouch_filesystem_writeJson(SD, xtouch_ssdp_pair, pairFile);
-    Serial.println("[XTOUCH][SSDP] Saving pair Done");
 }
 
 void xtouch_ssdp_parseResponse(String input)
