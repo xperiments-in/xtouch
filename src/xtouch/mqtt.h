@@ -14,6 +14,7 @@ PubSubClient xtouch_pubSubClient(xtouch_wiFiClientSecure);
 
 /* ---------------------------------------------- */
 bool xtouch_mqtt_firstConnectionDone = false;
+int xtouch_mqtt_connection_fail_count = 5;
 
 void sendMsg(XTOUCH_MESSAGE message, unsigned long long data = 0)
 {
@@ -464,10 +465,11 @@ const char *generateRandomKey(int keyLength)
 
 void xtouch_mqtt_connect()
 {
-    Serial.println(F("[XTouch][MQTT] Connecting"));
 
     xtouch_ssdp_save_pair(xTouchConfig.xTouchSerialNumber, xTouchConfig.xTouchAccessCode);
     delay(100);
+
+    Serial.println(F("[XTouch][MQTT] Connecting"));
 
     String deviceTopic = String("device/") + xTouchConfig.xTouchSerialNumber;
     String reportTopic = deviceTopic + String("/report");
@@ -477,10 +479,11 @@ void xtouch_mqtt_connect()
     delay(32);
     xtouch_mqtt_firstConnectionDone = false;
 
+    String clientId = "XTOUCH-CLIENT-" + String(generateRandomKey(16));
     while (!xtouch_pubSubClient.connected())
     {
         // String clientId = "XTOUCH-CLIENT";
-        if (xtouch_pubSubClient.connect(generateRandomKey(16), "bblp", xTouchConfig.xTouchAccessCode))
+        if (xtouch_pubSubClient.connect(clientId.c_str(), "bblp", xTouchConfig.xTouchAccessCode))
         {
             Serial.println(F("[XTouch][MQTT] ---- CONNECTED ----"));
 
@@ -505,7 +508,13 @@ void xtouch_mqtt_connect()
             switch (xtouch_pubSubClient.state())
             {
 
-                // case -4: // MQTT_CONNECTION_TIMEOUT
+            case -4: // MQTT_CONNECTION_TIMEOUT
+                xtouch_mqtt_connection_fail_count--;
+                if (xtouch_mqtt_connection_fail_count == 0)
+                {
+                    ESP.restart();
+                }
+                break;
                 // case -3: // MQTT_CONNECTION_LOST
                 // case -1: // MQTT_DISCONNECTED
                 //     break;
@@ -570,7 +579,8 @@ void xtouch_mqtt_setup()
     ip.fromString(ssdp[xTouchConfig.xTouchSerialNumber]["ip"].as<String>());
     xtouch_pubSubClient.setServer(ip, 8883);
     xtouch_pubSubClient.setCallback(xtouch_mqtt_parseMessage);
-
+    xtouch_pubSubClient.setSocketTimeout(5);
+    xtouch_pubSubClient.setKeepAlive(5);
     /* home */
     lv_msg_subscribe(XTOUCH_COMMAND_LIGHT_TOGGLE, (lv_msg_subscribe_cb_t)xtouch_device_onLightToggleCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_STOP, (lv_msg_subscribe_cb_t)xtouch_device_onStopCommand, NULL);
