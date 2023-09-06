@@ -465,6 +465,10 @@ const char *generateRandomKey(int keyLength)
 void xtouch_mqtt_connect()
 {
     Serial.println(F("[XTouch][MQTT] Connecting"));
+
+    xtouch_ssdp_save_pair(xTouchConfig.xTouchSerialNumber, xTouchConfig.xTouchAccessCode);
+    delay(100);
+
     String deviceTopic = String("device/") + xTouchConfig.xTouchSerialNumber;
     String reportTopic = deviceTopic + String("/report");
     lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " CONNECTING MQTT");
@@ -491,7 +495,6 @@ void xtouch_mqtt_connect()
             }
             xtouch_mqtt_firstConnectionDone = true;
 
-            xtouch_ssdp_save_pair(xTouchConfig.xTouchSerialNumber, xTouchConfig.xTouchAccessCode);
             break;
         }
         else
@@ -567,7 +570,6 @@ void xtouch_mqtt_setup()
     ip.fromString(ssdp[xTouchConfig.xTouchSerialNumber]["ip"].as<String>());
     xtouch_pubSubClient.setServer(ip, 8883);
     xtouch_pubSubClient.setCallback(xtouch_mqtt_parseMessage);
-    xtouch_pubSubClient.setKeepAlive(10);
 
     /* home */
     lv_msg_subscribe(XTOUCH_COMMAND_LIGHT_TOGGLE, (lv_msg_subscribe_cb_t)xtouch_device_onLightToggleCommand, NULL);

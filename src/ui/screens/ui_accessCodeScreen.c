@@ -40,8 +40,8 @@ void ui_accessCodeScreen_screen_init(void)
 
     // lv_obj_t *ui_accessCodeScreenKeyboard;
     ui_accessCodeScreenKeyboard = lv_keyboard_create(ui_accessCodeScreen);
-    lv_keyboard_set_mode(ui_accessCodeScreenKeyboard, LV_KEYBOARD_MODE_NUMBER);
-    lv_obj_set_height(ui_accessCodeScreenKeyboard, 190);
+    lv_keyboard_set_mode(ui_accessCodeScreenKeyboard, LV_KEYBOARD_MODE_TEXT_LOWER);
+    lv_obj_set_height(ui_accessCodeScreenKeyboard, 120);
     lv_obj_set_width(ui_accessCodeScreenKeyboard, lv_pct(100));
     lv_obj_add_flag(ui_accessCodeScreenKeyboard, LV_OBJ_FLAG_FLOATING);                                                                                                                                                                                                                               /// Flags
     lv_obj_clear_flag(ui_accessCodeScreenKeyboard, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
@@ -52,10 +52,15 @@ void ui_accessCodeScreen_screen_init(void)
 
     // lv_obj_t *ui_accessCodeInput;
     ui_accessCodeInput = lv_textarea_create(ui_accessCodeScreen);
-
-    lv_obj_set_height(ui_accessCodeInput, 48);
-    lv_obj_set_flex_grow(ui_accessCodeInput, 1);
+    lv_obj_set_width(ui_accessCodeInput, lv_pct(100));
+    lv_obj_set_height(ui_accessCodeInput, LV_SIZE_CONTENT); /// 48
+    lv_obj_set_x(ui_accessCodeInput, 0);
+    lv_obj_set_y(ui_accessCodeInput, 70);
     lv_textarea_set_placeholder_text(ui_accessCodeInput, "Enter Access Code");
+    lv_textarea_set_one_line(ui_accessCodeInput, true);
+    lv_obj_add_flag(ui_accessCodeInput, LV_OBJ_FLAG_FLOATING);                                 /// Flags
+    lv_obj_clear_flag(ui_accessCodeInput, LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE); /// Flags
+    lv_obj_set_style_text_align(ui_accessCodeInput, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_accessCodeInput, &lv_font_montserrat_28, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui_accessCodeInput, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_accessCodeInput, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
