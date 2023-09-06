@@ -514,6 +514,8 @@ void xtouch_mqtt_connect()
                 lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
                 lv_timer_handler();
                 lv_task_handler();
+                xtouch_ssdp_clear_device_list();
+                xtouch_ssdp_clear_pair_list();
                 ESP.restart();
                 break;
             case 1: // MQTT BAD_PROTOCOL
@@ -536,6 +538,7 @@ void xtouch_mqtt_connect()
                 lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
                 lv_timer_handler();
                 lv_task_handler();
+                xtouch_ssdp_clear_device_list();
                 xtouch_ssdp_clear_pair_list();
                 ESP.restart();
 
