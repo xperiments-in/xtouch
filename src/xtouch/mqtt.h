@@ -471,6 +471,8 @@ void xtouch_mqtt_connect()
     lv_timer_handler();
     lv_task_handler();
     delay(32);
+    xtouch_mqtt_firstConnectionDone = false;
+
     while (!xtouch_pubSubClient.connected())
     {
         // String clientId = "XTOUCH-CLIENT";
@@ -512,7 +514,6 @@ void xtouch_mqtt_connect()
                 lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
                 lv_timer_handler();
                 lv_task_handler();
-                xtouch_ssdp_clear_devices();
                 ESP.restart();
                 break;
             case 1: // MQTT BAD_PROTOCOL
@@ -535,6 +536,7 @@ void xtouch_mqtt_connect()
                 lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
                 lv_timer_handler();
                 lv_task_handler();
+                xtouch_ssdp_clear_pair_list();
                 ESP.restart();
 
                 break;
@@ -585,8 +587,6 @@ void xtouch_mqtt_setup()
     /* filament */
     lv_msg_subscribe(XTOUCH_COMMAND_EXTRUDE_UP, (lv_msg_subscribe_cb_t)xtouch_device_onNozzleUp, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_EXTRUDE_DOWN, (lv_msg_subscribe_cb_t)xtouch_device_onNozzleDown, NULL);
-
-    xtouch_mqtt_connect();
 }
 
 void xtouch_mqtt_loop()

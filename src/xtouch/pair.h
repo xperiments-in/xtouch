@@ -5,6 +5,7 @@ bool xtouch_pair_loop_exit = false;
 
 void xtouch_pair_start()
 {
+    xtouch_ssdp_setupButtonTimer();
     xtouch_pair_loop_exit = false;
     loadScreen(5);
     while (!xtouch_pair_loop_exit)
@@ -19,7 +20,6 @@ void xtouch_pair_start()
     if (storedCode.length() > 0)
     {
         strcpy(xTouchConfig.xTouchAccessCode, storedCode.c_str());
-        xtouch_intro_show();
     }
     else
     {

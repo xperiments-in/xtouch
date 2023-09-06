@@ -28,6 +28,7 @@ extern "C"
 #include "../../src/xtouch/types.h"
 
   lv_timer_t *xtouch_screen_onScreenOffTimer;
+  lv_timer_t *xtouch_ssdp_onButtonTimerTimer;
   // SCREEN: ui_controlScreen
   void ui_homeScreen_screen_init(void);
   void ui_temperatureScreen_screen_init(void);

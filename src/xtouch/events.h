@@ -17,7 +17,15 @@ void xtouch_events_onUnPair(lv_msg_t *m)
 void xtouch_events_onSSDP(lv_msg_t *m)
 {
     xtouch_pair_loop_exit = true;
+
+    char selectedUSNTitle[64];
+    lv_roller_get_selected_str(ui_printerPairScreenRoller, selectedUSNTitle, 64);
+    String selectedUSNTitleString = String(selectedUSNTitle);
+    selectedUSNTitleString.trim();
+    String selectedUSN = selectedUSNTitleString.substring(selectedUSNTitleString.lastIndexOf(" ") + 1);
+    strcpy(xTouchConfig.xTouchSerialNumber, selectedUSN.c_str());
 }
+
 void xtouch_events_onCodeEntered(lv_msg_t *m)
 {
     xtouch_pair_loop_exit = true;
@@ -25,7 +33,7 @@ void xtouch_events_onCodeEntered(lv_msg_t *m)
 
 void xtouch_events_onClearAccesCodeCache(lv_msg_t *m)
 {
-    xtouch_filesystem_deleteFile(SD, xtouch_ssdp_pair);
+    xtouch_ssdp_clear_pair_list();
     ESP.restart();
 }
 

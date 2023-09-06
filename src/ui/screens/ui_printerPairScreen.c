@@ -6,12 +6,7 @@ void ui_event_printerPairScreenSubmitButton(lv_event_t *e)
     lv_obj_t *target = lv_event_get_target(e);
     if (event_code == LV_EVENT_CLICKED)
     {
-        char selectedUSN[16];
-
-        lv_roller_get_selected_str(ui_printerPairScreenRoller, selectedUSN, 16);
-        strcpy(xTouchConfig.xTouchSerialNumber, selectedUSN);
         lv_msg_send(XTOUCH_ON_SSDP, NULL);
-        LV_LOG_USER("Selected USN: %s", selectedUSN);
     }
 }
 

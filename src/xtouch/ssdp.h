@@ -3,6 +3,8 @@
 
 #include <WiFi.h>
 #include <WiFiUdp.h>
+
+#define XTOUCH_SSDP_SEARCH_TIME 15000
 #define XTOUCH_SSDP_PACKET_SIZE 512
 #define XTOUCH_SSDP_UDP_PORT 2021
 #define XTOUCH_SSDP_MAX_DEVICES 20
@@ -23,6 +25,11 @@ void xtouch_ssdp_clear_device_list()
 {
     DynamicJsonDocument pairDoc(32);
     xtouch_filesystem_writeJson(SD, xtouch_ssdp_devices, pairDoc);
+}
+
+void xtouch_ssdp_clear_pair_list()
+{
+    xtouch_filesystem_deleteFile(SD, xtouch_ssdp_pair);
 }
 
 bool xtouch_ssdp_is_paired()
@@ -80,8 +87,6 @@ void xtouch_ssdp_unpair()
 void xtouch_ssdp_save_pair(String usn, String accessCode)
 {
     Serial.println("[XTOUCH][SSDP] Saving pair");
-    Serial.println(usn);
-    Serial.println(accessCode);
     DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
 
     pairFile["paired"] = usn;
@@ -155,7 +160,6 @@ void xtouch_ssdp_parseResponse(String input)
     }
 
     DynamicJsonDocument ssdpjson = xtouch_ssdp_load();
-    serializeJson(ssdpjson, Serial);
     if (ssdpjson.containsKey(keyIndex))
     {
         ssdpjson.remove(keyIndex);
@@ -198,7 +202,7 @@ void xtouch_ssdp_onButtonTimer(lv_timer_t *timer)
 
 void xtouch_ssdp_setupButtonTimer()
 {
-    xtouch_ssdp_onButtonTimerTimer = lv_timer_create(xtouch_ssdp_onButtonTimer, 10000, NULL);
+    xtouch_ssdp_onButtonTimerTimer = lv_timer_create(xtouch_ssdp_onButtonTimer, XTOUCH_SSDP_SEARCH_TIME, NULL);
     lv_timer_set_repeat_count(xtouch_ssdp_onButtonTimerTimer, 1);
 }
 

@@ -32,6 +32,8 @@ void setup()
   while (!xtouch_sdcard_setup())
     ;
 
+  xtouch_ssdp_clear_device_list();
+
   while (!xtouch_wifi_setup())
     ;
 
