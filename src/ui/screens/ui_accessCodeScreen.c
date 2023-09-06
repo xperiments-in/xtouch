@@ -66,7 +66,8 @@ void ui_accessCodeScreen_screen_init(void)
     lv_obj_set_style_text_line_space(ui_accessCodeInput, 0, LV_PART_TEXTAREA_PLACEHOLDER | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_accessCodeInput, &lv_font_montserrat_28, LV_PART_TEXTAREA_PLACEHOLDER | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui_accessCodeInput, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_add_event_cb(ui_accessCodeInput, ui_event_accessCodeScreenSubmit, LV_EVENT_ALL, NULL);
     lv_textarea_set_max_length(ui_accessCodeInput, 8);
     lv_keyboard_set_textarea(ui_accessCodeScreenKeyboard, ui_accessCodeInput);
+
+    lv_obj_add_event_cb(ui_accessCodeInput, ui_event_accessCodeScreenSubmit, LV_EVENT_ALL, NULL);
 }
