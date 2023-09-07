@@ -8,7 +8,16 @@
 #define SD_MOSI 23
 #define SD_CS 5
 
-#define SCREENTIMER 1000 * 60 * 3
+#define LCD_BACK_LIGHT_PIN 21
+
+// use first channel of 16 channels (started from zero)
+#define LEDC_CHANNEL_0 0
+
+// use 12 bit precission for LEDC timer
+#define LEDC_TIMER_12_BIT 12
+
+// use 5000 Hz as a LEDC base frequency
+#define LEDC_BASE_FREQ 5000
 
 static const uint16_t screenWidth = 240;
 static const uint16_t screenHeight = 320;
@@ -24,6 +33,17 @@ TFT_eSPI tft = TFT_eSPI(screenWidth, screenHeight); /* TFT instance */
 
 bool x_touch_read_from_power_off = false;
 
+// Arduino like analogWrite
+// value has to be between 0 and valueMax
+void ledcAnalogWrite(uint8_t channel, uint32_t value, uint32_t valueMax = 255)
+{
+    // calculate duty, 4095 from 2 ^ 12 - 1
+    uint32_t duty = (4095 / valueMax) * min(value, valueMax);
+
+    // write duty to LEDC
+    ledcWrite(channel, duty);
+}
+
 void xtouch_screen_setBackLedOff()
 {
     pinMode(4, OUTPUT);
@@ -36,8 +56,62 @@ void xtouch_screen_setBackLedOff()
 
 void xtouch_screen_onScreenOff(lv_timer_t *timer)
 {
-    digitalWrite(21, LOW);
+    // digitalWrite(BACKLIGHTPIN, LOW);
+    ledcAnalogWrite(LEDC_CHANNEL_0, 0);
     x_touch_read_from_power_off = true;
+}
+
+void xtouch_screen_setupScreenTimer()
+{
+    xtouch_screen_onScreenOffTimer = lv_timer_create(xtouch_screen_onScreenOff, xTouchConfig.xTouchTFTOFFValue * 1000 * 60, NULL);
+    lv_timer_pause(xtouch_screen_onScreenOffTimer);
+}
+
+void xtouch_screen_startScreenTimer()
+{
+    lv_timer_resume(xtouch_screen_onScreenOffTimer);
+}
+
+void xtouch_screen_updateScreenTimer(uint32_t period)
+{
+    Serial.println("xtouch_screen_updateScreenTimer");
+    Serial.println(period);
+    lv_timer_set_period(xtouch_screen_onScreenOffTimer, period);
+}
+
+void xtouch_screen_touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
+{
+
+    if (x_touch_touchScreen.tirqTouched() && x_touch_touchScreen.touched())
+    {
+        lv_timer_reset(xtouch_screen_onScreenOffTimer);
+        // dont pass first touch after power on
+        if (x_touch_read_from_power_off)
+        {
+            x_touch_read_from_power_off = false;
+            // digitalWrite(BACKLIGHTPIN, 128);
+            ledcAnalogWrite(LEDC_CHANNEL_0, 255);
+            while (x_touch_touchScreen.touched())
+                ;
+            return;
+        }
+
+        ScreenPoint sp = ScreenPoint();
+        TS_Point p = x_touch_touchScreen.getPoint();
+        sp = getScreenCoords(p.x, p.y);
+        data->state = LV_INDEV_STATE_PR;
+        data->point.x = sp.x;
+        data->point.y = sp.y;
+    }
+    else
+    {
+        data->state = LV_INDEV_STATE_REL;
+    }
+}
+
+void xtouch_screen_invert_setup()
+{
+    tft.invertDisplay(xTouchConfig.xTouchTFTInvert);
 }
 
 /* Display flushing */
@@ -52,47 +126,6 @@ void xtouch_screen_dispFlush(lv_disp_drv_t *disp, const lv_area_t *area, lv_colo
     tft.endWrite();
 
     lv_disp_flush_ready(disp);
-}
-
-void xtouch_screen_setupScreenTimer()
-{
-    xtouch_screen_onScreenOffTimer = lv_timer_create(xtouch_screen_onScreenOff, SCREENTIMER, NULL);
-    lv_timer_pause(xtouch_screen_onScreenOffTimer);
-}
-
-void xtouch_screen_startScreenTimer()
-{
-    lv_timer_resume(xtouch_screen_onScreenOffTimer);
-}
-
-void xtouch_screen_touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
-{
-
-    if (x_touch_touchScreen.tirqTouched() && x_touch_touchScreen.touched())
-    {
-        lv_timer_reset(xtouch_screen_onScreenOffTimer);
-        // dont pass first touch after power on
-        if (x_touch_read_from_power_off)
-        {
-            x_touch_read_from_power_off = false;
-            digitalWrite(21, HIGH);
-            while (x_touch_touchScreen.touched())
-                ;
-            return;
-        }
-
-        // digitalWrite(21, HIGH);
-        ScreenPoint sp = ScreenPoint();
-        TS_Point p = x_touch_touchScreen.getPoint();
-        sp = getScreenCoords(p.x, p.y);
-        data->state = LV_INDEV_STATE_PR;
-        data->point.x = sp.x;
-        data->point.y = sp.y;
-    }
-    else
-    {
-        data->state = LV_INDEV_STATE_REL;
-    }
 }
 
 void xtouch_screen_setup()
@@ -111,6 +144,10 @@ void xtouch_screen_setup()
     lv_init();
 
     tft.init();
+
+    ledcSetup(LEDC_CHANNEL_0, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
+    ledcAttachPin(LCD_BACK_LIGHT_PIN, LEDC_CHANNEL_0);
+
     tft.setRotation(1);
     x_touch_spi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
     x_touch_touchScreen.begin(x_touch_spi);

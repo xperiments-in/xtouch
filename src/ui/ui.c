@@ -22,6 +22,10 @@ lv_obj_t *ui_controlScreen;
 lv_obj_t *ui_controlComponent;
 lv_obj_t *ui_settingsScreen;
 lv_obj_t *ui_settingsComponent;
+lv_obj_t *ui_settingsBackLightPanelSlider;
+lv_obj_t *ui_settingsTFTOFFSlider;
+lv_obj_t *ui_settingsTFTOFFValue;
+lv_obj_t *ui_settingsTFTInvertSwitch;
 lv_obj_t *ui_confirmComponent; // layertop
 lv_obj_t *ui_hmsComponent;     // layertop
 lv_obj_t *ui_mainStatusComponent;

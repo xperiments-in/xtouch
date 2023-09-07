@@ -466,9 +466,6 @@ const char *generateRandomKey(int keyLength)
 void xtouch_mqtt_connect()
 {
 
-    xtouch_ssdp_save_pair(xTouchConfig.xTouchSerialNumber, xTouchConfig.xTouchAccessCode);
-    delay(100);
-
     Serial.println(F("[XTouch][MQTT] Connecting"));
 
     String deviceTopic = String("device/") + xTouchConfig.xTouchSerialNumber;
@@ -629,6 +626,8 @@ void xtouch_mqtt_setup()
     /* filament */
     lv_msg_subscribe(XTOUCH_COMMAND_EXTRUDE_UP, (lv_msg_subscribe_cb_t)xtouch_device_onNozzleUp, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_EXTRUDE_DOWN, (lv_msg_subscribe_cb_t)xtouch_device_onNozzleDown, NULL);
+
+    xtouch_ssdp_save_pair(xTouchConfig.xTouchSerialNumber, xTouchConfig.xTouchAccessCode);
 }
 
 void xtouch_mqtt_loop()

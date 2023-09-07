@@ -86,7 +86,7 @@ void xtouch_ssdp_unpair()
 
 void xtouch_ssdp_save_pair(String usn, String accessCode)
 {
-    Serial.println("[XTOUCH][SSDP] Saving pair");
+    Serial.println("[XTOUCH][SSDP] Saving USN:AccessCode pair");
     DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
 
     pairFile["paired"] = usn;

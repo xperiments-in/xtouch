@@ -15,6 +15,7 @@
 
 #include "xtouch/pair.h"
 #include "xtouch/mqtt.h"
+#include "xtouch/settings.h"
 #include "xtouch/events.h"
 #include "xtouch/connection.h"
 
@@ -31,6 +32,8 @@ void setup()
 
   while (!xtouch_sdcard_setup())
     ;
+
+  xtouch_settings_setup();
 
   while (!xtouch_wifi_setup())
     ;

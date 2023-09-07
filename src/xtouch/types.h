@@ -121,6 +121,9 @@ extern "C"
         char xTouchSerialNumber[16];
         bool xTouchAuxFanEnabled;
         bool xTouchChamberSensorEnabled;
+        int xTouchBacklightLevel;
+        int xTouchTFTOFFValue;
+        bool xTouchTFTInvert;
     } XTouchConfig;
 
     XTouchConfig xTouchConfig;
