@@ -71,6 +71,19 @@ void xtouch_events_onTFTInvert(lv_msg_t *m)
     xtouch_screen_invert_setup();
 }
 
+void xtouch_events_onSettingsSave(lv_msg_t *m)
+{
+    xtouch_settings_save();
+}
+
+void xtouch_events_onTFTFlip(lv_msg_t *m)
+{
+    xtouch_settings_save();
+    xtouch_screen_setFlip();
+    lv_obj_t *current = lv_scr_act();
+    lv_obj_invalidate(current);
+}
+
 void xtouch_setupGlobalEvents()
 {
     lv_msg_subscribe(XTOUCH_SETTINGS_RESET_DEVICE, (lv_msg_subscribe_cb_t)xtouch_events_onResetDevice, NULL);
@@ -82,6 +95,8 @@ void xtouch_setupGlobalEvents()
     lv_msg_subscribe(XTOUCH_SETTINGS_BACKLIGHT_SET, (lv_msg_subscribe_cb_t)xtouch_events_onBackLightSet, NULL);
     lv_msg_subscribe(XTOUCH_SETTINGS_TFTOFF_SET, (lv_msg_subscribe_cb_t)xtouch_events_onTFTTimerSet, NULL);
     lv_msg_subscribe(XTOUCH_SETTINGS_TFT_INVERT, (lv_msg_subscribe_cb_t)xtouch_events_onTFTInvert, NULL);
+    lv_msg_subscribe(XTOUCH_SETTINGS_SAVE, (lv_msg_subscribe_cb_t)xtouch_events_onSettingsSave, NULL);
+    lv_msg_subscribe(XTOUCH_SETTINGS_TFT_FLIP, (lv_msg_subscribe_cb_t)xtouch_events_onTFTFlip, NULL);
 }
 
 #endif

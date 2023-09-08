@@ -46,6 +46,9 @@ extern "C"
     void onSettingsResetDevice(lv_event_t *e);
     void onSettingsUnPair(lv_event_t *e);
     void onSettingsClearAccesCodeCache(lv_event_t *e);
+    void onSettingsAuxFan(lv_event_t *e);
+    void onSettingsChamberSensor(lv_event_t *e);
+    void onSettingsTFTFlip(lv_event_t *e);
 
     /* -----------Confirm-------------- */
     void onConfirmPanelNO(lv_event_t *e);

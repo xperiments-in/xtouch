@@ -30,6 +30,7 @@ extern "C"
   lv_timer_t *xtouch_screen_onScreenOffTimer;
   lv_timer_t *xtouch_ssdp_onButtonTimerTimer;
   // SCREEN: ui_controlScreen
+  void ui_introScreen_screen_init(void);
   void ui_homeScreen_screen_init(void);
   void ui_temperatureScreen_screen_init(void);
   void ui_controlScreen_screen_init(void);
@@ -37,6 +38,10 @@ extern "C"
   void ui_filamentScreen_screen_init(void);
   void ui_accessCodeScreen_screen_init(void);
   void ui_printerPairScreen_screen_init(void);
+
+  lv_obj_t *introScreen;
+  lv_obj_t *introScreenIcon;
+  lv_obj_t *introScreenCaption;
 
   lv_obj_t *ui_sidebarComponent;
   lv_obj_t *ui_homeScreen;
@@ -55,6 +60,9 @@ extern "C"
   lv_obj_t *ui_settingsTFTOFFSlider;
   lv_obj_t *ui_settingsTFTOFFValue;
   lv_obj_t *ui_settingsTFTInvertSwitch;
+  lv_obj_t *ui_settingsTFTFlipSwitch;
+  lv_obj_t *ui_settings_auxFanSwitch;
+  lv_obj_t *ui_settings_chamberSensorSwitch;
   lv_obj_t *ui_confirmComponent; // layertop
   lv_obj_t *ui_hmsComponent;     // layertop
   lv_obj_t *ui_mainStatusComponent;

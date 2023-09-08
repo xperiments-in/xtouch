@@ -49,11 +49,41 @@ void ui_event_comp_settingsComponent_tftInvertInput(lv_event_t *e)
 void ui_event_comp_settingsComponent_onTFTOFF(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
-    uint32_t value = lv_slider_get_value(ui_settingsTFTOFFSlider);
-    lv_label_set_text_fmt(ui_settingsTFTOFFValue, "%dm", value);
+    if (event_code == LV_EVENT_VALUE_CHANGED)
+    {
+        uint32_t value = lv_slider_get_value(ui_settingsTFTOFFSlider);
+        lv_label_set_text_fmt(ui_settingsTFTOFFValue, "%dm", value);
+    }
     if (event_code == LV_EVENT_RELEASED)
     {
         lv_msg_send(XTOUCH_SETTINGS_TFTOFF_SET, NULL);
+    }
+}
+
+void ui_event_comp_settingsComponent_onTFTFlip(lv_event_t *e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    if (event_code == LV_EVENT_VALUE_CHANGED)
+    {
+        onSettingsTFTFlip(e);
+    }
+}
+
+void ui_event_comp_settingsComponent_onAuxFan(lv_event_t *e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    if (event_code == LV_EVENT_VALUE_CHANGED)
+    {
+        onSettingsAuxFan(e);
+    }
+}
+
+void ui_event_comp_settingsComponent_onChamberTemp(lv_event_t *e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    if (event_code == LV_EVENT_VALUE_CHANGED)
+    {
+        onSettingsChamberSensor(e);
     }
 }
 
@@ -79,7 +109,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_y(cui_settingsComponent, 178);
     lv_obj_set_flex_flow(cui_settingsComponent, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(cui_settingsComponent, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-    lv_obj_clear_flag(cui_settingsComponent, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_style_radius(cui_settingsComponent, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_settingsComponent, lv_color_hex(0x444444), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(cui_settingsComponent, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -102,7 +131,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_width(cui_settingsTitle, lv_pct(100));
     lv_obj_set_height(cui_settingsTitle, LV_SIZE_CONTENT); /// 40
     lv_label_set_text(cui_settingsTitle, LV_SYMBOL_SETTINGS " SETTINGS");
-    lv_obj_clear_flag(cui_settingsTitle, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_scrollbar_mode(cui_settingsTitle, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_settingsTitle, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_settingsTitle, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -120,7 +148,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_width(cui_screenTitle, lv_pct(100));
     lv_obj_set_height(cui_screenTitle, LV_SIZE_CONTENT); /// 40
     lv_label_set_text(cui_screenTitle, LV_SYMBOL_IMAGE " SCREEN");
-    lv_obj_clear_flag(cui_screenTitle, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_scrollbar_mode(cui_screenTitle, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_screenTitle, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_screenTitle, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -139,7 +166,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_height(cui_settingsBackLightPanel, 70);
     lv_obj_set_flex_flow(cui_settingsBackLightPanel, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(cui_settingsBackLightPanel, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(cui_settingsBackLightPanel, LV_OBJ_FLAG_SCROLLABLE); /// Flags
     lv_obj_set_style_radius(cui_settingsBackLightPanel, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_settingsBackLightPanel, lv_color_hex(0x222222), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(cui_settingsBackLightPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -183,7 +209,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_height(cui_settingsTFTOFFPanel, 70);
     lv_obj_set_flex_flow(cui_settingsTFTOFFPanel, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(cui_settingsTFTOFFPanel, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(cui_settingsTFTOFFPanel, LV_OBJ_FLAG_SCROLLABLE); /// Flags
     lv_obj_set_style_radius(cui_settingsTFTOFFPanel, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_settingsTFTOFFPanel, lv_color_hex(0x222222), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(cui_settingsTFTOFFPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -237,7 +262,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_height(cui_screenInvertSetting, LV_SIZE_CONTENT); /// 50
     lv_obj_set_flex_flow(cui_screenInvertSetting, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(cui_screenInvertSetting, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(cui_screenInvertSetting, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_scrollbar_mode(cui_screenInvertSetting, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_bg_color(cui_screenInvertSetting, lv_color_hex(0x222222), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(cui_screenInvertSetting, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -252,14 +276,12 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_width(cui_screenInvertLabel, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(cui_screenInvertLabel, LV_SIZE_CONTENT); /// 1
     lv_label_set_text(cui_screenInvertLabel, LV_SYMBOL_SHUFFLE " Invert Colors");
-    lv_obj_clear_flag(cui_screenInvertLabel, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_scrollbar_mode(cui_screenInvertLabel, LV_SCROLLBAR_MODE_OFF);
 
     // lv_obj_t *ui_settingsTFTInvertSwitch;
     ui_settingsTFTInvertSwitch = lv_switch_create(cui_screenInvertSetting);
     lv_obj_set_width(ui_settingsTFTInvertSwitch, 50);
     lv_obj_set_height(ui_settingsTFTInvertSwitch, 25);
-    lv_obj_clear_flag(ui_settingsTFTInvertSwitch, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE); /// Flags
 
     lv_obj_set_style_bg_color(ui_settingsTFTInvertSwitch, lv_color_hex(0x2AFF00), LV_PART_INDICATOR | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_settingsTFTInvertSwitch, 255, LV_PART_INDICATOR | LV_STATE_CHECKED);
@@ -273,12 +295,50 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
         lv_obj_add_state(ui_settingsTFTInvertSwitch, LV_STATE_CHECKED);
     }
 
+    lv_obj_t *cui_settingsTFTFlip;
+    cui_settingsTFTFlip = lv_obj_create(cui_settingsComponent);
+    lv_obj_set_width(cui_settingsTFTFlip, lv_pct(100));
+    lv_obj_set_height(cui_settingsTFTFlip, LV_SIZE_CONTENT); /// 50
+    lv_obj_set_flex_flow(cui_settingsTFTFlip, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(cui_settingsTFTFlip, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_set_scrollbar_mode(cui_settingsTFTFlip, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_set_style_bg_color(cui_settingsTFTFlip, lv_color_hex(0x222222), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(cui_settingsTFTFlip, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(cui_settingsTFTFlip, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(cui_settingsTFTFlip, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(cui_settingsTFTFlip, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(cui_settingsTFTFlip, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(cui_settingsTFTFlip, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_t *cui_settingsTFTFlipLabel;
+    cui_settingsTFTFlipLabel = lv_label_create(cui_settingsTFTFlip);
+    lv_obj_set_width(cui_settingsTFTFlipLabel, LV_SIZE_CONTENT);  /// 1
+    lv_obj_set_height(cui_settingsTFTFlipLabel, LV_SIZE_CONTENT); /// 1
+    lv_label_set_text(cui_settingsTFTFlipLabel, "TFT FLIP");
+    lv_obj_set_scrollbar_mode(cui_settingsTFTFlipLabel, LV_SCROLLBAR_MODE_OFF);
+
+    // lv_obj_t *ui_settingsTFTInvertSwitch;
+    ui_settingsTFTFlipSwitch = lv_switch_create(cui_settingsTFTFlip);
+    lv_obj_set_width(ui_settingsTFTFlipSwitch, 50);
+    lv_obj_set_height(ui_settingsTFTFlipSwitch, 25);
+
+    lv_obj_set_style_bg_color(ui_settingsTFTFlipSwitch, lv_color_hex(0x2AFF00), LV_PART_INDICATOR | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_settingsTFTFlipSwitch, 255, LV_PART_INDICATOR | LV_STATE_CHECKED);
+
+    lv_obj_set_style_bg_color(ui_settingsTFTFlipSwitch, lv_color_hex(0x2AFF00), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_settingsTFTFlipSwitch, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_settingsTFTFlipSwitch, lv_color_hex(0x000000), LV_PART_KNOB | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_settingsTFTFlipSwitch, 255, LV_PART_KNOB | LV_STATE_CHECKED);
+    if (xTouchConfig.xTouchTFTFlip)
+    {
+        lv_obj_add_state(ui_settingsTFTFlipSwitch, LV_STATE_CHECKED);
+    }
+
     lv_obj_t *cui_pairingTitle;
     cui_pairingTitle = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_pairingTitle, lv_pct(100));
     lv_obj_set_height(cui_pairingTitle, LV_SIZE_CONTENT); /// 40
     lv_label_set_text(cui_pairingTitle, LV_SYMBOL_REFRESH " PAIRING");
-    lv_obj_clear_flag(cui_pairingTitle, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_scrollbar_mode(cui_pairingTitle, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_pairingTitle, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_pairingTitle, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -297,7 +357,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_height(cui_unpairButton, LV_SIZE_CONTENT); /// 1
     lv_label_set_text(cui_unpairButton, LV_SYMBOL_SHUFFLE " Unpair Printer");
     lv_obj_add_flag(cui_unpairButton, LV_OBJ_FLAG_CLICKABLE); /// Flags
-    // lv_obj_clear_flag(cui_unpairButton, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_scrollbar_mode(cui_unpairButton, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_radius(cui_unpairButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_unpairButton, lv_color_hex(0xFF682A), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -314,7 +373,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_height(cui_clearAccesCodeCacheButton, LV_SIZE_CONTENT); /// 1
     lv_label_set_text(cui_clearAccesCodeCacheButton, LV_SYMBOL_TRASH " Clear Access Codes");
     lv_obj_add_flag(cui_clearAccesCodeCacheButton, LV_OBJ_FLAG_CLICKABLE); /// Flags
-    // lv_obj_clear_flag(cui_clearAccesCodeCacheButton, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_scrollbar_mode(cui_clearAccesCodeCacheButton, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_radius(cui_clearAccesCodeCacheButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_clearAccesCodeCacheButton, lv_color_hex(0xFF682A), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -330,7 +388,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_width(cui_deviceTitle, lv_pct(100));
     lv_obj_set_height(cui_deviceTitle, LV_SIZE_CONTENT); /// 40
     lv_label_set_text(cui_deviceTitle, LV_SYMBOL_LIST " DEVICE");
-    lv_obj_clear_flag(cui_deviceTitle, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_scrollbar_mode(cui_deviceTitle, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_deviceTitle, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_deviceTitle, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -343,13 +400,91 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_radius(cui_deviceTitle, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(cui_deviceTitle, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    lv_obj_t *cui_settings_auxFan;
+    cui_settings_auxFan = lv_obj_create(cui_settingsComponent);
+    lv_obj_set_width(cui_settings_auxFan, lv_pct(100));
+    lv_obj_set_height(cui_settings_auxFan, LV_SIZE_CONTENT); /// 50
+    lv_obj_set_flex_flow(cui_settings_auxFan, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(cui_settings_auxFan, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_set_scrollbar_mode(cui_settings_auxFan, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_set_style_bg_color(cui_settings_auxFan, lv_color_hex(0x222222), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(cui_settings_auxFan, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(cui_settings_auxFan, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(cui_settings_auxFan, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(cui_settings_auxFan, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(cui_settings_auxFan, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(cui_settings_auxFan, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_t *cui_settings_auxFanLabel;
+    cui_settings_auxFanLabel = lv_label_create(cui_settings_auxFan);
+    lv_obj_set_width(cui_settings_auxFanLabel, LV_SIZE_CONTENT);  /// 1
+    lv_obj_set_height(cui_settings_auxFanLabel, LV_SIZE_CONTENT); /// 1
+    lv_label_set_text(cui_settings_auxFanLabel, "AUX FAN");
+    lv_obj_set_scrollbar_mode(cui_settings_auxFanLabel, LV_SCROLLBAR_MODE_OFF);
+
+    // lv_obj_t *ui_settingsTFTInvertSwitch;
+    ui_settings_auxFanSwitch = lv_switch_create(cui_settings_auxFan);
+    lv_obj_set_width(ui_settings_auxFanSwitch, 50);
+    lv_obj_set_height(ui_settings_auxFanSwitch, 25);
+
+    lv_obj_set_style_bg_color(ui_settings_auxFanSwitch, lv_color_hex(0x2AFF00), LV_PART_INDICATOR | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_settings_auxFanSwitch, 255, LV_PART_INDICATOR | LV_STATE_CHECKED);
+
+    lv_obj_set_style_bg_color(ui_settings_auxFanSwitch, lv_color_hex(0x2AFF00), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_settings_auxFanSwitch, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_settings_auxFanSwitch, lv_color_hex(0x000000), LV_PART_KNOB | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_settings_auxFanSwitch, 255, LV_PART_KNOB | LV_STATE_CHECKED);
+    if (xTouchConfig.xTouchAuxFanEnabled)
+    {
+        lv_obj_add_state(ui_settings_auxFanSwitch, LV_STATE_CHECKED);
+    }
+
+    lv_obj_t *cui_settings_chamberSensor;
+    cui_settings_chamberSensor = lv_obj_create(cui_settingsComponent);
+    lv_obj_set_width(cui_settings_chamberSensor, lv_pct(100));
+    lv_obj_set_height(cui_settings_chamberSensor, LV_SIZE_CONTENT); /// 50
+    lv_obj_set_flex_flow(cui_settings_chamberSensor, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(cui_settings_chamberSensor, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_set_scrollbar_mode(cui_settings_chamberSensor, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_set_style_bg_color(cui_settings_chamberSensor, lv_color_hex(0x222222), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(cui_settings_chamberSensor, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(cui_settings_chamberSensor, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(cui_settings_chamberSensor, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(cui_settings_chamberSensor, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(cui_settings_chamberSensor, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(cui_settings_chamberSensor, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_t *cui_settings_chamberSensorLabel;
+    cui_settings_chamberSensorLabel = lv_label_create(cui_settings_chamberSensor);
+    lv_obj_set_width(cui_settings_chamberSensorLabel, LV_SIZE_CONTENT);  /// 1
+    lv_obj_set_height(cui_settings_chamberSensorLabel, LV_SIZE_CONTENT); /// 1
+    lv_label_set_text(cui_settings_chamberSensorLabel, "CHAMBER TEMP");
+    lv_obj_set_scrollbar_mode(cui_settings_chamberSensorLabel, LV_SCROLLBAR_MODE_OFF);
+
+    // lv_obj_t *ui_settingsTFTInvertSwitch;
+    ui_settings_chamberSensorSwitch = lv_switch_create(cui_settings_chamberSensor);
+    lv_obj_set_width(ui_settings_chamberSensorSwitch, 50);
+    lv_obj_set_height(ui_settings_chamberSensorSwitch, 25);
+
+    lv_obj_set_style_bg_color(ui_settings_chamberSensorSwitch, lv_color_hex(0x2AFF00), LV_PART_INDICATOR | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_settings_chamberSensorSwitch, 255, LV_PART_INDICATOR | LV_STATE_CHECKED);
+
+    lv_obj_set_style_bg_color(ui_settings_chamberSensorSwitch, lv_color_hex(0x2AFF00), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_settings_chamberSensorSwitch, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_settings_chamberSensorSwitch, lv_color_hex(0x000000), LV_PART_KNOB | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_settings_chamberSensorSwitch, 255, LV_PART_KNOB | LV_STATE_CHECKED);
+    if (xTouchConfig.xTouchChamberSensorEnabled)
+    {
+        lv_obj_add_state(ui_settings_chamberSensorSwitch, LV_STATE_CHECKED);
+    }
+
     lv_obj_t *cui_reseDeviceButton;
     cui_reseDeviceButton = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_reseDeviceButton, lv_pct(100));
     lv_obj_set_height(cui_reseDeviceButton, LV_SIZE_CONTENT); /// 1
     lv_label_set_text(cui_reseDeviceButton, LV_SYMBOL_POWER " Reboot Device");
-    lv_obj_add_flag(cui_reseDeviceButton, LV_OBJ_FLAG_CLICKABLE); /// Flags
-    // lv_obj_clear_flag(cui_reseDeviceButton, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
+    lv_obj_add_flag(cui_reseDeviceButton, LV_OBJ_FLAG_CLICKABLE);    /// Flags
+    lv_obj_clear_flag(cui_reseDeviceButton, LV_OBJ_FLAG_SCROLLABLE); /// Flags
     lv_obj_set_scrollbar_mode(cui_reseDeviceButton, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_radius(cui_reseDeviceButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_reseDeviceButton, lv_color_hex(0xFF682A), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -373,20 +508,38 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     children[UI_COMP_SETTINGSCOMPONENT_TFT_INVERT] = cui_screenInvertSetting;
     children[UI_COMP_SETTINGSCOMPONENT_TFT_INVERT_LABEL] = cui_screenInvertLabel;
     children[UI_COMP_SETTINGSCOMPONENT_TFT_INVERT_INPUT] = ui_settingsTFTInvertSwitch;
+    children[UI_COMP_SETTINGSCOMPONENT_TFT_FLIP] = cui_settingsTFTFlip;
+    children[UI_COMP_SETTINGSCOMPONENT_TFT_FLIP_LABEL] = cui_settingsTFTFlipLabel;
+    children[UI_COMP_SETTINGSCOMPONENT_TFT_FLIP_INPUT] = ui_settingsTFTFlipSwitch;
+
     children[UI_COMP_SETTINGSCOMPONENT_PAIR_TITLE] = cui_pairingTitle;
     children[UI_COMP_SETTINGSCOMPONENT_UNPAIRBUTTON] = cui_unpairButton;
-    children[UI_COMP_SETTINGSCOMPONENT_RESETDEVICEBUTTON] = cui_reseDeviceButton;
-    children[UI_COMP_SETTINGSCOMPONENT_DEVICE_TITLE] = cui_deviceTitle;
     children[UI_COMP_SETTINGSCOMPONENT_RESETSETTINGSBUTTON] = cui_clearAccesCodeCacheButton;
+
+    children[UI_COMP_SETTINGSCOMPONENT_DEVICE_TITLE] = cui_deviceTitle;
+    children[UI_COMP_SETTINGSCOMPONENT_AUXFAN] = cui_settings_auxFan;
+    children[UI_COMP_SETTINGSCOMPONENT_AUXFAN_LABEL] = cui_settings_auxFanLabel;
+    children[UI_COMP_SETTINGSCOMPONENT_AUXFAN_SWITCH] = ui_settings_auxFanSwitch;
+    children[UI_COMP_SETTINGSCOMPONENT_CHAMBER_TEMP] = cui_settings_chamberSensor;
+    children[UI_COMP_SETTINGSCOMPONENT_CHAMBER_TEMP_LABEL] = cui_settings_chamberSensorLabel;
+    children[UI_COMP_SETTINGSCOMPONENT_CHAMBER_TEMP_SWITCH] = ui_settings_chamberSensorSwitch;
+    children[UI_COMP_SETTINGSCOMPONENT_RESETDEVICEBUTTON] = cui_reseDeviceButton;
+
     lv_obj_add_event_cb(cui_settingsComponent, get_component_child_event_cb, LV_EVENT_GET_COMP_CHILD, children);
     lv_obj_add_event_cb(cui_settingsComponent, del_component_child_event_cb, LV_EVENT_DELETE, children);
-    lv_obj_add_event_cb(cui_unpairButton, ui_event_comp_settingsComponent_unpairButton, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(cui_clearAccesCodeCacheButton, ui_event_comp_settingsComponent_clearAccesCodeCacheButton, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(cui_reseDeviceButton, ui_event_comp_settingsComponent_resetDeviceButton, LV_EVENT_ALL, NULL);
+
+    lv_obj_add_event_cb(cui_unpairButton, ui_event_comp_settingsComponent_unpairButton, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(cui_clearAccesCodeCacheButton, ui_event_comp_settingsComponent_clearAccesCodeCacheButton, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(cui_reseDeviceButton, ui_event_comp_settingsComponent_resetDeviceButton, LV_EVENT_CLICKED, NULL);
 
     lv_obj_add_event_cb(ui_settingsTFTOFFSlider, ui_event_comp_settingsComponent_onTFTOFF, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_settingsBackLightPanelSlider, ui_event_comp_settingsComponent_onBackLight, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_settingsTFTInvertSwitch, ui_event_comp_settingsComponent_tftInvertInput, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_settingsTFTInvertSwitch, ui_event_comp_settingsComponent_tftInvertInput, LV_EVENT_VALUE_CHANGED, NULL);
+
+    lv_obj_add_event_cb(ui_settings_auxFanSwitch, ui_event_comp_settingsComponent_onAuxFan, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_settings_chamberSensorSwitch, ui_event_comp_settingsComponent_onChamberTemp, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_settingsTFTFlipSwitch, ui_event_comp_settingsComponent_onTFTFlip, LV_EVENT_VALUE_CHANGED, NULL);
+
     ui_comp_settingsComponent_create_hook(cui_settingsComponent);
     return cui_settingsComponent;
 }

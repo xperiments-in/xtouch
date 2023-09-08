@@ -124,6 +124,7 @@ extern "C"
         int xTouchBacklightLevel;
         int xTouchTFTOFFValue;
         bool xTouchTFTInvert;
+        bool xTouchTFTFlip;
     } XTouchConfig;
 
     XTouchConfig xTouchConfig;
