@@ -128,9 +128,29 @@ void xtouch_screen_dispFlush(lv_disp_drv_t *disp, const lv_area_t *area, lv_colo
     lv_disp_flush_ready(disp);
 }
 
-void xtouch_screen_setFlip()
+byte xtouch_screen_getTFTFlip()
 {
-    byte eepromTFTFlip = xtouch_eeprom_read(XTOUCH_EEPROM_POS_TFTFLIP);
+    byte val = xtouch_eeprom_read(XTOUCH_EEPROM_POS_TFTFLIP);
+    xTouchConfig.xTouchTFTFlip = val;
+    return val;
+}
+
+void xtouch_screen_setTFTFlip(byte mode)
+{
+    xTouchConfig.xTouchTFTFlip = mode;
+    xtouch_eeprom_write(XTOUCH_EEPROM_POS_TFTFLIP, mode);
+}
+
+void xtouch_screen_toggleTFTFlip()
+{
+    xtouch_screen_setTFTFlip(!xtouch_screen_getTFTFlip());
+    xtouch_resetTouchConfig();
+    ESP.restart();
+}
+
+void xtouch_screen_setupTFTRotation()
+{
+    byte eepromTFTFlip = xtouch_screen_getTFTFlip();
     tft.setRotation(eepromTFTFlip == 1 ? 3 : 1);
     x_touch_touchScreen.setRotation(eepromTFTFlip == 1 ? 3 : 1);
 }
@@ -159,7 +179,7 @@ void xtouch_screen_setup()
     x_touch_spi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
     x_touch_touchScreen.begin(x_touch_spi);
 
-    xtouch_screen_setFlip();
+    xtouch_screen_setupTFTRotation();
 
     ledcAnalogWrite(LEDC_CHANNEL_0, 255);
 

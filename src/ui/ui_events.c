@@ -114,10 +114,14 @@ void onSettingsChamberSensor(lv_event_t *e)
     lv_msg_send(XTOUCH_SETTINGS_SAVE, NULL);
 }
 
+void onSettingsTFTFlipConfirm()
+{
+    lv_msg_send(XTOUCH_SETTINGS_TFT_FLIP, NULL);
+}
+
 void onSettingsTFTFlip(lv_event_t *e)
 {
-    xTouchConfig.xTouchTFTFlip = !xTouchConfig.xTouchTFTFlip;
-    lv_msg_send(XTOUCH_SETTINGS_TFT_FLIP, NULL);
+    ui_confirmPanel_show(LV_SYMBOL_WARNING " Flip LCD " LV_SYMBOL_REFRESH "(Reboot)", onSettingsTFTFlipConfirm);
 }
 
 /* filament */

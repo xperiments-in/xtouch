@@ -78,10 +78,13 @@ void xtouch_events_onSettingsSave(lv_msg_t *m)
 
 void xtouch_events_onTFTFlip(lv_msg_t *m)
 {
-    xtouch_settings_save();
-    xtouch_screen_setFlip();
-    lv_obj_t *current = lv_scr_act();
-    lv_obj_invalidate(current);
+    xtouch_screen_toggleTFTFlip();
+}
+
+void xtouch_events_onResetTouch(lv_msg_t *m)
+{
+    xtouch_resetTouchConfig();
+    ESP.restart();
 }
 
 void xtouch_events_onChamberTempSwitch(lv_msg_t *m)
