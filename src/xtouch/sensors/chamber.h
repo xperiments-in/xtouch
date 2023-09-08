@@ -14,6 +14,8 @@ DallasTemperature xtouch_chamber_sensors(&temperatureSensorsOneWire);
 
 lv_timer_t *xtouch_chambertemp_requestTemperaturesTimer;
 
+void xtouch_chamber_requestTemperatures(lv_timer_t *timer);
+
 void xtouch_chamber_timer_create()
 {
     xtouch_chambertemp_requestTemperaturesTimer = lv_timer_create(xtouch_chamber_requestTemperatures, 2500, NULL);
