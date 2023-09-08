@@ -181,7 +181,6 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
 
         if (incomingJson["print"].containsKey("chamber_temper"))
         {
-            // Todo listen event
             bambuStatus.chamber_temper = incomingJson["print"]["chamber_temper"].as<double>();
             sendMsg(XTOUCH_ON_CHAMBER_TEMP, bambuStatus.chamber_temper);
         }
