@@ -29,7 +29,7 @@ void ui_printerPairScreen_screen_init(void)
     ui_printerPairScreenCaption = lv_label_create(ui_printerPairScreen);
     lv_obj_set_height(ui_printerPairScreenCaption, 50);
     lv_obj_set_width(ui_printerPairScreenCaption, lv_pct(100));
-    lv_label_set_text(ui_printerPairScreenCaption, "Select Printer");
+    lv_label_set_text(ui_printerPairScreenCaption, "Pick a Printer");
     lv_obj_set_style_text_align(ui_printerPairScreenCaption, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_printerPairScreenCaption, &lv_font_montserrat_28, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(ui_printerPairScreenCaption, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -40,7 +40,7 @@ void ui_printerPairScreen_screen_init(void)
     // lv_obj_t *ui_printerPairScreenRoller;
     ui_printerPairScreenRoller = lv_roller_create(ui_printerPairScreen);
 
-    lv_roller_set_options(ui_printerPairScreenRoller, LV_SYMBOL_CHARGE " Printer Search. Please wait...", LV_ROLLER_MODE_NORMAL);
+    lv_roller_set_options(ui_printerPairScreenRoller, LV_SYMBOL_CHARGE " Searching for Printers...", LV_ROLLER_MODE_NORMAL);
     lv_obj_set_width(ui_printerPairScreenRoller, lv_pct(100));
     lv_obj_set_flex_grow(ui_printerPairScreenRoller, 5);
     lv_obj_set_x(ui_printerPairScreenRoller, 344);

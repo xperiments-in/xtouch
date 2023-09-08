@@ -17,6 +17,9 @@ bool xtouch_sdcard_setup()
         Serial.println("[XTouch][SD] Card Mount Failed");
         return false;
     }
+
+    lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0x555555), LV_PART_MAIN | LV_STATE_DEFAULT);
+
     uint8_t cardType = SD.cardType();
 
     if (cardType == CARD_NONE)
@@ -46,11 +49,6 @@ bool xtouch_sdcard_setup()
 
     uint64_t cardSize = SD.cardSize() / (1024 * 1024);
     Serial.printf("[XTouch][SD] SD Card Size: %lluMB\n", cardSize);
-
-    // lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE);
-    // lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0x00FF00), LV_PART_MAIN | LV_STATE_DEFAULT);
-    // lv_timer_handler();
-
     return true;
 }
 
