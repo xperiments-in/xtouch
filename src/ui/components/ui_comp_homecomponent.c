@@ -150,6 +150,19 @@ void onXTouchBedTemp(lv_event_t *e)
     lv_label_set_text(target, value);
 }
 
+void onXTouchChamberTemp(lv_event_t *e)
+{
+
+    lv_obj_t *target = lv_event_get_target(e);
+    lv_msg_t *m = lv_event_get_msg(e);
+
+    struct XTOUCH_MESSAGE_DATA *message = (struct XTOUCH_MESSAGE_DATA *)m->payload;
+    char value[10];
+
+    itoa(message->data, value, 10);
+    lv_label_set_text(target, value);
+}
+
 void onXTouchBedTempTarget(lv_event_t *e)
 {
 
@@ -1050,6 +1063,9 @@ lv_obj_t *ui_homeComponent_create(lv_obj_t *comp_parent)
 
     lv_obj_add_event_cb(cui_mainScreenNozzleTempValue, onXTouchBedTemp, LV_EVENT_MSG_RECEIVED, NULL);
     lv_msg_subsribe_obj(XTOUCH_ON_NOZZLE_TEMP, cui_mainScreenNozzleTempValue, NULL);
+
+    lv_obj_add_event_cb(cui_mainScreenChamberTempValue, onXTouchChamberTemp, LV_EVENT_MSG_RECEIVED, NULL);
+    lv_msg_subsribe_obj(XTOUCH_ON_CHAMBER_TEMP, cui_mainScreenChamberTempValue, NULL);
 
     lv_obj_add_event_cb(cui_mainScreenNozzleTempIcon, onXTouchBedTempTarget, LV_EVENT_MSG_RECEIVED, NULL);
     lv_msg_subsribe_obj(XTOUCH_ON_NOZZLE_TARGET_TEMP, cui_mainScreenNozzleTempIcon, NULL);

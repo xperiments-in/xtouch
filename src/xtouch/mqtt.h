@@ -603,6 +603,8 @@ void xtouch_mqtt_setup()
     xtouch_pubSubClient.setBufferSize(4096);
     IPAddress ip;
     ip.fromString(ssdp[xTouchConfig.xTouchSerialNumber]["ip"].as<String>());
+    String pairedModel = ssdp[xTouchConfig.xTouchSerialNumber]["model"].as<String>();
+    xTouchConfig.xTouchIsP1Series = pairedModel == "C11" || pairedModel == "C12" ? true : false;
     xtouch_pubSubClient.setServer(ip, 8883);
     xtouch_pubSubClient.setCallback(xtouch_mqtt_parseMessage);
     xtouch_pubSubClient.setSocketTimeout(30);

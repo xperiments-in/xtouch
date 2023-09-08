@@ -17,6 +17,7 @@
 #include "xtouch/pair.h"
 #include "xtouch/mqtt.h"
 #include "xtouch/settings.h"
+#include "xtouch/sensors/chamber.h"
 #include "xtouch/events.h"
 #include "xtouch/connection.h"
 
@@ -50,6 +51,7 @@ void setup()
   xtouch_setupGlobalEvents();
   xtouch_pair_check();
   xtouch_mqtt_setup();
+  xtouch_chamber_timer_init();
 }
 
 void loop()

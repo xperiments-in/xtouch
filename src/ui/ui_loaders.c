@@ -21,6 +21,7 @@ void fillScreenData(int screen)
         sendMqttMsg(XTOUCH_ON_LIGHT_REPORT, bambuStatus.led);
         sendMqttMsg(XTOUCH_ON_AMS, bambuStatus.ams);
         sendMqttMsg(XTOUCH_ON_PRINT_STATUS, 0);
+        sendMqttMsg(XTOUCH_ON_CHAMBER_TEMP, bambuStatus.chamber_temper);
         break;
     case 1:
         sendMqttMsg(XTOUCH_ON_BED_TEMP, bambuStatus.bed_temper);

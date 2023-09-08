@@ -454,6 +454,11 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_pad_top(cui_settings_chamberSensor, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(cui_settings_chamberSensor, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    if (!xTouchConfig.xTouchIsP1Series)
+    {
+        lv_obj_add_flag(cui_settings_chamberSensor, LV_OBJ_FLAG_HIDDEN);
+    }
+
     lv_obj_t *cui_settings_chamberSensorLabel;
     cui_settings_chamberSensorLabel = lv_label_create(cui_settings_chamberSensor);
     lv_obj_set_width(cui_settings_chamberSensorLabel, LV_SIZE_CONTENT);  /// 1

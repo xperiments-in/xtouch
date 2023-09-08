@@ -125,6 +125,7 @@ extern "C"
         int xTouchTFTOFFValue;
         bool xTouchTFTInvert;
         bool xTouchTFTFlip;
+        bool xTouchIsP1Series;
     } XTouchConfig;
 
     XTouchConfig xTouchConfig;

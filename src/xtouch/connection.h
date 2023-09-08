@@ -19,7 +19,7 @@ bool xtouch_wifi_setup()
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     Serial.println(F("[XTOUCH][CONNECTION] Connecting to WiFi .."));
-    delay(500);
+    delay(1000);
     wl_status_t status = WiFi.status();
     const char *statusText = "";
     lv_color_t statusColor = lv_color_hex(0x555555);

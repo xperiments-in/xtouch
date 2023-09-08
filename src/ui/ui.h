@@ -70,6 +70,7 @@ extern "C"
   lv_obj_t *ui_filamentComponent;
   lv_obj_t *ui_printerPairScreenRoller;
   lv_obj_t *ui_printerPairScreenSubmitButton;
+  lv_obj_t *ui_mainScreenChamberTempValue;
   void ui_event____initial_actions0(lv_event_t *e);
   lv_obj_t *ui____initial_actions0;
 
