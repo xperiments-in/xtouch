@@ -34,10 +34,8 @@ void fillScreenData(int screen)
         break;
     }
 }
-
 void loadScreen(int screen)
 {
-
     lv_obj_t *current = lv_scr_act();
     if (current != NULL)
     {
@@ -47,6 +45,9 @@ void loadScreen(int screen)
 
     switch (screen)
     {
+    case -1:
+        ui_introScreen_screen_init();
+        break;
     case 0:
         ui_homeScreen_screen_init();
         lv_disp_load_scr(ui_homeScreen);
@@ -79,7 +80,7 @@ void loadScreen(int screen)
 
     fillScreenData(screen);
 
-    if (screen < 5)
+    if (screen >= 0 && screen < 5)
     {
         ui_sidebarComponent_set_active(screen);
     }

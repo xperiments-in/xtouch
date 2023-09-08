@@ -33,4 +33,22 @@ void xtouch_pair_start()
     }
 }
 
+void xtouch_pair_check()
+{
+    xtouch_ssdp_start();
+
+    if (!xtouch_ssdp_is_paired())
+    {
+        xtouch_pair_start();
+    }
+    else
+    {
+        xtouch_ssdp_load_pair();
+    }
+
+    xtouch_ssdp_stop();
+
+    loadScreen(-1);
+}
+
 #endif

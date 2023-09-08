@@ -13,8 +13,7 @@
 WiFiUDP xtouch_ssdp_udp;
 
 char xtouch_ssdp_packetBuffer[XTOUCH_SSDP_PACKET_SIZE];
-const char *xtouch_ssdp_devices = "/ssdp-devices.json";
-const char *xtouch_ssdp_pair = "/ssdp-pair.json";
+int xtouch_ssdp_search_count = 0;
 
 DynamicJsonDocument xtouch_ssdp_load()
 {
@@ -86,13 +85,13 @@ void xtouch_ssdp_unpair()
 
 void xtouch_ssdp_save_pair(String usn, String accessCode)
 {
-    Serial.println("[XTOUCH][SSDP] Saving USN:AccessCode pair");
-    DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
+    Serial.println("[XTOUCH][SSDP] Saving USN:AccessCode Pair");
+    DynamicJsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
 
-    pairFile["paired"] = usn;
-    pairFile[usn] = accessCode;
+    doc["paired"] = usn.c_str();
+    doc[usn] = accessCode.c_str();
 
-    xtouch_filesystem_writeJson(SD, xtouch_ssdp_pair, pairFile);
+    xtouch_filesystem_writeJson(SD, xtouch_ssdp_pair, doc);
 }
 
 void xtouch_ssdp_parseResponse(String input)
@@ -181,6 +180,14 @@ void xtouch_ssdp_loop()
     }
 }
 
+void xtouch_ssdp_onButtonTimer(lv_timer_t *timer);
+
+void xtouch_ssdp_setupButtonTimer()
+{
+    xtouch_ssdp_onButtonTimerTimer = lv_timer_create(xtouch_ssdp_onButtonTimer, XTOUCH_SSDP_SEARCH_TIME, NULL);
+    lv_timer_set_repeat_count(xtouch_ssdp_onButtonTimerTimer, 1);
+}
+
 void xtouch_ssdp_onButtonTimer(lv_timer_t *timer)
 {
     DynamicJsonDocument ssdpjson = xtouch_ssdp_load();
@@ -197,12 +204,13 @@ void xtouch_ssdp_onButtonTimer(lv_timer_t *timer)
         lv_roller_set_options(ui_printerPairScreenRoller, output.c_str(), LV_ROLLER_MODE_NORMAL);
         lv_obj_clear_flag(ui_printerPairScreenSubmitButton, LV_OBJ_FLAG_HIDDEN);
     }
-}
-
-void xtouch_ssdp_setupButtonTimer()
-{
-    xtouch_ssdp_onButtonTimerTimer = lv_timer_create(xtouch_ssdp_onButtonTimer, XTOUCH_SSDP_SEARCH_TIME, NULL);
-    lv_timer_set_repeat_count(xtouch_ssdp_onButtonTimerTimer, 1);
+    else
+    {
+        xtouch_ssdp_search_count++;
+        String a = String(LV_SYMBOL_CHARGE " Printer Search. Please wait...(") + xtouch_ssdp_search_count + ")";
+        lv_roller_set_options(ui_printerPairScreenRoller, LV_SYMBOL_CHARGE " Printer Search. Please wait...", LV_ROLLER_MODE_NORMAL);
+        xtouch_ssdp_setupButtonTimer();
+    }
 }
 
 void xtouch_ssdp_start()

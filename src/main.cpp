@@ -1,10 +1,11 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
+#include "xtouch/eeprom.h"
+#include "xtouch/paths.h"
 #include "xtouch/types.h"
 #include "xtouch/globals.h"
 #include "xtouch/filesystem.h"
 #include "ui/ui.h"
-#include "screens/intro.h"
 #include "xtouch/sdcard.h"
 #include "xtouch/hms.h"
 #include "xtouch/ssdp.h"
@@ -19,43 +20,35 @@
 #include "xtouch/events.h"
 #include "xtouch/connection.h"
 
+void xtouch_intro_show(void)
+{
+  ui_introScreen_screen_init();
+  lv_disp_load_scr(introScreen);
+  lv_timer_handler();
+}
+
 void setup()
 {
 
   Serial.begin(115200);
 
+  xtouch_eeprom_setup();
   xtouch_globals_init();
-
   xtouch_screen_setup();
-
   xtouch_intro_show();
 
   while (!xtouch_sdcard_setup())
     ;
 
   xtouch_settings_setup();
+  xtouch_touch_setup();
 
   while (!xtouch_wifi_setup())
     ;
 
-  xtouch_touch_setup();
-
   xtouch_screen_setupScreenTimer();
   xtouch_setupGlobalEvents();
-
-  xtouch_ssdp_start();
-
-  if (!xtouch_ssdp_is_paired())
-  {
-    xtouch_pair_start();
-  }
-  else
-  {
-    xtouch_ssdp_load_pair();
-  }
-  xtouch_ssdp_stop();
-
-  xtouch_intro_show();
+  xtouch_pair_check();
   xtouch_mqtt_setup();
 }
 

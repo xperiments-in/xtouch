@@ -3,7 +3,6 @@
 
 void xtouch_settings_save()
 {
-
     DynamicJsonDocument doc(128);
     doc["backlight"] = xTouchConfig.xTouchBacklightLevel;
     doc["tftOff"] = xTouchConfig.xTouchTFTOFFValue;
@@ -11,9 +10,6 @@ void xtouch_settings_save()
     doc["tftFlip"] = xTouchConfig.xTouchTFTFlip;
     doc["auxFan"] = xTouchConfig.xTouchAuxFanEnabled;
     doc["chamberTemp"] = xTouchConfig.xTouchChamberSensorEnabled;
-
-    Serial.println("xtouch_settings_save");
-    Serial.println(xTouchConfig.xTouchTFTFlip);
 
     xtouch_eeprom_write(XTOUCH_EEPROM_POS_TFTFLIP, xTouchConfig.xTouchTFTFlip);
     xtouch_filesystem_writeJson(SD, settingsPath, doc);

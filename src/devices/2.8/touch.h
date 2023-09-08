@@ -159,6 +159,8 @@ void xtouch_touch_setup()
     }
 
     lv_msg_subscribe(XTOUCH_SETTINGS_RESET_TOUCH, (lv_msg_subscribe_cb_t)xtouch_onSettingsResetTouch, NULL);
+
+    loadScreen(-1);
 }
 
 #endif

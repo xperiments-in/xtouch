@@ -155,32 +155,35 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
             }
         }
 
-        if (incomingJson["print"].containsKey("bed_target_temper"))
-        {
-
-            bambuStatus.bed_target_temper = incomingJson["print"]["bed_target_temper"].as<double>();
-            sendMsg(XTOUCH_ON_BED_TARGET_TEMP, bambuStatus.bed_target_temper);
-        }
-
         if (incomingJson["print"].containsKey("bed_temper"))
         {
-
             bambuStatus.bed_temper = incomingJson["print"]["bed_temper"].as<double>();
             sendMsg(XTOUCH_ON_BED_TEMP, bambuStatus.bed_temper);
         }
 
-        if (incomingJson["print"].containsKey("nozzle_target_temper"))
+        if (incomingJson["print"].containsKey("bed_target_temper"))
         {
-
-            bambuStatus.nozzle_target_temper = incomingJson["print"]["nozzle_target_temper"].as<double>();
-            sendMsg(XTOUCH_ON_NOZZLE_TARGET_TEMP, bambuStatus.nozzle_target_temper);
+            bambuStatus.bed_target_temper = incomingJson["print"]["bed_target_temper"].as<double>();
+            sendMsg(XTOUCH_ON_BED_TARGET_TEMP, bambuStatus.bed_target_temper);
         }
 
         if (incomingJson["print"].containsKey("nozzle_temper"))
         {
-
             bambuStatus.nozzle_temper = incomingJson["print"]["nozzle_temper"].as<double>();
             sendMsg(XTOUCH_ON_NOZZLE_TEMP, bambuStatus.nozzle_temper);
+        }
+
+        if (incomingJson["print"].containsKey("nozzle_target_temper"))
+        {
+            bambuStatus.nozzle_target_temper = incomingJson["print"]["nozzle_target_temper"].as<double>();
+            sendMsg(XTOUCH_ON_NOZZLE_TARGET_TEMP, bambuStatus.nozzle_target_temper);
+        }
+
+        if (incomingJson["print"].containsKey("chamber_temper"))
+        {
+            // Todo listen event
+            bambuStatus.chamber_temper = incomingJson["print"]["chamber_temper"].as<double>();
+            sendMsg(XTOUCH_ON_CHAMBER_TEMP, bambuStatus.chamber_temper);
         }
 
         if (incomingJson["print"].containsKey("wifi_signal"))
