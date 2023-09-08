@@ -1,19 +1,4 @@
-#ifndef _XLCD_INTRO
-#define _XLCD_INTRO
-
-#include "ui/ui.h"
-
-lv_obj_t *introScreen;
-lv_obj_t *introScreenIcon;
-lv_obj_t *introScreenCaption;
-
-void xtouch_intro_label(const char *text, lv_color_t color)
-{
-    lv_label_set_text(introScreenCaption, text);
-    lv_obj_set_style_text_color(introScreenCaption, color, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_timer_handler();
-    lv_task_handler();
-}
+#include "../ui.h"
 
 void ui_introScreen_screen_init()
 {
@@ -53,13 +38,3 @@ void ui_introScreen_screen_init()
     lv_obj_set_style_text_align(introScreenCaption, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0x555555), LV_PART_MAIN | LV_STATE_DEFAULT);
 }
-
-void xtouch_intro_show(void)
-{
-    ui_introScreen_screen_init();
-    lv_disp_load_scr(introScreen);
-    lv_timer_handler();
-    lv_task_handler();
-}
-
-#endif
