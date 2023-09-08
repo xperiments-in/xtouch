@@ -59,7 +59,11 @@ void xtouch_chamber_timer_init()
     }
     else
     {
-        xtouch_chamber_timer_stop();
+        if (xtouch_chamber_started)
+        {
+
+            xtouch_chamber_timer_stop();
+        }
     }
 }
 
