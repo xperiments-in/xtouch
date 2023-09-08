@@ -40,7 +40,7 @@ void ui_printerPairScreen_screen_init(void)
     // lv_obj_t *ui_printerPairScreenRoller;
     ui_printerPairScreenRoller = lv_roller_create(ui_printerPairScreen);
 
-    lv_roller_set_options(ui_printerPairScreenRoller, LV_SYMBOL_CHARGE " Printer Search", LV_ROLLER_MODE_NORMAL);
+    lv_roller_set_options(ui_printerPairScreenRoller, LV_SYMBOL_CHARGE " Printer Search. Please wait...", LV_ROLLER_MODE_NORMAL);
     lv_obj_set_width(ui_printerPairScreenRoller, lv_pct(100));
     lv_obj_set_flex_grow(ui_printerPairScreenRoller, 5);
     lv_obj_set_x(ui_printerPairScreenRoller, 344);
