@@ -53,6 +53,11 @@ void xtouch_chamber_timer_stop()
 
 void xtouch_chamber_timer_init()
 {
+    if (!xTouchConfig.xTouchIsP1Series)
+    {
+        return;
+    }
+
     if (xTouchConfig.xTouchChamberSensorEnabled)
     {
         xtouch_chamber_timer_start();
