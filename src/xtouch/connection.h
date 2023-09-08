@@ -6,7 +6,7 @@ bool xtouch_wifi_setup()
     DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_wifi);
     if (wifiConfig.isNull() || !wifiConfig.containsKey("ssid") || !wifiConfig.containsKey("pwd"))
     {
-        lv_label_set_text(introScreenCaption, LV_SYMBOL_SD_CARD " WRONG CONFIG FILE");
+        lv_label_set_text(introScreenCaption, wifiConfig.isNull() ? LV_SYMBOL_SD_CARD " Missing xtouch.json" : LV_SYMBOL_WARNING " Inaccurate Network Credentials");
         lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_timer_handler();
         return false;
@@ -23,19 +23,22 @@ bool xtouch_wifi_setup()
     wl_status_t status = WiFi.status();
     const char *statusText = "";
     lv_color_t statusColor = lv_color_hex(0x555555);
+
+    bool reboot = false;
     while (status != WL_CONNECTED)
     {
 
         switch (status)
         {
         case WL_IDLE_STATUS:
-            statusText = LV_SYMBOL_WIFI " Connecting to SSID";
+            statusText = LV_SYMBOL_WIFI " Connecting";
             statusColor = lv_color_hex(0x555555);
             break;
 
         case WL_NO_SSID_AVAIL:
             statusText = LV_SYMBOL_WARNING " Bad SSID Check WiFi credentials";
             statusColor = lv_color_hex(0xff0000);
+            reboot = true;
             break;
 
             // case WL_CONNECTION_LOST:
@@ -45,6 +48,7 @@ bool xtouch_wifi_setup()
         case WL_DISCONNECTED:
             statusText = LV_SYMBOL_WARNING " Check your WiFi credentials";
             statusColor = lv_color_hex(0xff0000);
+            reboot = true;
             break;
 
         default:
@@ -60,10 +64,18 @@ bool xtouch_wifi_setup()
             delay(32);
         }
 
+        if (reboot)
+        {
+            delay(3000);
+            lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
+            lv_timer_handler();
+            lv_task_handler();
+            ESP.restart();
+        }
         status = WiFi.status();
     }
 
-    lv_label_set_text(introScreenCaption, LV_SYMBOL_WIFI " Connected to SSID");
+    lv_label_set_text(introScreenCaption, LV_SYMBOL_WIFI " Connected");
     lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0x555555), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_timer_handler();
     delay(1000);
