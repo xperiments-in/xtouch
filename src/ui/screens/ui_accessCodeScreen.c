@@ -5,11 +5,9 @@ void ui_event_accessCodeScreenSubmit(lv_event_t *e)
 
     if (code == LV_EVENT_READY)
     {
-        LV_LOG_USER("LV_EVENT_READY");
-        LV_LOG_USER("Ready, current text: %s", lv_textarea_get_text(ui_accessCodeInput));
-        const char *pepe = lv_textarea_get_text(ui_accessCodeInput);
-        // get length of string pepe
-        int n = strlen(pepe);
+        const char *accessCode = lv_textarea_get_text(ui_accessCodeInput);
+        // get length of string accessCode
+        int n = strlen(accessCode);
         if (n == 8)
         {
             strcpy(xTouchConfig.xTouchAccessCode, lv_textarea_get_text(ui_accessCodeInput));
@@ -19,9 +17,9 @@ void ui_event_accessCodeScreenSubmit(lv_event_t *e)
 
     if (code == LV_EVENT_VALUE_CHANGED)
     {
-        const char *pepe = lv_textarea_get_text(ui_accessCodeInput);
-        // get length of string pepe
-        int n = strlen(pepe);
+        const char *accessCode = lv_textarea_get_text(ui_accessCodeInput);
+        // get length of string accessCode
+        int n = strlen(accessCode);
 
         lv_obj_set_style_text_color(ui_accessCodeInput, n != 8 ? lv_color_hex(0xFF0000) : lv_color_hex(0x0000ff), LV_PART_MAIN | LV_STATE_DEFAULT);
     }

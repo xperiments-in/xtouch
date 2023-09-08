@@ -109,7 +109,7 @@ void xtouch_touch_setup()
         TS_Point p;
         int16_t x1, y1, x2, y2;
 
-        lv_label_set_text(introScreenCaption, "Touch the" LV_SYMBOL_PLUS " with the stylus");
+        lv_label_set_text(introScreenCaption, "Touch the  " LV_SYMBOL_PLUS "  with the stylus");
         lv_timer_handler();
 
         // wait for no touch
