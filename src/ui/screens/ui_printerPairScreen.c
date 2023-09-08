@@ -29,7 +29,7 @@ void ui_printerPairScreen_screen_init(void)
     ui_printerPairScreenCaption = lv_label_create(ui_printerPairScreen);
     lv_obj_set_height(ui_printerPairScreenCaption, 50);
     lv_obj_set_width(ui_printerPairScreenCaption, lv_pct(100));
-    lv_label_set_text(ui_printerPairScreenCaption, "Pick a Printer");
+    lv_label_set_text(ui_printerPairScreenCaption, "Pair Printer");
     lv_obj_set_style_text_align(ui_printerPairScreenCaption, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_printerPairScreenCaption, &lv_font_montserrat_28, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(ui_printerPairScreenCaption, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
