@@ -96,15 +96,11 @@ bool hasTouchConfig()
     return SD.exists(touchPath);
 }
 
-void xtouch_onSettingsResetTouch(lv_msg_t *m)
-{
-    xtouch_resetTouchConfig();
-}
-
 void xtouch_touch_setup()
 {
     if (hasTouchConfig())
     {
+        Serial.println(F("[XTouch][TOUCH] Load"));
         xtouch_loadTouchConfig(x_touch_touchConfig);
     }
     else
@@ -112,7 +108,6 @@ void xtouch_touch_setup()
         Serial.println(F("[XTouch][TOUCH] Touch Setup"));
         TS_Point p;
         int16_t x1, y1, x2, y2;
-        lv_obj_clean(lv_scr_act());
 
         lv_label_set_text(introScreenCaption, "Touch the" LV_SYMBOL_PLUS " with the stylus");
         lv_timer_handler();
@@ -156,11 +151,9 @@ void xtouch_touch_setup()
         x_touch_touchConfig.yCalC = 20.0 - ((float)y1 * x_touch_touchConfig.yCalM);
 
         xtouch_saveTouchConfig(x_touch_touchConfig);
+
+        loadScreen(-1);
     }
-
-    lv_msg_subscribe(XTOUCH_SETTINGS_RESET_TOUCH, (lv_msg_subscribe_cb_t)xtouch_onSettingsResetTouch, NULL);
-
-    loadScreen(-1);
 }
 
 #endif

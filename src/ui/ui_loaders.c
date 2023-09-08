@@ -47,6 +47,7 @@ void loadScreen(int screen)
     {
     case -1:
         ui_introScreen_screen_init();
+        lv_disp_load_scr(introScreen);
         break;
     case 0:
         ui_homeScreen_screen_init();

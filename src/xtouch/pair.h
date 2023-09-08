@@ -40,6 +40,7 @@ void xtouch_pair_check()
     if (!xtouch_ssdp_is_paired())
     {
         xtouch_pair_start();
+        loadScreen(-1);
     }
     else
     {
@@ -47,8 +48,6 @@ void xtouch_pair_check()
     }
 
     xtouch_ssdp_stop();
-
-    loadScreen(-1);
 }
 
 #endif
