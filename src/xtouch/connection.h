@@ -3,7 +3,7 @@
 
 bool xtouch_wifi_setup()
 {
-    DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, "/xtouch.json");
+    DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_wifi);
     if (wifiConfig.isNull() || !wifiConfig.containsKey("ssid") || !wifiConfig.containsKey("pwd"))
     {
         lv_label_set_text(introScreenCaption, LV_SYMBOL_SD_CARD " WRONG CONFIG FILE");

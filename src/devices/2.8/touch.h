@@ -12,7 +12,6 @@
 SPIClass x_touch_spi = SPIClass(HSPI);
 XPT2046_Touchscreen x_touch_touchScreen(XPT2046_CS, XPT2046_IRQ);
 XTouchPanelConfig x_touch_touchConfig;
-const char *touchPath = "/touch.json";
 
 class ScreenPoint
 {
