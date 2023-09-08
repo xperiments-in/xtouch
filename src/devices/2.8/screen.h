@@ -128,9 +128,17 @@ void xtouch_screen_dispFlush(lv_disp_drv_t *disp, const lv_area_t *area, lv_colo
     lv_disp_flush_ready(disp);
 }
 
+void xtouch_screen_setFlip()
+{
+    byte eepromTFTFlip = xtouch_eeprom_read(XTOUCH_EEPROM_POS_TFTFLIP);
+    tft.setRotation(eepromTFTFlip == 1 ? 3 : 1);
+    x_touch_touchScreen.setRotation(eepromTFTFlip == 1 ? 3 : 1);
+}
+
 void xtouch_screen_setup()
 {
 
+    Serial.println("[XTouch][SCREEN] Setup");
     pinMode(XPT2046_CS, OUTPUT);
     pinMode(TFT_CS, OUTPUT);
     pinMode(SD_CS, OUTPUT);
@@ -148,10 +156,12 @@ void xtouch_screen_setup()
     ledcSetup(LEDC_CHANNEL_0, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
     ledcAttachPin(LCD_BACK_LIGHT_PIN, LEDC_CHANNEL_0);
 
-    tft.setRotation(1);
     x_touch_spi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
     x_touch_touchScreen.begin(x_touch_spi);
-    x_touch_touchScreen.setRotation(1);
+
+    xtouch_screen_setFlip();
+
+    ledcAnalogWrite(LEDC_CHANNEL_0, 255);
 
     lv_disp_draw_buf_init(&draw_buf, buf, NULL, screenWidth * screenHeight / 10);
 
