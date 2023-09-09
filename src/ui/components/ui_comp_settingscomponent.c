@@ -323,7 +323,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     cui_settingsTFTFlipLabel = lv_label_create(cui_settingsTFTFlip);
     lv_obj_set_width(cui_settingsTFTFlipLabel, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(cui_settingsTFTFlipLabel, LV_SIZE_CONTENT); /// 1
-    lv_label_set_text(cui_settingsTFTFlipLabel, LV_SYMBOL_SHUFFLE "Flip Screen");
+    lv_label_set_text(cui_settingsTFTFlipLabel, LV_SYMBOL_SHUFFLE " Flip Screen");
     lv_obj_set_scrollbar_mode(cui_settingsTFTFlipLabel, LV_SCROLLBAR_MODE_OFF);
 
     // lv_obj_t *ui_settingsTFTInvertSwitch;
