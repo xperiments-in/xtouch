@@ -1,10 +1,6 @@
 #ifndef _XLCD_CONFIG
 #define _XLCD_CONFIG
 
-void xtouch_events_onUpdatedConfig(lv_msg_t *m)
-{
-    // xtouch_saveConfig();
-}
 void xtouch_events_onResetDevice(lv_msg_t *m)
 {
     ESP.restart();
@@ -40,7 +36,7 @@ void xtouch_events_onClearAccesCodeCache(lv_msg_t *m)
 void xtouch_events_onBackLight(lv_msg_t *m)
 {
     int32_t value = lv_slider_get_value(ui_settingsBackLightPanelSlider);
-    ledcAnalogWrite(LEDC_CHANNEL_0, value);
+    xtouch_screen_setBrightness(value);
 }
 
 void xtouch_events_onBackLightSet(lv_msg_t *m)
@@ -49,16 +45,18 @@ void xtouch_events_onBackLightSet(lv_msg_t *m)
     DynamicJsonDocument settings = xtouch_filesystem_readJson(SD, settingsPath);
     settings["backlight"] = value;
     xtouch_filesystem_writeJson(SD, settingsPath, settings);
-    ledcAnalogWrite(LEDC_CHANNEL_0, value);
+    xtouch_screen_setBrightness(value);
 }
 
 void xtouch_events_onTFTTimerSet(lv_msg_t *m)
 {
     int32_t value = lv_slider_get_value(ui_settingsTFTOFFSlider);
+    xtouch_screen_setScreenTimer(value * 1000 * 60);
+
     DynamicJsonDocument settings = xtouch_filesystem_readJson(SD, settingsPath);
     settings["tftOff"] = value;
+    xTouchConfig.xTouchTFTOFFValue = value;
     xtouch_filesystem_writeJson(SD, settingsPath, settings);
-    xtouch_screen_updateScreenTimer(value * 1000 * 60);
 }
 
 void xtouch_events_onTFTInvert(lv_msg_t *m)
@@ -68,7 +66,7 @@ void xtouch_events_onTFTInvert(lv_msg_t *m)
     settings["tftInvert"] = value ? true : false;
     xtouch_filesystem_writeJson(SD, settingsPath, settings);
     xTouchConfig.xTouchTFTInvert = value;
-    xtouch_screen_invert_setup();
+    xtouch_screen_invertColors();
 }
 
 void xtouch_events_onSettingsSave(lv_msg_t *m)

@@ -3,15 +3,6 @@
 #include "../ui.h"
 #include "xtouch/globals.h"
 
-void pauseScreenTimer()
-{
-    lv_timer_pause(xtouch_screen_onScreenOffTimer);
-}
-void resumeScreenTimer()
-{
-    lv_timer_resume(xtouch_screen_onScreenOffTimer);
-}
-
 const char *xtouch_device_get_print_state()
 {
     switch (bambuStatus.print_status)
@@ -254,11 +245,6 @@ void onXTouchPrintStatus(lv_event_t *e)
     lv_obj_t *playPauseButton = comp_homeComponent[UI_COMP_HOMECOMPONENT_MAINSCREENLEFT_MAINSCREENPLAYER_MAINSCREENCONTROLLER_MAINSCREENPLAYPAUSEBUTTON];
     lv_obj_t *dropDown = comp_homeComponent[UI_COMP_HOMECOMPONENT_MAINSCREENLEFT_MAINSCREENCENTRAL_MAINSCREENSPEEDDROPDOWN];
 
-    if (bambuStatus.print_status != XTOUCH_PRINT_STATUS_RUNNING)
-    {
-        resumeScreenTimer();
-    }
-
     switch (bambuStatus.print_status)
     {
     case XTOUCH_PRINT_STATUS_PAUSED:
@@ -270,7 +256,6 @@ void onXTouchPrintStatus(lv_event_t *e)
 
         break;
     case XTOUCH_PRINT_STATUS_RUNNING:
-        pauseScreenTimer(); // pause screen timer when printing
 
         lv_label_set_text(playPauseButton, "0");
         lv_obj_clear_flag(comp_homeComponent[UI_COMP_HOMECOMPONENT_MAINSCREENLEFT_MAINSCREENPLAYER], LV_OBJ_FLAG_HIDDEN);

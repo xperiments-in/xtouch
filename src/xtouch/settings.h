@@ -33,13 +33,13 @@ void xtouch_settings_setup()
 
     xTouchConfig.xTouchAuxFanEnabled = settings["auxFan"].as<bool>();
     xTouchConfig.xTouchChamberSensorEnabled = settings["chamberTemp"].as<bool>();
-    ledcAnalogWrite(LEDC_CHANNEL_0, settings["backlight"].as<int>());
+    xtouch_screen_setBrightness(xTouchConfig.xTouchBacklightLevel);
 
     bool isTFTFlipped = xtouch_screen_getTFTFlip();
     tft.setRotation(isTFTFlipped ? 3 : 1);
     x_touch_touchScreen.setRotation(isTFTFlipped ? 3 : 1);
 
-    xtouch_screen_invert_setup();
+    xtouch_screen_invertColors();
 }
 
 #endif

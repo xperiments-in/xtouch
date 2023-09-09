@@ -6,6 +6,8 @@ extern "C"
 {
 #endif
 
+#define _XLCD_MAIN_MINIMAL_SLEEP_MINUTES 5
+
     struct XTouchPanelConfig
     {
         float xCalM;
@@ -52,6 +54,7 @@ extern "C"
         double bed_temper;
         int cooling_fan_speed; // PART
         int big_fan1_speed;    // AUX
+        int big_fan2_speed;    //
         double chamber_temper;
         char command[32];
         char printer_type[32];

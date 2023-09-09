@@ -31,17 +31,20 @@ TFT_eSPI tft = TFT_eSPI(screenWidth, screenHeight); /* TFT instance */
 #include "touch.h"
 #include "xtouch/globals.h"
 
-bool x_touch_read_from_power_off = false;
+bool xtouch_screen_touchFromPowerOff = false;
 
-// Arduino like analogWrite
-// value has to be between 0 and valueMax
-void ledcAnalogWrite(uint8_t channel, uint32_t value, uint32_t valueMax = 255)
+void xtouch_screen_ledcAnalogWrite(uint8_t channel, uint32_t value, uint32_t valueMax = 255)
 {
     // calculate duty, 4095 from 2 ^ 12 - 1
     uint32_t duty = (4095 / valueMax) * min(value, valueMax);
 
     // write duty to LEDC
     ledcWrite(channel, duty);
+}
+
+void xtouch_screen_setBrightness(byte brightness)
+{
+    xtouch_screen_ledcAnalogWrite(LEDC_CHANNEL_0, brightness);
 }
 
 void xtouch_screen_setBackLedOff()
@@ -56,9 +59,19 @@ void xtouch_screen_setBackLedOff()
 
 void xtouch_screen_onScreenOff(lv_timer_t *timer)
 {
-    // digitalWrite(BACKLIGHTPIN, LOW);
-    ledcAnalogWrite(LEDC_CHANNEL_0, 0);
-    x_touch_read_from_power_off = true;
+    if (bambuStatus.print_status == XTOUCH_PRINT_STATUS_RUNNING)
+    {
+        return;
+    }
+
+    if (xTouchConfig.xTouchTFTOFFValue < _XLCD_MAIN_MINIMAL_SLEEP_MINUTES)
+    {
+        return;
+    }
+
+    Serial.println("[XTouch][SCREEN] Screen Off");
+    xtouch_screen_setBrightness(0);
+    xtouch_screen_touchFromPowerOff = true;
 }
 
 void xtouch_screen_setupScreenTimer()
@@ -72,60 +85,14 @@ void xtouch_screen_startScreenTimer()
     lv_timer_resume(xtouch_screen_onScreenOffTimer);
 }
 
-void xtouch_screen_updateScreenTimer(uint32_t period)
+void xtouch_screen_setScreenTimer(uint32_t period)
 {
-    Serial.println("xtouch_screen_updateScreenTimer");
-    Serial.println(period);
     lv_timer_set_period(xtouch_screen_onScreenOffTimer, period);
 }
 
-void xtouch_screen_touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
-{
-
-    if (x_touch_touchScreen.tirqTouched() && x_touch_touchScreen.touched())
-    {
-        lv_timer_reset(xtouch_screen_onScreenOffTimer);
-        // dont pass first touch after power on
-        if (x_touch_read_from_power_off)
-        {
-            x_touch_read_from_power_off = false;
-            // digitalWrite(BACKLIGHTPIN, 128);
-            ledcAnalogWrite(LEDC_CHANNEL_0, 255);
-            while (x_touch_touchScreen.touched())
-                ;
-            return;
-        }
-
-        ScreenPoint sp = ScreenPoint();
-        TS_Point p = x_touch_touchScreen.getPoint();
-        sp = getScreenCoords(p.x, p.y);
-        data->state = LV_INDEV_STATE_PR;
-        data->point.x = sp.x;
-        data->point.y = sp.y;
-    }
-    else
-    {
-        data->state = LV_INDEV_STATE_REL;
-    }
-}
-
-void xtouch_screen_invert_setup()
+void xtouch_screen_invertColors()
 {
     tft.invertDisplay(xTouchConfig.xTouchTFTInvert);
-}
-
-/* Display flushing */
-void xtouch_screen_dispFlush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
-{
-    uint32_t w = (area->x2 - area->x1 + 1);
-    uint32_t h = (area->y2 - area->y1 + 1);
-
-    tft.startWrite();
-    tft.setAddrWindow(area->x1, area->y1, w, h);
-    tft.pushColors((uint16_t *)&color_p->full, w * h, true);
-    tft.endWrite();
-
-    lv_disp_flush_ready(disp);
 }
 
 byte xtouch_screen_getTFTFlip()
@@ -148,11 +115,55 @@ void xtouch_screen_toggleTFTFlip()
     ESP.restart();
 }
 
-void xtouch_screen_setupTFTRotation()
+void xtouch_screen_setupTFTFlip()
 {
     byte eepromTFTFlip = xtouch_screen_getTFTFlip();
     tft.setRotation(eepromTFTFlip == 1 ? 3 : 1);
     x_touch_touchScreen.setRotation(eepromTFTFlip == 1 ? 3 : 1);
+}
+
+void xtouch_screen_dispFlush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
+{
+    uint32_t w = (area->x2 - area->x1 + 1);
+    uint32_t h = (area->y2 - area->y1 + 1);
+
+    tft.startWrite();
+    tft.setAddrWindow(area->x1, area->y1, w, h);
+    tft.pushColors((uint16_t *)&color_p->full, w * h, true);
+    tft.endWrite();
+
+    lv_disp_flush_ready(disp);
+}
+
+void xtouch_screen_touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
+{
+
+    if (x_touch_touchScreen.tirqTouched() && x_touch_touchScreen.touched())
+    {
+        lv_timer_reset(xtouch_screen_onScreenOffTimer);
+        // dont pass first touch after power on
+        if (xtouch_screen_touchFromPowerOff)
+        {
+            xtouch_screen_touchFromPowerOff = false;
+
+            xtouch_screen_setBrightness(xTouchConfig.xTouchBacklightLevel);
+
+            while (x_touch_touchScreen.touched())
+                ;
+            return;
+        }
+
+        ScreenPoint sp = ScreenPoint();
+        TS_Point p = x_touch_touchScreen.getPoint();
+        sp = getScreenCoords(p.x, p.y);
+        data->state = LV_INDEV_STATE_PR;
+        data->point.x = sp.x;
+        data->point.y = sp.y;
+    }
+    else
+    {
+        data->state = LV_INDEV_STATE_REL;
+    }
 }
 
 void xtouch_screen_setup()
@@ -179,9 +190,9 @@ void xtouch_screen_setup()
     x_touch_spi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
     x_touch_touchScreen.begin(x_touch_spi);
 
-    xtouch_screen_setupTFTRotation();
+    xtouch_screen_setupTFTFlip();
 
-    ledcAnalogWrite(LEDC_CHANNEL_0, 255);
+    xtouch_screen_setBrightness(255);
 
     lv_disp_draw_buf_init(&draw_buf, buf, NULL, screenWidth * screenHeight / 10);
 

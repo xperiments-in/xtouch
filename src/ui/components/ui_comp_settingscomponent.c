@@ -53,6 +53,14 @@ void ui_event_comp_settingsComponent_onTFTOFF(lv_event_t *e)
     {
         uint32_t value = lv_slider_get_value(ui_settingsTFTOFFSlider);
         lv_label_set_text_fmt(ui_settingsTFTOFFValue, "%dm", value);
+        if (value < _XLCD_MAIN_MINIMAL_SLEEP_MINUTES)
+        {
+            lv_label_set_text(ui_settingsTFTOFFValue, LV_SYMBOL_POWER);
+        }
+        else
+        {
+            lv_label_set_text_fmt(ui_settingsTFTOFFValue, "%dm", value);
+        }
     }
     if (event_code == LV_EVENT_RELEASED)
     {
@@ -147,7 +155,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     cui_screenTitle = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_screenTitle, lv_pct(100));
     lv_obj_set_height(cui_screenTitle, LV_SIZE_CONTENT); /// 40
-    lv_label_set_text(cui_screenTitle, LV_SYMBOL_IMAGE " SCREEN");
+    lv_label_set_text(cui_screenTitle, LV_SYMBOL_IMAGE " LCD");
     lv_obj_set_scrollbar_mode(cui_screenTitle, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_screenTitle, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_screenTitle, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -222,7 +230,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     cui_settingsTFTOFFPanelLabel = lv_label_create(cui_settingsTFTOFFPanel);
     lv_obj_set_width(cui_settingsTFTOFFPanelLabel, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(cui_settingsTFTOFFPanelLabel, LV_SIZE_CONTENT); /// 1
-    lv_label_set_text(cui_settingsTFTOFFPanelLabel, "TFT " LV_SYMBOL_POWER);
+    lv_label_set_text(cui_settingsTFTOFFPanelLabel, "Sleep");
     lv_obj_set_style_text_font(cui_settingsTFTOFFPanelLabel, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_settingsTFTOFFPanelLabel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(cui_settingsTFTOFFPanelLabel, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -230,7 +238,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_pad_bottom(cui_settingsTFTOFFPanelLabel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_settingsTFTOFFSlider = lv_slider_create(cui_settingsTFTOFFPanel);
-    lv_slider_set_range(ui_settingsTFTOFFSlider, 5, 45);
+    lv_slider_set_range(ui_settingsTFTOFFSlider, 4, 60);
     lv_slider_set_value(ui_settingsTFTOFFSlider, xTouchConfig.xTouchTFTOFFValue, LV_ANIM_OFF);
     lv_obj_set_height(ui_settingsTFTOFFSlider, 10);
     lv_obj_set_flex_grow(ui_settingsTFTOFFSlider, 1);
@@ -249,7 +257,8 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_width(ui_settingsTFTOFFValue, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_settingsTFTOFFValue, LV_SIZE_CONTENT); /// 1
 
-    lv_label_set_text_fmt(ui_settingsTFTOFFValue, "%dm", lv_slider_get_value(ui_settingsTFTOFFSlider));
+    int32_t value = lv_slider_get_value(ui_settingsTFTOFFSlider);
+    lv_label_set_text_fmt(ui_settingsTFTOFFValue, value < _XLCD_MAIN_MINIMAL_SLEEP_MINUTES ? LV_SYMBOL_POWER : "%dm", value);
     lv_obj_set_style_text_font(ui_settingsTFTOFFValue, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(ui_settingsTFTOFFValue, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_settingsTFTOFFValue, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -275,7 +284,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     cui_screenInvertLabel = lv_label_create(cui_screenInvertSetting);
     lv_obj_set_width(cui_screenInvertLabel, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(cui_screenInvertLabel, LV_SIZE_CONTENT); /// 1
-    lv_label_set_text(cui_screenInvertLabel, LV_SYMBOL_SHUFFLE " Invert Colors");
+    lv_label_set_text(cui_screenInvertLabel, LV_SYMBOL_IMAGE " Invert Colors");
     lv_obj_set_scrollbar_mode(cui_screenInvertLabel, LV_SCROLLBAR_MODE_OFF);
 
     // lv_obj_t *ui_settingsTFTInvertSwitch;
@@ -314,7 +323,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     cui_settingsTFTFlipLabel = lv_label_create(cui_settingsTFTFlip);
     lv_obj_set_width(cui_settingsTFTFlipLabel, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(cui_settingsTFTFlipLabel, LV_SIZE_CONTENT); /// 1
-    lv_label_set_text(cui_settingsTFTFlipLabel, "TFT FLIP");
+    lv_label_set_text(cui_settingsTFTFlipLabel, LV_SYMBOL_SHUFFLE "Flip Screen");
     lv_obj_set_scrollbar_mode(cui_settingsTFTFlipLabel, LV_SCROLLBAR_MODE_OFF);
 
     // lv_obj_t *ui_settingsTFTInvertSwitch;
