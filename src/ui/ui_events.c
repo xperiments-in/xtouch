@@ -121,7 +121,7 @@ void onSettingsTFTFlipConfirm()
 
 void onSettingsTFTFlip(lv_event_t *e)
 {
-    ui_confirmPanel_show(LV_SYMBOL_WARNING " Flip LCD " LV_SYMBOL_REFRESH "(Reboot)", onSettingsTFTFlipConfirm);
+    ui_confirmPanel_show(LV_SYMBOL_WARNING " Flip LCD\n" LV_SYMBOL_REFRESH " Reboot", onSettingsTFTFlipConfirm);
 }
 
 /* filament */
