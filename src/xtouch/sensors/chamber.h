@@ -25,7 +25,6 @@ void xtouch_chamber_timer_create()
 void xtouch_chamber_requestTemperatures(lv_timer_t *timer)
 {
     int temperatureC = xtouch_chamber_sensors.getTempCByIndex(0);
-    Serial.println("Chamber temperature: " + String(temperatureC) + "°C");
     bambuStatus.chamber_temper = temperatureC;
     sendMsg(XTOUCH_ON_CHAMBER_TEMP, temperatureC);
     xtouch_chamber_sensors.requestTemperatures();
@@ -35,7 +34,6 @@ void xtouch_chamber_requestTemperatures(lv_timer_t *timer)
 bool xtouch_chamber_started = false;
 void xtouch_chamber_timer_start()
 {
-    Serial.println("Chamber temperature sensor enabled");
     if (!xtouch_chamber_started)
     {
         xtouch_chamber_sensors.begin();
@@ -47,7 +45,6 @@ void xtouch_chamber_timer_start()
 
 void xtouch_chamber_timer_stop()
 {
-    Serial.println("Chamber temperature sensor disabled");
     lv_timer_pause(xtouch_chambertemp_requestTemperaturesTimer);
 }
 
