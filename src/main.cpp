@@ -43,7 +43,7 @@ void setup()
   while (!xtouch_sdcard_setup())
     ;
 
-  xtouch_settings_setup();
+  xtouch_settings_loadSettings();
 
   xtouch_firmware_checkFirmwareUpdate();
 

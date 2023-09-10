@@ -600,13 +600,14 @@ void xtouch_mqtt_setup()
     lv_task_handler();
     delay(32);
 
-    DynamicJsonDocument ssdp = xtouch_ssdp_load();
+    DynamicJsonDocument printer = xtouch_ssdp_load_printer();
+    DynamicJsonDocument printerIps = xtouch_ssdp_load_printerIPs();
     xtouch_mqtt_topic_setup();
     xtouch_wiFiClientSecure.setInsecure();
     xtouch_pubSubClient.setBufferSize(4096);
     IPAddress ip;
-    ip.fromString(ssdp[xTouchConfig.xTouchSerialNumber]["ip"].as<String>());
-    String pairedModel = ssdp[xTouchConfig.xTouchSerialNumber]["model"].as<String>();
+    ip.fromString(printerIps[xTouchConfig.xTouchSerialNumber].as<String>());
+    String pairedModel = printer[xTouchConfig.xTouchSerialNumber]["model"].as<String>();
     xTouchConfig.xTouchIsP1Series = pairedModel == "C11" || pairedModel == "C12" ? true : false;
     xtouch_pubSubClient.setServer(ip, 8883);
     xtouch_pubSubClient.setCallback(xtouch_mqtt_parseMessage);

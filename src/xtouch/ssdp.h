@@ -15,9 +15,14 @@ WiFiUDP xtouch_ssdp_udp;
 char xtouch_ssdp_packetBuffer[XTOUCH_SSDP_PACKET_SIZE];
 int xtouch_ssdp_search_count = 0;
 
-DynamicJsonDocument xtouch_ssdp_load()
+DynamicJsonDocument xtouch_ssdp_load_printer()
 {
     return xtouch_filesystem_readJson(SD, xtouch_paths_printers, false);
+}
+
+DynamicJsonDocument xtouch_ssdp_load_printerIPs()
+{
+    return xtouch_filesystem_readJson(SD, xtouch_paths_printer_ips, false);
 }
 
 void xtouch_ssdp_clear_device_list()
@@ -46,7 +51,7 @@ bool xtouch_ssdp_is_paired()
         if (pairDoc.containsKey(pairedSN))
         {
             DynamicJsonDocument pairDevices = xtouch_filesystem_readJson(SD, xtouch_paths_printers, false);
-            if (pairDevices.containsKey(pairedSN) && pairDevices[pairedSN].containsKey("ip"))
+            if (pairDevices.containsKey(pairedSN))
             {
                 return true;
             }
@@ -97,10 +102,11 @@ void xtouch_ssdp_save_pair(String usn, String accessCode)
 void xtouch_ssdp_parseResponse(String input)
 {
     StaticJsonDocument<512> doc;
-    // Split input into lines
     int startPos = 0;
     int endPos = 0;
     String keyIndex;
+    String ip;
+    bool isEmptyDoc = true;
     while (endPos < input.length())
     {
         endPos = input.indexOf('\n', startPos);
@@ -124,6 +130,7 @@ void xtouch_ssdp_parseResponse(String input)
             // Check if the key is one of the desired keys
             if (key == "location" || key == "usn" || key == "devmodel.bambu.com" || key == "devconnect.bambu.com" || key == "devbind.bambu.com" || key == "devname.bambu.com")
             {
+                isEmptyDoc = false;
                 if (key == "devname.bambu.com")
                 {
                     key = "name";
@@ -148,8 +155,9 @@ void xtouch_ssdp_parseResponse(String input)
                 else if (key == "location")
                 {
                     key = "ip";
+                    ip = value;
                 }
-                // Store key-value pair in JSON document
+
                 doc[key] = value;
             }
         }
@@ -157,13 +165,17 @@ void xtouch_ssdp_parseResponse(String input)
         startPos = endPos + 1;
     }
 
-    DynamicJsonDocument ssdpjson = xtouch_ssdp_load();
-    if (ssdpjson.containsKey(keyIndex))
+    DynamicJsonDocument printerIPs = xtouch_ssdp_load_printerIPs();
+    printerIPs[keyIndex] = ip;
+    xtouch_filesystem_writeJson(SD, xtouch_paths_printer_ips, printerIPs);
+
+    DynamicJsonDocument printers = xtouch_ssdp_load_printer();
+    if (!isEmptyDoc && !printers.containsKey(keyIndex))
     {
-        ssdpjson.remove(keyIndex);
+        doc.remove("ip");
+        printers[keyIndex] = doc;
+        xtouch_filesystem_writeJson(SD, xtouch_paths_printers, printers);
     }
-    ssdpjson[keyIndex] = doc;
-    xtouch_filesystem_writeJson(SD, xtouch_paths_printers, ssdpjson);
 }
 
 void xtouch_ssdp_loop()
@@ -190,9 +202,9 @@ void xtouch_ssdp_setupButtonTimer()
 
 void xtouch_ssdp_onButtonTimer(lv_timer_t *timer)
 {
-    DynamicJsonDocument ssdpjson = xtouch_ssdp_load();
+    DynamicJsonDocument printers = xtouch_ssdp_load_printer();
     String output = "";
-    for (JsonPair keyValue : ssdpjson.as<JsonObject>())
+    for (JsonPair keyValue : printers.as<JsonObject>())
     {
         String name = keyValue.value()["name"].as<String>();
         output = output + LV_SYMBOL_CHARGE + " " + name + "   " + LV_SYMBOL_USB + " " + keyValue.key().c_str() + "\n";

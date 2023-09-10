@@ -3,9 +3,11 @@
 
 const char *xtouch_paths_root = "/xtouch";
 const char *xtouch_paths_wifi = "/wifi.json";
+
 const char *xtouch_paths_settings = "/xtouch/settings.json";
-const char *xtouch_paths_printers = "/xtouch/ssdp-devices.json";
-const char *xtouch_paths_pair = "/xtouch/ssdp-pair.json";
+const char *xtouch_paths_printers = "/xtouch/printer.json";
+const char *xtouch_paths_printer_ips = "/xtouch/printer-ips.json";
+const char *xtouch_paths_pair = "/xtouch/printer-pair.json";
 const char *xtouch_paths_touch = "/xtouch/touch.json";
 
 const char *xtouch_paths_firmware_ota_json = "/xtouch/ota.json";
