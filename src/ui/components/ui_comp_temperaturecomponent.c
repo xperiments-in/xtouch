@@ -194,7 +194,7 @@ void ui_event_comp_temperatureComponent_numpadKeyOk(lv_event_t *e)
         else if (ui_temperatureComponent_input_target == aux)
         {
             const char *data = lv_textarea_get_text(aux);
-            bambuStatus.big_fan1_speed = atoi(data);
+            bambuStatus.big_fan1_speed = atoi(data) * 255 / 100;
             lv_msg_send(XTOUCH_COMMAND_AUX_FAN_SPEED, NULL);
             lv_textarea_set_text(aux, "");
         }
@@ -243,6 +243,18 @@ void ui_temperatureComponent_onXtouchTempTarget(lv_event_t *e)
 }
 
 void ui_temperatureComponent_onXtouchPartFanSpeed(lv_event_t *e)
+{
+    lv_obj_t *target = lv_event_get_target(e);
+    lv_msg_t *m = lv_event_get_msg(e);
+
+    struct XTOUCH_MESSAGE_DATA *message = (struct XTOUCH_MESSAGE_DATA *)m->payload;
+    char value[4];
+
+    itoa(message->data * 100 / 255, value, 10);
+    lv_textarea_set_text(target, value);
+}
+
+void ui_temperatureComponent_onXtouchAuxFanSpeed(lv_event_t *e)
 {
     lv_obj_t *target = lv_event_get_target(e);
     lv_msg_t *m = lv_event_get_msg(e);
@@ -993,6 +1005,9 @@ lv_obj_t *ui_temperatureComponent_create(lv_obj_t *comp_parent)
 
     lv_obj_add_event_cb(cui_temperatureComponentPartFanInput, ui_temperatureComponent_onXtouchPartFanSpeed, LV_EVENT_MSG_RECEIVED, NULL);
     lv_msg_subsribe_obj(XTOUCH_ON_PART_FAN_SPEED, cui_temperatureComponentPartFanInput, NULL);
+
+    lv_obj_add_event_cb(cui_temperatureComponentAuxFanInput, ui_temperatureComponent_onXtouchAuxFanSpeed, LV_EVENT_MSG_RECEIVED, NULL);
+    lv_msg_subsribe_obj(XTOUCH_ON_PART_AUX_SPEED, cui_temperatureComponentAuxFanInput, NULL);
 
     ui_comp_temperatureComponent_create_hook(cui_temperatureComponent);
 
