@@ -53,7 +53,7 @@ void ui_event_comp_settingsComponent_onTFTOFF(lv_event_t *e)
     {
         uint32_t value = lv_slider_get_value(ui_settingsTFTOFFSlider);
         lv_label_set_text_fmt(ui_settingsTFTOFFValue, "%dm", value);
-        if (value < _XLCD_MAIN_MINIMAL_SLEEP_MINUTES)
+        if (value < XTOUCH_LCD_MIN_SLEEP_TIME)
         {
             lv_label_set_text(ui_settingsTFTOFFValue, LV_SYMBOL_POWER);
         }
@@ -267,7 +267,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_height(ui_settingsTFTOFFValue, LV_SIZE_CONTENT); /// 1
 
     int32_t value = lv_slider_get_value(ui_settingsTFTOFFSlider);
-    lv_label_set_text_fmt(ui_settingsTFTOFFValue, value < _XLCD_MAIN_MINIMAL_SLEEP_MINUTES ? LV_SYMBOL_POWER : "%dm", value);
+    lv_label_set_text_fmt(ui_settingsTFTOFFValue, value < XTOUCH_LCD_MIN_SLEEP_TIME ? LV_SYMBOL_POWER : "%dm", value);
     lv_obj_set_style_text_font(ui_settingsTFTOFFValue, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(ui_settingsTFTOFFValue, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_settingsTFTOFFValue, 0, LV_PART_MAIN | LV_STATE_DEFAULT);

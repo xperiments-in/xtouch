@@ -64,7 +64,7 @@ void xtouch_screen_onScreenOff(lv_timer_t *timer)
         return;
     }
 
-    if (xTouchConfig.xTouchTFTOFFValue < _XLCD_MAIN_MINIMAL_SLEEP_MINUTES)
+    if (xTouchConfig.xTouchTFTOFFValue < XTOUCH_LCD_MIN_SLEEP_TIME)
     {
         return;
     }
