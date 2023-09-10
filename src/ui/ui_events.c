@@ -119,6 +119,12 @@ void onSettingsTFTFlipConfirm()
     lv_msg_send(XTOUCH_SETTINGS_TFT_FLIP, NULL);
 }
 
+void onSettingsOTA(lv_event_t *e)
+{
+    xTouchConfig.xTouchOTAEnabled = !xTouchConfig.xTouchOTAEnabled;
+    lv_msg_send(XTOUCH_SETTINGS_SAVE, NULL);
+}
+
 void onSettingsTFTFlip(lv_event_t *e)
 {
     ui_confirmPanel_show(LV_SYMBOL_WARNING " Flip LCD\n" LV_SYMBOL_REFRESH " Reboot", onSettingsTFTFlipConfirm);

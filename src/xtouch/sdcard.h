@@ -49,6 +49,8 @@ bool xtouch_sdcard_setup()
 
     uint64_t cardSize = SD.cardSize() / (1024 * 1024);
     Serial.printf("[XTouch][SD] SD Card Size: %lluMB\n", cardSize);
+    xtouch_filesystem_mkdir(SD, xtouch_paths_root);
+
     return true;
 }
 

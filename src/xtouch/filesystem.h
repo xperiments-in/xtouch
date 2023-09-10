@@ -11,19 +11,28 @@ bool xtouch_filesystem_exist(fs::FS &fs, const char *path)
     return fs.exists(path);
 }
 
-void xtouch_filesystem_deleteFile(fs::FS &fs, const char *path)
+File xtouch_filesystem_open(fs::FS &fs, const char *path)
 {
-    Serial.printf("[XTouch][SD] Deleting file: %s\n", path);
-    if (fs.remove(path))
+    return fs.open(path);
+}
+
+bool xtouch_filesystem_deleteFile(fs::FS &fs, const char *path)
+{
+    return fs.remove(path);
+}
+
+bool xtouch_filesystem_mkdir(fs::FS &fs, const char *path)
+{
+    if (!xtouch_filesystem_exist(SD, path))
     {
-        Serial.print(F("[XTouch][SD] File deleted: "));
-        Serial.println(path);
+        return fs.mkdir(path);
     }
-    else
-    {
-        Serial.print(F("[XTouch][SD] Delete failed: "));
-        Serial.println(path);
-    }
+    return true;
+}
+
+bool xtouch_filesystem_rmdir(fs::FS &fs, const char *path)
+{
+    return fs.rmdir(path);
 }
 
 void xtouch_filesystem_writeJson(fs::FS &fs, const char *filename, DynamicJsonDocument json, bool defaultsToArray = false, int size = 1024)

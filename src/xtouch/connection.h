@@ -3,12 +3,13 @@
 
 bool xtouch_wifi_setup()
 {
-    DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_wifi);
+    DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_paths_wifi);
     if (wifiConfig.isNull() || !wifiConfig.containsKey("ssid") || !wifiConfig.containsKey("pwd"))
     {
         lv_label_set_text(introScreenCaption, wifiConfig.isNull() ? LV_SYMBOL_SD_CARD " Missing xtouch.json" : LV_SYMBOL_WARNING " Inaccurate Network Credentials");
         lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_timer_handler();
+        lv_task_handler();
         return false;
     }
     const char *ssid = wifiConfig["ssid"].as<const char *>();
@@ -61,6 +62,7 @@ bool xtouch_wifi_setup()
             lv_label_set_text(introScreenCaption, statusText);
             lv_obj_set_style_text_color(introScreenCaption, statusColor, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_timer_handler();
+            lv_task_handler();
             delay(32);
         }
 
@@ -75,9 +77,10 @@ bool xtouch_wifi_setup()
         status = WiFi.status();
     }
 
+    delay(1000);
     lv_label_set_text(introScreenCaption, LV_SYMBOL_WIFI " Connected");
-    lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0x555555), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_timer_handler();
+    lv_task_handler();
     delay(1000);
     Serial.print(F("[XTOUCH][CONNECTION] Connected to the WiFi network with IP: "));
     Serial.println(WiFi.localIP());

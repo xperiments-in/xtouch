@@ -34,8 +34,11 @@ extern "C"
 #define UI_COMP_SETTINGSCOMPONENT_CHAMBER_TEMP 22
 #define UI_COMP_SETTINGSCOMPONENT_CHAMBER_TEMP_LABEL 23
 #define UI_COMP_SETTINGSCOMPONENT_CHAMBER_TEMP_SWITCH 24
-#define UI_COMP_SETTINGSCOMPONENT_RESETDEVICEBUTTON 25
-#define _UI_COMP_SETTINGSCOMPONENT_NUM 26
+#define UI_COMP_SETTINGSCOMPONENT_OTA 25
+#define UI_COMP_SETTINGSCOMPONENT_OTA_LABEL 26
+#define UI_COMP_SETTINGSCOMPONENT_OTA_SWITCH 27
+#define UI_COMP_SETTINGSCOMPONENT_RESETDEVICEBUTTON 28
+#define _UI_COMP_SETTINGSCOMPONENT_NUM 29
     lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent);
     void ui_event_comp_settingsComponent_tftInvertInput(lv_event_t *e);
     void ui_event_comp_settingsComponent_resetTouchButton(lv_event_t *e);

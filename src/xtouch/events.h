@@ -42,9 +42,9 @@ void xtouch_events_onBackLight(lv_msg_t *m)
 void xtouch_events_onBackLightSet(lv_msg_t *m)
 {
     int32_t value = lv_slider_get_value(ui_settingsBackLightPanelSlider);
-    DynamicJsonDocument settings = xtouch_filesystem_readJson(SD, settingsPath);
+    DynamicJsonDocument settings = xtouch_filesystem_readJson(SD, xtouch_paths_settings);
     settings["backlight"] = value;
-    xtouch_filesystem_writeJson(SD, settingsPath, settings);
+    xtouch_filesystem_writeJson(SD, xtouch_paths_settings, settings);
     xtouch_screen_setBrightness(value);
 }
 
@@ -53,18 +53,18 @@ void xtouch_events_onTFTTimerSet(lv_msg_t *m)
     int32_t value = lv_slider_get_value(ui_settingsTFTOFFSlider);
     xtouch_screen_setScreenTimer(value * 1000 * 60);
 
-    DynamicJsonDocument settings = xtouch_filesystem_readJson(SD, settingsPath);
+    DynamicJsonDocument settings = xtouch_filesystem_readJson(SD, xtouch_paths_settings);
     settings["tftOff"] = value;
     xTouchConfig.xTouchTFTOFFValue = value;
-    xtouch_filesystem_writeJson(SD, settingsPath, settings);
+    xtouch_filesystem_writeJson(SD, xtouch_paths_settings, settings);
 }
 
 void xtouch_events_onTFTInvert(lv_msg_t *m)
 {
     bool value = lv_obj_has_state(ui_settingsTFTInvertSwitch, LV_STATE_CHECKED);
-    DynamicJsonDocument settings = xtouch_filesystem_readJson(SD, settingsPath);
+    DynamicJsonDocument settings = xtouch_filesystem_readJson(SD, xtouch_paths_settings);
     settings["tftInvert"] = value ? true : false;
-    xtouch_filesystem_writeJson(SD, settingsPath, settings);
+    xtouch_filesystem_writeJson(SD, xtouch_paths_settings, settings);
     xTouchConfig.xTouchTFTInvert = value;
     xtouch_screen_invertColors();
 }

@@ -202,14 +202,16 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
 
         if (incomingJson["print"].containsKey("big_fan1_speed"))
         {
-            // Serial.println(F("big_fan1_speed"));
-            // Serial.println(incomingJson["print"]["big_fan1_speed"].as<int>());
+            int speed = incomingJson["print"]["big_fan1_speed"].as<int>();
+            bambuStatus.big_fan1_speed = round(floor(speed / float(1.5)) * float(25.5));
+            sendMsg(XTOUCH_ON_PART_AUX_SPEED, bambuStatus.cooling_fan_speed);
         }
 
         if (incomingJson["print"].containsKey("big_fan2_speed"))
         {
-            // Serial.println(F("big_fan2_speed"));
-            // Serial.println(incomingJson["print"]["big_fan2_speed"].as<int>());
+            int speed = incomingJson["print"]["big_fan1_speed"].as<int>();
+            bambuStatus.big_fan2_speed = round(floor(speed / float(1.5)) * float(25.5));
+            sendMsg(XTOUCH_ON_PART_AUX_SPEED, bambuStatus.big_fan2_speed);
         }
 
         if (incomingJson["print"].containsKey("hw_switch_state"))
@@ -465,6 +467,16 @@ const char *generateRandomKey(int keyLength)
     return key;
 }
 
+void xtouch_mqtt_onMqttReady()
+{
+    if (!xtouch_mqtt_firstConnectionDone)
+    {
+        loadScreen(0);
+        xtouch_screen_startScreenTimer();
+    }
+    xtouch_mqtt_firstConnectionDone = true;
+}
+
 void xtouch_mqtt_connect()
 {
 
@@ -472,7 +484,7 @@ void xtouch_mqtt_connect()
 
     String deviceTopic = String("device/") + xTouchConfig.xTouchSerialNumber;
     String reportTopic = deviceTopic + String("/report");
-    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " CONNECTING MQTT");
+    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Connecting MQTT");
     lv_timer_handler();
     lv_task_handler();
     delay(32);
@@ -489,20 +501,12 @@ void xtouch_mqtt_connect()
             xtouch_pubSubClient.subscribe(reportTopic.c_str());
             xtouch_device_pushall();
             xtouch_device_get_version();
-
-            if (!xtouch_mqtt_firstConnectionDone)
-            {
-                loadScreen(0);
-                xtouch_screen_startScreenTimer();
-            }
-            xtouch_mqtt_firstConnectionDone = true;
-
+            xtouch_mqtt_onMqttReady();
             break;
         }
         else
         {
-            Serial.print(F("[XTouch][MQTT] ---- CONNECTION FAIL ----: "));
-            Serial.println(xtouch_pubSubClient.state());
+            Serial.printf("[XTouch][MQTT] ---- CONNECTION FAIL ----: %d\n", xtouch_pubSubClient.state());
 
             switch (xtouch_pubSubClient.state())
             {
@@ -591,7 +595,7 @@ void xtouch_mqtt_connect()
 
 void xtouch_mqtt_setup()
 {
-    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " CONNECTING MQTT");
+    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Connecting MQTT");
     lv_timer_handler();
     lv_task_handler();
     delay(32);

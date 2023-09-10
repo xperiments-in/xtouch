@@ -17,23 +17,23 @@ int xtouch_ssdp_search_count = 0;
 
 DynamicJsonDocument xtouch_ssdp_load()
 {
-    return xtouch_filesystem_readJson(SD, xtouch_ssdp_devices, false);
+    return xtouch_filesystem_readJson(SD, xtouch_paths_printers, false);
 }
 
 void xtouch_ssdp_clear_device_list()
 {
     DynamicJsonDocument pairDoc(32);
-    xtouch_filesystem_writeJson(SD, xtouch_ssdp_devices, pairDoc);
+    xtouch_filesystem_writeJson(SD, xtouch_paths_printers, pairDoc);
 }
 
 void xtouch_ssdp_clear_pair_list()
 {
-    xtouch_filesystem_deleteFile(SD, xtouch_ssdp_pair);
+    xtouch_filesystem_deleteFile(SD, xtouch_paths_pair);
 }
 
 bool xtouch_ssdp_is_paired()
 {
-    DynamicJsonDocument pairDoc = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
+    DynamicJsonDocument pairDoc = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
     if (pairDoc.isNull())
     {
         return false;
@@ -45,7 +45,7 @@ bool xtouch_ssdp_is_paired()
         String pairedSN = pairDoc["paired"].as<String>();
         if (pairDoc.containsKey(pairedSN))
         {
-            DynamicJsonDocument pairDevices = xtouch_filesystem_readJson(SD, xtouch_ssdp_devices, false);
+            DynamicJsonDocument pairDevices = xtouch_filesystem_readJson(SD, xtouch_paths_printers, false);
             if (pairDevices.containsKey(pairedSN) && pairDevices[pairedSN].containsKey("ip"))
             {
                 return true;
@@ -58,7 +58,7 @@ bool xtouch_ssdp_is_paired()
 
 String xtouch_ssdp_getStoredCode(String usn)
 {
-    DynamicJsonDocument pairDoc = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
+    DynamicJsonDocument pairDoc = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
     if (pairDoc.containsKey(usn))
     {
         return pairDoc[usn].as<String>();
@@ -68,7 +68,7 @@ String xtouch_ssdp_getStoredCode(String usn)
 
 void xtouch_ssdp_load_pair()
 {
-    DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
+    DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
     String usn = pairFile["paired"].as<String>();
     strcpy(xTouchConfig.xTouchSerialNumber, pairFile["paired"].as<String>().c_str());
     strcpy(xTouchConfig.xTouchAccessCode, pairFile[usn].as<String>().c_str());
@@ -77,21 +77,21 @@ void xtouch_ssdp_load_pair()
 void xtouch_ssdp_unpair()
 {
     Serial.println("[XTOUCH][SSDP] Unpairing device");
-    DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
+    DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
     pairFile.remove("paired");
-    xtouch_filesystem_writeJson(SD, xtouch_ssdp_pair, pairFile);
+    xtouch_filesystem_writeJson(SD, xtouch_paths_pair, pairFile);
     ESP.restart();
 }
 
 void xtouch_ssdp_save_pair(String usn, String accessCode)
 {
     Serial.println("[XTOUCH][SSDP] Saving USN:AccessCode Pair");
-    DynamicJsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_ssdp_pair, false);
+    DynamicJsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
 
     doc["paired"] = usn.c_str();
     doc[usn] = accessCode.c_str();
 
-    xtouch_filesystem_writeJson(SD, xtouch_ssdp_pair, doc);
+    xtouch_filesystem_writeJson(SD, xtouch_paths_pair, doc);
 }
 
 void xtouch_ssdp_parseResponse(String input)
@@ -163,7 +163,7 @@ void xtouch_ssdp_parseResponse(String input)
         ssdpjson.remove(keyIndex);
     }
     ssdpjson[keyIndex] = doc;
-    xtouch_filesystem_writeJson(SD, xtouch_ssdp_devices, ssdpjson);
+    xtouch_filesystem_writeJson(SD, xtouch_paths_printers, ssdpjson);
 }
 
 void xtouch_ssdp_loop()

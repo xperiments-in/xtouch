@@ -1,12 +1,13 @@
 #ifndef _XLCD_TYPES
 #define _XLCD_TYPES
 
+#define _XLCD_MAIN_MINIMAL_SLEEP_MINUTES 5
+#define XTOUCH_FIRMWARE_VERSION "0.0.3"
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-#define _XLCD_MAIN_MINIMAL_SLEEP_MINUTES 5
 
     struct XTouchPanelConfig
     {
@@ -120,15 +121,16 @@ extern "C"
 
     typedef struct XTouchTouchConfigStruct
     {
-        char xTouchAccessCode[9];
-        char xTouchSerialNumber[16];
         bool xTouchAuxFanEnabled;
         bool xTouchChamberSensorEnabled;
+        bool xTouchIsP1Series;
+        bool xTouchOTAEnabled;
+        bool xTouchTFTFlip;
+        bool xTouchTFTInvert;
+        char xTouchAccessCode[9];
+        char xTouchSerialNumber[16];
         int xTouchBacklightLevel;
         int xTouchTFTOFFValue;
-        bool xTouchTFTInvert;
-        bool xTouchTFTFlip;
-        bool xTouchIsP1Series;
     } XTouchConfig;
 
     XTouchConfig xTouchConfig;

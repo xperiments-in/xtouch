@@ -15,6 +15,8 @@
 #endif
 
 #include "xtouch/pair.h"
+#include "xtouch/net.h"
+#include "xtouch/firmware.h"
 #include "xtouch/mqtt.h"
 #include "xtouch/settings.h"
 #include "xtouch/sensors/chamber.h"
@@ -42,10 +44,15 @@ void setup()
     ;
 
   xtouch_settings_setup();
+
+  xtouch_firmware_checkFirmwareUpdate();
+
   xtouch_touch_setup();
 
   while (!xtouch_wifi_setup())
     ;
+
+  xtouch_firmware_checkOnlineFirmwareUpdate();
 
   xtouch_screen_setupScreenTimer();
   xtouch_setupGlobalEvents();

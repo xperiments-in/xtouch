@@ -49,7 +49,7 @@ ScreenPoint getScreenCoords(int16_t x, int16_t y)
 void xtouch_loadTouchConfig(XTouchPanelConfig &config)
 {
     // Open file for reading
-    File file = SD.open(touchPath, FILE_READ);
+    File file = xtouch_filesystem_open(SD, xtouch_paths_touch);
 
     // Allocate a temporary JsonDocument
     // Don't forget to change the capacity to match your requirements.
@@ -71,29 +71,25 @@ void xtouch_loadTouchConfig(XTouchPanelConfig &config)
 
 void xtouch_saveTouchConfig(XTouchPanelConfig &config)
 {
-
-    File file = SD.open(touchPath, FILE_WRITE);
     StaticJsonDocument<512> doc;
-
     doc["xCalM"] = config.xCalM;
     doc["yCalM"] = config.yCalM;
     doc["xCalC"] = config.xCalC;
     doc["yCalC"] = config.yCalC;
-    serializeJson(doc, file);
-    file.close();
+    xtouch_filesystem_writeJson(SD, xtouch_paths_touch, doc);
 }
 
 void xtouch_resetTouchConfig()
 {
     Serial.println(F("[XTouch][FS] Resetting touch config"));
-    SD.remove(touchPath);
+    xtouch_filesystem_deleteFile(SD, xtouch_paths_touch);
     ESP.restart();
 }
 
 bool hasTouchConfig()
 {
     Serial.println(F("[XTouch][FS] Checking for touch config"));
-    return SD.exists(touchPath);
+    return xtouch_filesystem_exist(SD, xtouch_paths_touch);
 }
 
 void xtouch_touch_setup()
