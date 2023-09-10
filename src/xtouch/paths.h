@@ -2,7 +2,7 @@
 #define _XLCD_PATHS
 
 const char *xtouch_paths_root = "/xtouch";
-const char *xtouch_paths_wifi = "/xtouch/wifi.json";
+const char *xtouch_paths_wifi = "/wifi.json";
 const char *xtouch_paths_settings = "/xtouch/settings.json";
 const char *xtouch_paths_printers = "/xtouch/ssdp-devices.json";
 const char *xtouch_paths_pair = "/xtouch/ssdp-pair.json";
