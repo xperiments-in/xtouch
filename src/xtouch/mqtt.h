@@ -204,15 +204,15 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
         {
             int speed = incomingJson["print"]["big_fan1_speed"].as<int>();
             bambuStatus.big_fan1_speed = round(floor(speed / float(1.5)) * float(25.5));
-            sendMsg(XTOUCH_ON_PART_AUX_SPEED, bambuStatus.cooling_fan_speed);
+            sendMsg(XTOUCH_ON_PART_AUX_SPEED, bambuStatus.big_fan1_speed);
         }
 
-        if (incomingJson["print"].containsKey("big_fan2_speed"))
-        {
-            int speed = incomingJson["print"]["big_fan1_speed"].as<int>();
-            bambuStatus.big_fan2_speed = round(floor(speed / float(1.5)) * float(25.5));
-            sendMsg(XTOUCH_ON_PART_AUX_SPEED, bambuStatus.big_fan2_speed);
-        }
+        // if (incomingJson["print"].containsKey("big_fan2_speed"))
+        // {
+        //     int speed = incomingJson["print"]["big_fan1_speed"].as<int>();
+        //     bambuStatus.big_fan2_speed = round(floor(speed / float(1.5)) * float(25.5));
+        //     sendMsg(XTOUCH_ON_PART_AUX_SPEED, bambuStatus.big_fan2_speed);
+        // }
 
         if (incomingJson["print"].containsKey("hw_switch_state"))
         {
