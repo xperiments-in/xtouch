@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
+#include "xtouch/debug.h"
 #include "xtouch/eeprom.h"
 #include "xtouch/paths.h"
 #include "xtouch/types.h"
@@ -33,9 +34,7 @@ void xtouch_intro_show(void)
 
 void setup()
 {
-
-  Serial.begin(115200);
-
+  xtouch_debug_setup();
   xtouch_eeprom_setup();
   xtouch_globals_init();
   xtouch_screen_setup();
