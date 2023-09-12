@@ -50,7 +50,7 @@ void xtouch_chamber_timer_stop()
 
 void xtouch_chamber_timer_init()
 {
-    if (!xTouchConfig.xTouchIsP1Series)
+    if (!xtouch_bblp_is_p1Series())
     {
         return;
     }

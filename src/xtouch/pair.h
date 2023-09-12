@@ -35,19 +35,13 @@ void xtouch_pair_start()
 
 void xtouch_pair_check()
 {
-    xtouch_ssdp_start();
-
     if (!xtouch_ssdp_is_paired())
     {
+        xtouch_ssdp_start();
         xtouch_pair_start();
         loadScreen(-1);
+        xtouch_ssdp_stop();
     }
-    else
-    {
-        xtouch_ssdp_load_pair();
-    }
-
-    xtouch_ssdp_stop();
 }
 
 #endif

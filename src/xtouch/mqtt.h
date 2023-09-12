@@ -490,9 +490,9 @@ void xtouch_mqtt_connect()
     delay(32);
     xtouch_mqtt_firstConnectionDone = false;
 
-    String clientId = "XTOUCH-CLIENT-" + String(generateRandomKey(16));
     while (!xtouch_pubSubClient.connected())
     {
+        String clientId = "XTOUCH-CLIENT-" + String(generateRandomKey(16));
         // String clientId = "XTOUCH-CLIENT";
         if (xtouch_pubSubClient.connect(clientId.c_str(), "bblp", xTouchConfig.xTouchAccessCode))
         {
@@ -608,11 +608,9 @@ void xtouch_mqtt_setup()
     IPAddress ip;
     ip.fromString(printerIps[xTouchConfig.xTouchSerialNumber].as<String>());
     String pairedModel = printer[xTouchConfig.xTouchSerialNumber]["model"].as<String>();
-    xTouchConfig.xTouchIsP1Series = pairedModel == "C11" || pairedModel == "C12" ? true : false;
+    strcpy(xTouchConfig.xTouchPrinterModel, pairedModel.c_str());
     xtouch_pubSubClient.setServer(ip, 8883);
     xtouch_pubSubClient.setCallback(xtouch_mqtt_parseMessage);
-    xtouch_pubSubClient.setSocketTimeout(30);
-    xtouch_pubSubClient.setKeepAlive(30);
     /* home */
     lv_msg_subscribe(XTOUCH_COMMAND_LIGHT_TOGGLE, (lv_msg_subscribe_cb_t)xtouch_device_onLightToggleCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_STOP, (lv_msg_subscribe_cb_t)xtouch_device_onStopCommand, NULL);

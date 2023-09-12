@@ -3,6 +3,7 @@
 #include "xtouch/eeprom.h"
 #include "xtouch/paths.h"
 #include "xtouch/types.h"
+#include "xtouch/bblp.h"
 #include "xtouch/globals.h"
 #include "xtouch/filesystem.h"
 #include "ui/ui.h"

@@ -42,13 +42,14 @@ void xtouch_settings_loadSettings()
     xTouchConfig.xTouchBacklightLevel = settings["backlight"].as<int>();
     xTouchConfig.xTouchTFTOFFValue = settings["tftOff"].as<int>();
     xTouchConfig.xTouchTFTInvert = settings["tftInvert"].as<bool>();
+    
     xTouchConfig.xTouchAuxFanEnabled = settings["auxFan"].as<bool>();
     xTouchConfig.xTouchOTAEnabled = settings["ota"].as<bool>();
 
-    if (xtouch_filesystem_exist(SD, xtouch_paths_printers))
+    if (xtouch_ssdp_is_paired())
     {
-        DynamicJsonDocument printers = xtouch_ssdp_load_printer();
-        xTouchConfig.xTouchChamberSensorEnabled = printers[xTouchConfig.xTouchSerialNumber]["settings"]["chamberTemp"].as<bool>();
+        xtouch_ssdp_load_pair();
+        xTouchConfig.xTouchChamberSensorEnabled = xtouch_ssdp_load_printer()[xTouchConfig.xTouchSerialNumber]["settings"]["chamberTemp"].as<bool>();
     }
     else
     {

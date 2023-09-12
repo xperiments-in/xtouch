@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include "../ui.h"
 #include "../ui_msgs.h"
-
-void setScreenTimerTimeout()
-{
-}
-
+#include "xtouch/bblp.h"
 void ui_event_comp_settingsComponent_unpairButton(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -452,9 +448,17 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_bg_opa(ui_settings_auxFanSwitch, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_settings_auxFanSwitch, lv_color_hex(0x000000), LV_PART_KNOB | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_settings_auxFanSwitch, 255, LV_PART_KNOB | LV_STATE_CHECKED);
-    if (xTouchConfig.xTouchAuxFanEnabled)
+
+    if (!xtouch_bblp_is_p1p())
     {
-        lv_obj_add_state(ui_settings_auxFanSwitch, LV_STATE_CHECKED);
+        lv_obj_add_flag(ui_settings_auxFanSwitch, LV_OBJ_FLAG_HIDDEN);
+    }
+    else
+    {
+        if (xTouchConfig.xTouchAuxFanEnabled)
+        {
+            lv_obj_add_state(ui_settings_auxFanSwitch, LV_STATE_CHECKED);
+        }
     }
 
     lv_obj_t *cui_settings_chamberSensor;
@@ -471,11 +475,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_pad_right(cui_settings_chamberSensor, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(cui_settings_chamberSensor, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(cui_settings_chamberSensor, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    if (!xTouchConfig.xTouchIsP1Series)
-    {
-        lv_obj_add_flag(cui_settings_chamberSensor, LV_OBJ_FLAG_HIDDEN);
-    }
 
     lv_obj_t *cui_settings_chamberSensorLabel;
     cui_settings_chamberSensorLabel = lv_label_create(cui_settings_chamberSensor);
@@ -496,9 +495,17 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_bg_opa(ui_settings_chamberSensorSwitch, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_settings_chamberSensorSwitch, lv_color_hex(0x000000), LV_PART_KNOB | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_settings_chamberSensorSwitch, 255, LV_PART_KNOB | LV_STATE_CHECKED);
-    if (xTouchConfig.xTouchChamberSensorEnabled)
+
+    if (!xtouch_bblp_is_p1Series())
     {
-        lv_obj_add_state(ui_settings_chamberSensorSwitch, LV_STATE_CHECKED);
+        lv_obj_add_flag(cui_settings_chamberSensor, LV_OBJ_FLAG_HIDDEN);
+    }
+    else
+    {
+        if (xTouchConfig.xTouchChamberSensorEnabled)
+        {
+            lv_obj_add_state(ui_settings_chamberSensorSwitch, LV_STATE_CHECKED);
+        }
     }
 
     lv_obj_t *cui_settings_ota;

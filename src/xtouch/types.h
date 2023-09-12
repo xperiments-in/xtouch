@@ -123,12 +123,12 @@ extern "C"
     {
         bool xTouchAuxFanEnabled;
         bool xTouchChamberSensorEnabled;
-        bool xTouchIsP1Series;
         bool xTouchOTAEnabled;
         bool xTouchTFTFlip;
         bool xTouchTFTInvert;
         char xTouchAccessCode[9];
         char xTouchSerialNumber[16];
+        char xTouchPrinterModel[32];
         int xTouchBacklightLevel;
         int xTouchTFTOFFValue;
     } XTouchConfig;
