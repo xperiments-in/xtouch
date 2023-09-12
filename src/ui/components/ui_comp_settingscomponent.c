@@ -352,7 +352,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     cui_pairingTitle = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_pairingTitle, lv_pct(100));
     lv_obj_set_height(cui_pairingTitle, LV_SIZE_CONTENT); /// 40
-    lv_label_set_text(cui_pairingTitle, LV_SYMBOL_REFRESH " PAIRING");
+    lv_label_set_text(cui_pairingTitle, LV_SYMBOL_LIST " CONNECTED PRINTERS");
     lv_obj_set_scrollbar_mode(cui_pairingTitle, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_pairingTitle, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_pairingTitle, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -368,8 +368,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_t *cui_unpairButton;
     cui_unpairButton = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_unpairButton, lv_pct(100));
-    lv_obj_set_height(cui_unpairButton, LV_SIZE_CONTENT); /// 1
-    lv_label_set_text(cui_unpairButton, LV_SYMBOL_SHUFFLE " Unpair Printer");
+    lv_obj_set_height(cui_unpairButton, LV_SIZE_CONTENT);     /// 1
     lv_obj_add_flag(cui_unpairButton, LV_OBJ_FLAG_CLICKABLE); /// Flags
     lv_obj_set_scrollbar_mode(cui_unpairButton, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_radius(cui_unpairButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -381,11 +380,13 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_pad_bottom(cui_unpairButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(cui_unpairButton, lv_color_hex(0x000), LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    lv_label_set_text_fmt(cui_unpairButton, LV_SYMBOL_SHUFFLE " Unlink [ %s ]", xTouchConfig.xTouchPrinterName);
+
     lv_obj_t *cui_clearAccesCodeCacheButton;
     cui_clearAccesCodeCacheButton = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_clearAccesCodeCacheButton, lv_pct(100));
     lv_obj_set_height(cui_clearAccesCodeCacheButton, LV_SIZE_CONTENT); /// 1
-    lv_label_set_text(cui_clearAccesCodeCacheButton, LV_SYMBOL_TRASH " Clear Access Codes");
+    lv_label_set_text(cui_clearAccesCodeCacheButton, LV_SYMBOL_TRASH " Clear Access Code Cache");
     lv_obj_add_flag(cui_clearAccesCodeCacheButton, LV_OBJ_FLAG_CLICKABLE); /// Flags
     lv_obj_set_scrollbar_mode(cui_clearAccesCodeCacheButton, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_radius(cui_clearAccesCodeCacheButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -401,7 +402,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     cui_deviceTitle = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_deviceTitle, lv_pct(100));
     lv_obj_set_height(cui_deviceTitle, LV_SIZE_CONTENT); /// 40
-    lv_label_set_text(cui_deviceTitle, LV_SYMBOL_LIST " DEVICE");
+    lv_label_set_text(cui_deviceTitle, LV_SYMBOL_LIST " XTOUCH");
     lv_obj_set_scrollbar_mode(cui_deviceTitle, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_deviceTitle, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_deviceTitle, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -449,7 +450,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_bg_color(ui_settings_auxFanSwitch, lv_color_hex(0x000000), LV_PART_KNOB | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_settings_auxFanSwitch, 255, LV_PART_KNOB | LV_STATE_CHECKED);
 
-    if (!xtouch_bblp_is_p1p())
+    if (!xtouch_bblp_is_p1p() || !xtouch_bblp_is_x1())
     {
         lv_obj_add_flag(cui_settings_auxFan, LV_OBJ_FLAG_HIDDEN);
     }
