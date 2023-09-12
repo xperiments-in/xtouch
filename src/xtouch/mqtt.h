@@ -14,6 +14,7 @@ PubSubClient xtouch_pubSubClient(xtouch_wiFiClientSecure);
 
 #define XTOUCH_MQTT_SERVER_TIMEOUT 20
 #define XTOUCH_MQTT_SERVER_BUFFER_SIZE 8192
+#define XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE 8192
 
 /* ---------------------------------------------- */
 bool xtouch_mqtt_firstConnectionDone = false;
@@ -402,7 +403,7 @@ void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length)
 {
 
     Serial.println(F("[XTouch][MQTT] ParseMessage"));
-    DynamicJsonDocument incomingJson(4096);
+    DynamicJsonDocument incomingJson(XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE);
     auto deserializeError = deserializeJson(incomingJson, payload, length);
     serializeJson(incomingJson, Serial);
     if (!deserializeError)

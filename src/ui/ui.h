@@ -7,6 +7,8 @@ extern "C"
 {
 #endif
 
+#include "xtouch/types.h"
+
 #if defined __has_include
 #if __has_include("lvgl.h")
 #include "lvgl.h"
@@ -25,7 +27,6 @@ extern "C"
 #include "components/ui_comp.h"
 #include "components/ui_comp_hook.h"
 #include "ui_events.h"
-#include "../../src/xtouch/types.h"
 
   lv_timer_t *xtouch_screen_onScreenOffTimer;
   lv_timer_t *xtouch_ssdp_onButtonTimerTimer;
@@ -80,6 +81,11 @@ extern "C"
   LV_FONT_DECLARE(ui_font_xperiments);
 
   void ui_init(void);
+
+  bool xtouch_bblp_is_p1p();
+  bool xtouch_bblp_is_p1Series();
+  bool xtouch_bblp_is_x1();
+  bool xtouch_bblp_is_x1s();
 
 #ifdef __cplusplus
 } /*extern "C"*/

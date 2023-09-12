@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "../ui.h"
 #include "../ui_msgs.h"
-#include "xtouch/bblp.h"
+
 void ui_event_comp_settingsComponent_unpairButton(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
