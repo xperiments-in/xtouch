@@ -19,7 +19,7 @@ bool xtouch_wifi_setup()
 
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
-    Serial.println(F("[XTOUCH][CONNECTION] Connecting to WiFi .."));
+    ConsoleLog.println(F("[XTOUCH][CONNECTION] Connecting to WiFi .."));
     delay(1000);
     wl_status_t status = WiFi.status();
     const char *statusText = "";
@@ -82,8 +82,8 @@ bool xtouch_wifi_setup()
     lv_timer_handler();
     lv_task_handler();
     delay(1000);
-    Serial.print(F("[XTOUCH][CONNECTION] Connected to the WiFi network with IP: "));
-    Serial.println(WiFi.localIP());
+    ConsoleLog.print(F("[XTOUCH][CONNECTION] Connected to the WiFi network with IP: "));
+    ConsoleLog.println(WiFi.localIP());
 
     return true;
 }
