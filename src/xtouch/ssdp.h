@@ -74,9 +74,12 @@ String xtouch_ssdp_getStoredCode(String usn)
 void xtouch_ssdp_load_pair()
 {
     DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
+    DynamicJsonDocument printers = xtouch_ssdp_load_printer();
     String usn = pairFile["paired"].as<String>();
+    String name = printers[usn]["name"].as<String>();
     strcpy(xTouchConfig.xTouchSerialNumber, pairFile["paired"].as<String>().c_str());
     strcpy(xTouchConfig.xTouchAccessCode, pairFile[usn].as<String>().c_str());
+    strcpy(xTouchConfig.xTouchPrinterName, name.c_str());
 }
 
 void xtouch_ssdp_unpair()

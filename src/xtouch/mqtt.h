@@ -12,6 +12,9 @@ PubSubClient xtouch_pubSubClient(xtouch_wiFiClientSecure);
 #include "ams.h"
 #include "xtouch.h"
 
+#define XTOUCH_MQTT_SERVER_TIMEOUT 20
+#define XTOUCH_MQTT_SERVER_BUFFER_SIZE 8192
+
 /* ---------------------------------------------- */
 bool xtouch_mqtt_firstConnectionDone = false;
 int xtouch_mqtt_connection_fail_count = 5;
@@ -484,7 +487,7 @@ void xtouch_mqtt_connect()
 
     String deviceTopic = String("device/") + xTouchConfig.xTouchSerialNumber;
     String reportTopic = deviceTopic + String("/report");
-    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Connecting MQTT");
+    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Connecting to Printer");
     lv_timer_handler();
     lv_task_handler();
     delay(32);
@@ -595,22 +598,26 @@ void xtouch_mqtt_connect()
 
 void xtouch_mqtt_setup()
 {
-    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Connecting MQTT");
+    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Connecting to Printer");
     lv_timer_handler();
     lv_task_handler();
     delay(32);
 
+    IPAddress ip;
     DynamicJsonDocument printer = xtouch_ssdp_load_printer();
     DynamicJsonDocument printerIps = xtouch_ssdp_load_printerIPs();
+    String pairedModel = printer[xTouchConfig.xTouchSerialNumber]["model"].as<String>();
+
+    ip.fromString(printerIps[xTouchConfig.xTouchSerialNumber].as<String>());
+    strcpy(xTouchConfig.xTouchPrinterModel, pairedModel.c_str());
+
     xtouch_mqtt_topic_setup();
     xtouch_wiFiClientSecure.setInsecure();
-    xtouch_pubSubClient.setBufferSize(4096);
-    IPAddress ip;
-    ip.fromString(printerIps[xTouchConfig.xTouchSerialNumber].as<String>());
-    String pairedModel = printer[xTouchConfig.xTouchSerialNumber]["model"].as<String>();
-    strcpy(xTouchConfig.xTouchPrinterModel, pairedModel.c_str());
+    xtouch_pubSubClient.setBufferSize(XTOUCH_MQTT_SERVER_BUFFER_SIZE);
     xtouch_pubSubClient.setServer(ip, 8883);
     xtouch_pubSubClient.setCallback(xtouch_mqtt_parseMessage);
+    xtouch_pubSubClient.setSocketTimeout(XTOUCH_MQTT_SERVER_TIMEOUT);
+
     /* home */
     lv_msg_subscribe(XTOUCH_COMMAND_LIGHT_TOGGLE, (lv_msg_subscribe_cb_t)xtouch_device_onLightToggleCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_STOP, (lv_msg_subscribe_cb_t)xtouch_device_onStopCommand, NULL);
