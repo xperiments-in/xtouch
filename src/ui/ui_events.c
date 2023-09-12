@@ -94,7 +94,7 @@ void onSettingsResetDevice(lv_event_t *e)
 void onSettingsUnPairConfirm() { lv_msg_send(XTOUCH_SETTINGS_UNPAIR, NULL); }
 void onSettingsUnPair(lv_event_t *e)
 {
-    ui_confirmPanel_show(LV_SYMBOL_WARNING " Confirm UNPAIR Device", onSettingsUnPairConfirm);
+    ui_confirmPanel_show(LV_SYMBOL_WARNING " Confirm Unlink Printer", onSettingsUnPairConfirm);
 }
 void onSettingsClearAccesCodeCacheConfirm() { lv_msg_send(XTOUCH_SETTINGS_CLEAR_ACCESS_CODE_CACHE, NULL); }
 void onSettingsClearAccesCodeCache(lv_event_t *e)
