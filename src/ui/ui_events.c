@@ -88,13 +88,13 @@ void onControlAxis(lv_event_t *e) { lv_msg_send(XTOUCH_CONTROL_AXIS_SWITCH, NULL
 void onSettingsResetDeviceConfirm() { lv_msg_send(XTOUCH_SETTINGS_RESET_DEVICE, NULL); }
 void onSettingsResetDevice(lv_event_t *e)
 {
-    ui_confirmPanel_show(LV_SYMBOL_WARNING " Confirm REBOOT", onSettingsResetDeviceConfirm);
+    ui_confirmPanel_show(LV_SYMBOL_WARNING " REBOOT", onSettingsResetDeviceConfirm);
 }
 
 void onSettingsUnPairConfirm() { lv_msg_send(XTOUCH_SETTINGS_UNPAIR, NULL); }
 void onSettingsUnPair(lv_event_t *e)
 {
-    ui_confirmPanel_show(LV_SYMBOL_WARNING " Confirm Unlink Printer", onSettingsUnPairConfirm);
+    ui_confirmPanel_show(LV_SYMBOL_WARNING " Unlink Printer", onSettingsUnPairConfirm);
 }
 void onSettingsClearAccesCodeCacheConfirm() { lv_msg_send(XTOUCH_SETTINGS_CLEAR_ACCESS_CODE_CACHE, NULL); }
 void onSettingsClearAccesCodeCache(lv_event_t *e)
@@ -135,14 +135,14 @@ void onNozzleUpConfirm() { lv_msg_send(XTOUCH_COMMAND_EXTRUDE_UP, NULL); }
 void onNozzleUp(lv_event_t *e)
 {
     // Your code here
-    ui_confirmPanel_show(LV_SYMBOL_WARNING " Confirm Nozzle MIN 170°C", onNozzleUpConfirm);
+    ui_confirmPanel_show(LV_SYMBOL_WARNING " Is Nozzle at MIN 170°C", onNozzleUpConfirm);
 }
 
 void onNozzleDownConfirm() { lv_msg_send(XTOUCH_COMMAND_EXTRUDE_DOWN, NULL); }
 void onNozzleDown(lv_event_t *e)
 {
     // Your code here
-    ui_confirmPanel_show(LV_SYMBOL_WARNING " Confirm Nozzle MIN 170°C", onNozzleDownConfirm);
+    ui_confirmPanel_show(LV_SYMBOL_WARNING " Is Nozzle at MIN 170°C", onNozzleDownConfirm);
 }
 
 void onFilamentUnload(lv_event_t *e)
