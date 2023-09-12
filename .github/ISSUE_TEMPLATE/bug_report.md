@@ -29,6 +29,7 @@ If applicable, add screenshots to help explain your problem.
 **Printers (please complete the following information):**
  - Device: [e.g. P1S]
  - FW Version [e.g. xx.xx.xx]
+-  AMS units:[e.g. 1]
 
 **Additional context**
 Add any other context about the problem here.
