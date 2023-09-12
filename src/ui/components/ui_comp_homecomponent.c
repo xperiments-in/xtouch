@@ -964,7 +964,7 @@ lv_obj_t *ui_homeComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_text_color(cui_mainScreenChamberTemp, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(cui_mainScreenChamberTemp, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    if (!xTouchConfig.xTouchChamberSensorEnabled)
+    if (xtouch_bblp_is_p1Series() && !xTouchConfig.xTouchChamberSensorEnabled)
     {
         lv_obj_add_flag(cui_mainScreenChamberTemp, LV_OBJ_FLAG_HIDDEN);
     }

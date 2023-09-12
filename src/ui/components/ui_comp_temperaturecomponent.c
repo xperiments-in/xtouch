@@ -596,7 +596,8 @@ lv_obj_t *ui_temperatureComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_border_width(cui_temperatureComponentAuxFan, 2, LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_color(cui_temperatureComponentAuxFan, lv_color_hex(0x2aff00), LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_set_style_bg_opa(cui_temperatureComponentAuxFan, 255, LV_PART_MAIN | LV_STATE_PRESSED);
-    if (!xTouchConfig.xTouchAuxFanEnabled)
+
+    if ((xtouch_bblp_is_p1p() || xtouch_bblp_is_x1()) && !xTouchConfig.xTouchAuxFanEnabled)
     {
         lv_obj_add_flag(cui_temperatureComponentAuxFan, LV_OBJ_FLAG_HIDDEN);
     }
