@@ -451,7 +451,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
 
     if (!xtouch_bblp_is_p1p())
     {
-        lv_obj_add_flag(ui_settings_auxFanSwitch, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(cui_settings_auxFan, LV_OBJ_FLAG_HIDDEN);
     }
     else
     {
