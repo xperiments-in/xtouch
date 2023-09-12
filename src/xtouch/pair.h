@@ -41,7 +41,10 @@ void xtouch_pair_check()
         xtouch_pair_start();
         loadScreen(-1);
         xtouch_ssdp_stop();
+        xtouch_ssdp_save_pair(xTouchConfig.xTouchSerialNumber, xTouchConfig.xTouchAccessCode);
     }
+
+    xtouch_ssdp_load_pair();
 }
 
 #endif
