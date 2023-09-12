@@ -143,7 +143,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     cui_settingsTitle = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_settingsTitle, lv_pct(100));
     lv_obj_set_height(cui_settingsTitle, LV_SIZE_CONTENT); /// 40
-    lv_label_set_text_fmt(cui_settingsTitle, LV_SYMBOL_SETTINGS " SETTINGS v%s", XTOUCH_FIRMWARE_VERSION);
+    lv_label_set_text_fmt(cui_settingsTitle, LV_SYMBOL_SETTINGS " SETTINGS");
     lv_obj_set_scrollbar_mode(cui_settingsTitle, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_settingsTitle, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_settingsTitle, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -402,7 +402,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     cui_deviceTitle = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_deviceTitle, lv_pct(100));
     lv_obj_set_height(cui_deviceTitle, LV_SIZE_CONTENT); /// 40
-    lv_label_set_text(cui_deviceTitle, LV_SYMBOL_LIST " XTOUCH");
+    lv_label_set_text_fmt(cui_deviceTitle, LV_SYMBOL_LIST " XTOUCH v%s", XTOUCH_FIRMWARE_VERSION);
     lv_obj_set_scrollbar_mode(cui_deviceTitle, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_deviceTitle, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_deviceTitle, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -450,7 +450,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_bg_color(ui_settings_auxFanSwitch, lv_color_hex(0x000000), LV_PART_KNOB | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_settings_auxFanSwitch, 255, LV_PART_KNOB | LV_STATE_CHECKED);
 
-    if (!xtouch_bblp_is_p1p() || !xtouch_bblp_is_x1())
+    if (!xtouch_bblp_is_p1p() && !xtouch_bblp_is_x1())
     {
         lv_obj_add_flag(cui_settings_auxFan, LV_OBJ_FLAG_HIDDEN);
     }
