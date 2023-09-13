@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
+#include "xtouch/debug.h"
 #include "xtouch/eeprom.h"
 #include "xtouch/paths.h"
 #include "xtouch/types.h"
@@ -34,7 +35,9 @@ void xtouch_intro_show(void)
 void setup()
 {
 
+#if XTOUCH_USE_SERIAL == true || XTOUCH_DEBUG_ERROR == true || XTOUCH_DEBUG_DEBUG == true || XTOUCH_DEBUG_INFO == true
   Serial.begin(115200);
+#endif
 
   xtouch_eeprom_setup();
   xtouch_globals_init();

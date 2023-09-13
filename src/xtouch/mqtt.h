@@ -50,7 +50,7 @@ String xtouch_mqtt_parse_printer_type(String type_str)
 
 void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
 {
-    Serial.println(F("[XTouch][MQTT] ProcessPushStatus"));
+    ConsoleDebug.println(F("[XTouch][MQTT] ProcessPushStatus"));
 
     if (incomingJson != NULL && incomingJson.containsKey("print"))
     {
@@ -134,9 +134,9 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
 
         if (incomingJson["print"].containsKey("stg_cur"))
         {
-            // Serial.println(F("[XTouch][MQTT] stg_cur"));
-            // Serial.println(incomingJson["print"]["stg_cur"].as<int>());
-            // Serial.println(F("[XTouch][MQTT] stg_cur B"));
+            // ConsoleDebug.println(F("[XTouch][MQTT] stg_cur"));
+            // ConsoleDebug.println(incomingJson["print"]["stg_cur"].as<int>());
+            // ConsoleDebug.println(F("[XTouch][MQTT] stg_cur B"));
         }
 
         if (incomingJson["print"].containsKey("lights_report"))
@@ -393,19 +393,13 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
     }
 }
 
-void onMqttUnauthorizedConfirm()
-{
-    Serial.println(F("[XTouch][MQTT] onMqttUnauthorizedConfirm"));
-    ui_confirmPanel_hide();
-}
-
 void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length)
 {
 
-    Serial.println(F("[XTouch][MQTT] ParseMessage"));
+    ConsoleDebug.println(F("[XTouch][MQTT] ParseMessage"));
     DynamicJsonDocument incomingJson(XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE);
     auto deserializeError = deserializeJson(incomingJson, payload, length);
-    serializeJson(incomingJson, Serial);
+    xtouch_debug_json(incomingJson);
     if (!deserializeError)
     {
 
@@ -420,8 +414,8 @@ void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length)
             }
             else if (command == "gcode_line")
             {
-                Serial.println(F("[XTouch][MQTT] gcode_line"));
-                Serial.println(String((char *)payload));
+                ConsoleDebug.println(F("[XTouch][MQTT] gcode_line"));
+                ConsoleDebug.println(String((char *)payload));
             }
         }
 
@@ -443,7 +437,7 @@ void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length)
     }
     else
     {
-        Serial.println(F("[XTouch][MQTT] ParseMessage deserializeJson failed"));
+        ConsoleError.println(F("[XTouch][MQTT] ParseMessage deserializeJson failed"));
     }
 }
 
@@ -484,7 +478,7 @@ void xtouch_mqtt_onMqttReady()
 void xtouch_mqtt_connect()
 {
 
-    Serial.println(F("[XTouch][MQTT] Connecting"));
+    ConsoleInfo.println(F("[XTouch][MQTT] Connecting"));
 
     String deviceTopic = String("device/") + xTouchConfig.xTouchSerialNumber;
     String reportTopic = deviceTopic + String("/report");
@@ -500,7 +494,7 @@ void xtouch_mqtt_connect()
         // String clientId = "XTOUCH-CLIENT";
         if (xtouch_pubSubClient.connect(clientId.c_str(), "bblp", xTouchConfig.xTouchAccessCode))
         {
-            Serial.println(F("[XTouch][MQTT] ---- CONNECTED ----"));
+            ConsoleInfo.println(F("[XTouch][MQTT] ---- CONNECTED ----"));
 
             xtouch_pubSubClient.subscribe(reportTopic.c_str());
             xtouch_device_pushall();
@@ -510,7 +504,7 @@ void xtouch_mqtt_connect()
         }
         else
         {
-            Serial.printf("[XTouch][MQTT] ---- CONNECTION FAIL ----: %d\n", xtouch_pubSubClient.state());
+            ConsoleError.printf("[XTouch][MQTT] ---- CONNECTION FAIL ----: %d\n", xtouch_pubSubClient.state());
 
             switch (xtouch_pubSubClient.state())
             {
