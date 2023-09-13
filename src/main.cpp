@@ -34,7 +34,11 @@ void xtouch_intro_show(void)
 
 void setup()
 {
-  xtouch_debug_setup();
+
+#if XTOUCH_USE_SERIAL == true || XTOUCH_DEBUG_ERROR == true || XTOUCH_DEBUG_DEBUG == true || XTOUCH_DEBUG_INFO == true
+  Serial.begin(115200);
+#endif
+
   xtouch_eeprom_setup();
   xtouch_globals_init();
   xtouch_screen_setup();

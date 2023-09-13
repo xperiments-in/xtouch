@@ -14,23 +14,13 @@
 #include <Arduino.h> 
 #include <ArduinoJson.h> 
 
-void xtouch_debug_setup()
-{
-#if XTOUCH_USE_SERIAL == true || XTOUCH_DEBUG_ERROR == true || XTOUCH_DEBUG_DEBUG == true || XTOUCH_DEBUG_INFO == true
-    Serial.begin(115200);
-    while (!Serial)
-        ;
-        
-#endif
-}
-
 void xtouch_debug_json(const JsonDocument &doc)
 {
 #if XTOUCH_DEBUG_DEBUG == true
     String output;
     serializeJsonPretty(doc, output);
     ConsoleDebug.println(output);
-
 #endif
 }
+
 #endif
