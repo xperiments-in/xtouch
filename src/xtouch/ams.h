@@ -69,6 +69,19 @@ void xtouch_ams_parse_status(int ams_status)
 
 bool xtouch_has_ams() { return bambuStatus.ams_exist_bits != 0; }
 
+bool xtouch_can_load_filament()
+{
+    bool result = false;
+    if (!xtouch_has_ams())
+        return true;
+
+    if (bambuStatus.ams_status_main == AMS_STATUS_MAIN_IDLE && bambuStatus.hw_switch_state == 1 && bambuStatus.m_tray_now == 255)
+    {
+        return true;
+    }
+    return result;
+}
+
 bool xtouch_can_unload_filament()
 {
     bool result = false;

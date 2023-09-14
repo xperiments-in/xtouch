@@ -134,25 +134,23 @@ void onSettingsTFTFlip(lv_event_t *e)
 void onNozzleUpConfirm() { lv_msg_send(XTOUCH_COMMAND_EXTRUDE_UP, NULL); }
 void onNozzleUp(lv_event_t *e)
 {
-    // Your code here
     ui_confirmPanel_show(LV_SYMBOL_WARNING " Is Nozzle at MIN 170°C", onNozzleUpConfirm);
 }
 
 void onNozzleDownConfirm() { lv_msg_send(XTOUCH_COMMAND_EXTRUDE_DOWN, NULL); }
 void onNozzleDown(lv_event_t *e)
 {
-    // Your code here
     ui_confirmPanel_show(LV_SYMBOL_WARNING " Is Nozzle at MIN 170°C", onNozzleDownConfirm);
 }
 
+void onFilamentUnloadConfirm() { lv_msg_send(XTOUCH_COMMAND_UNLOAD_FILAMENT, NULL); }
 void onFilamentUnload(lv_event_t *e)
 {
-
-    lv_msg_send(XTOUCH_COMMAND_UNLOAD_FILAMENT, NULL);
-    // Your code here
+    ui_confirmPanel_show("Please remove\nthe filament after\n" LV_SYMBOL_CUT, onFilamentUnloadConfirm);
 }
 
+void onFilamentLoadConfirm() { lv_msg_send(XTOUCH_COMMAND_LOAD_FILAMENT, NULL); }
 void onFilamentLoad(lv_event_t *e)
 {
-    // Your code here
+    ui_confirmPanel_show(LV_SYMBOL_PLAY " Load new Filament\n" LV_SYMBOL_PLAY " into the Printer\n\n" LV_SYMBOL_OK " Tap YES to continue", onFilamentLoadConfirm);
 }
