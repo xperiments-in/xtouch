@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include "xtouch/debug.h"
-#include "xtouch/eeprom.h"
 #include "xtouch/paths.h"
+#include "xtouch/eeprom.h"
 #include "xtouch/types.h"
 #include "xtouch/bblp.h"
 #include "xtouch/globals.h"

@@ -18,7 +18,7 @@ bool downloadFileToSDCard(const char *url, const char *fileName, void (*callback
     bool success = false;
     if (httpCode == HTTP_CODE_OK)
     {
-        File file = xtouch_filesystem_open(SD, fileName);
+        File file = SD.open(fileName, FILE_WRITE);
         if (file)
         {
             Stream *response = &http.getStream();

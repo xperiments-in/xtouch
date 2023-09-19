@@ -2,7 +2,6 @@
 #define _XLCD_TYPES
 
 #define XTOUCH_LCD_MIN_SLEEP_TIME 5
-#define XTOUCH_FIRMWARE_VERSION "0.0.3"
 
 #ifdef __cplusplus
 extern "C"

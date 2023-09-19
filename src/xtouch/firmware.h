@@ -100,40 +100,36 @@ void xtouch_firmware_checkOnlineFirmwareUpdate(void)
 void xtouch_firmware_checkFirmwareUpdate(void)
 {
 
-    // Verifica si el archivo de actualización existe en la tarjeta SD
     if (xtouch_filesystem_exist(SD, xtouch_paths_firmware_ota_fw))
     {
-        if (xtouch_filesystem_exist(SD, xtouch_paths_firmware_ota_fw))
+        File firmware = xtouch_filesystem_open(SD, xtouch_paths_firmware_ota_fw);
+        Update.onProgress(xtouch_firmware_onProgress);
+        Update.begin(firmware.size(), U_FLASH);
+        Update.writeStream(firmware);
+        bool updateSucceeded = Update.end();
+        firmware.close();
+
+        if (updateSucceeded)
         {
-            File firmware = xtouch_filesystem_open(SD, xtouch_paths_firmware_ota_fw);
-            Update.onProgress(xtouch_firmware_onProgress);
-            Update.begin(firmware.size(), U_FLASH);
-            Update.writeStream(firmware);
-            bool updateSucceeded = Update.end();
-            firmware.close();
-
-            if (updateSucceeded)
-            {
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_OK " Update finished");
-                lv_timer_handler();
-                lv_task_handler();
-            }
-            else
-            {
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " Update error");
-                lv_timer_handler();
-                lv_task_handler();
-                delay(3000);
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_TRASH " Deleting firmware file");
-                lv_timer_handler();
-                lv_task_handler();
-            }
-
-            xtouch_filesystem_deleteFile(SD, xtouch_paths_firmware_ota_fw);
-
-            delay(2000);
-            ESP.restart();
+            lv_label_set_text(introScreenCaption, LV_SYMBOL_OK " Update finished");
+            lv_timer_handler();
+            lv_task_handler();
         }
+        else
+        {
+            lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " Update error");
+            lv_timer_handler();
+            lv_task_handler();
+            delay(3000);
+            lv_label_set_text(introScreenCaption, LV_SYMBOL_TRASH " Deleting firmware file");
+            lv_timer_handler();
+            lv_task_handler();
+        }
+
+        xtouch_filesystem_deleteFile(SD, xtouch_paths_firmware_ota_fw);
+
+        delay(2000);
+        ESP.restart();
     }
 }
 #endif
