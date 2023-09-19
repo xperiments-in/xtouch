@@ -51,7 +51,7 @@ def post_build_ota(version_value):
 
     ota = {
         "version": version_value,
-        "url": f"http://xperiments.github.io/retroconsol.es/products/p1touch/ota/p1touch.{version_value}.bin"
+        "url": f"http://retroconsol.es/products/p1touch/ota/p1touch.{version_value}.bin"
     }
 
     # Serialize the webusb_manifest as a JSON string
