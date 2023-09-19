@@ -36,6 +36,7 @@ void xtouch_events_onClearAccesCodeCache(lv_msg_t *m)
 void xtouch_events_onBackLight(lv_msg_t *m)
 {
     int32_t value = lv_slider_get_value(ui_settingsBackLightPanelSlider);
+    xTouchConfig.xTouchBacklightLevel = value;
     xtouch_screen_setBrightness(value);
 }
 
