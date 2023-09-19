@@ -112,7 +112,6 @@ void xtouch_screen_toggleTFTFlip()
 {
     xtouch_screen_setTFTFlip(!xtouch_screen_getTFTFlip());
     xtouch_resetTouchConfig();
-    ESP.restart();
 }
 
 void xtouch_screen_setupTFTFlip()

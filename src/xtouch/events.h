@@ -82,7 +82,6 @@ void xtouch_events_onTFTFlip(lv_msg_t *m)
 void xtouch_events_onResetTouch(lv_msg_t *m)
 {
     xtouch_resetTouchConfig();
-    ESP.restart();
 }
 
 void xtouch_events_onChamberTempSwitch(lv_msg_t *m)

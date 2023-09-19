@@ -83,6 +83,7 @@ void xtouch_resetTouchConfig()
 {
     ConsoleInfo.println(F("[XTouch][FS] Resetting touch config"));
     xtouch_filesystem_deleteFile(SD, xtouch_paths_touch);
+    delay(500);
     ESP.restart();
 }
 
