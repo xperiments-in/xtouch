@@ -44,6 +44,7 @@ void xtouch_events_onBackLightSet(lv_msg_t *m)
     int32_t value = lv_slider_get_value(ui_settingsBackLightPanelSlider);
     DynamicJsonDocument settings = xtouch_filesystem_readJson(SD, xtouch_paths_settings);
     settings["backlight"] = value;
+    xTouchConfig.xTouchBacklightLevel = value;
     xtouch_filesystem_writeJson(SD, xtouch_paths_settings, settings);
     xtouch_screen_setBrightness(value);
 }
