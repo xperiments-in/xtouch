@@ -14,13 +14,14 @@ bool xtouch_wifi_setup()
     }
     const char *ssid = wifiConfig["ssid"].as<const char *>();
     const char *password = wifiConfig["pwd"].as<const char *>();
+    int timeout = wifiConfig.containsKey("timeout") ? wifiConfig["timeout"].as<int>() : 3000;
 
     WiFi.setTxPower(WIFI_POWER_19_5dBm); // https://github.com/G6EJD/ESP32-8266-Adjust-WiFi-RF-Power-Output/blob/main/README.md
 
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     ConsoleInfo.println(F("[XTOUCH][CONNECTION] Connecting to WiFi .."));
-    delay(1000);
+    delay(timeout);
     wl_status_t status = WiFi.status();
     const char *statusText = "";
     lv_color_t statusColor = lv_color_hex(0x555555);
