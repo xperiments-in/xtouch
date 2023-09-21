@@ -254,7 +254,7 @@ lv_color_t _ui_get_complementary_color(lv_color_t color)
    return compl_color;
 }
 
-void _ui_seconds_to_HMS(uint32_t seconds, char *ret)
+void _ui_seconds_to_timeleft(uint32_t seconds, char *ret)
 {
    int days = seconds / 86400;
    seconds %= 86400;
@@ -265,18 +265,14 @@ void _ui_seconds_to_HMS(uint32_t seconds, char *ret)
 
    if (days > 0)
    {
-      sprintf(ret, "%02dd %02dh %02dm %02ds", days, hours, minutes, seconds);
+      sprintf(ret, "%02dd %02dh %02dm", days, hours, minutes);
    }
    else if (hours > 0)
    {
-      sprintf(ret, "%02dh %02dm %02ds", hours, minutes, seconds);
-   }
-   else if (minutes > 0)
-   {
-      sprintf(ret, "%02dm %02ds", minutes, seconds);
+      sprintf(ret, "%02dh %02dm", hours, minutes);
    }
    else
    {
-      sprintf(ret, "%02ds", seconds);
+      sprintf(ret, "%02dm", minutes);
    }
 }

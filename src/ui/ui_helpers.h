@@ -107,8 +107,8 @@ extern "C"
     void _ui_checked_set_text_value(lv_obj_t *trg, lv_obj_t *src, const char *txt_on, const char *txt_off);
 
     lv_color_t _ui_get_complementary_color(lv_color_t color);
-    
-    void _ui_seconds_to_HMS(uint32_t seconds, char *ret);
+
+    void _ui_seconds_to_timeleft(uint32_t seconds, char *ret);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif
