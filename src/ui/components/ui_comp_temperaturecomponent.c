@@ -194,7 +194,13 @@ void ui_event_comp_temperatureComponent_numpadKeyOk(lv_event_t *e)
         else if (ui_temperatureComponent_input_target == aux)
         {
             const char *data = lv_textarea_get_text(aux);
-            bambuStatus.big_fan1_speed = atoi(data) * 255 / 100;
+            int speed = atoi(data);
+            // limit here to 95 as aux fan does not like values above 95
+            if (speed > 95)
+            {
+                speed = 95;
+            }
+            bambuStatus.big_fan1_speed = speed * 255 / 100;
             lv_msg_send(XTOUCH_COMMAND_AUX_FAN_SPEED, NULL);
             lv_textarea_set_text(aux, "");
         }
@@ -248,7 +254,7 @@ void ui_temperatureComponent_onXtouchPartFanSpeed(lv_event_t *e)
     lv_msg_t *m = lv_event_get_msg(e);
 
     struct XTOUCH_MESSAGE_DATA *message = (struct XTOUCH_MESSAGE_DATA *)m->payload;
-    char value[4];
+    char value[3];
 
     itoa(message->data * 100 / 255, value, 10);
     lv_textarea_set_text(target, value);
@@ -260,7 +266,7 @@ void ui_temperatureComponent_onXtouchAuxFanSpeed(lv_event_t *e)
     lv_msg_t *m = lv_event_get_msg(e);
 
     struct XTOUCH_MESSAGE_DATA *message = (struct XTOUCH_MESSAGE_DATA *)m->payload;
-    char value[4];
+    char value[3];
 
     itoa(message->data * 100 / 255, value, 10);
     lv_textarea_set_text(target, value);
