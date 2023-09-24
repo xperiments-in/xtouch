@@ -233,6 +233,13 @@ void xtouch_device_onAuxSpeedCommand(lv_msg_t *m)
     xtouch_device_pushall();
 }
 
+void xtouch_device_onChamberSpeedCommand(lv_msg_t *m)
+{
+    xtouch_device_gcode_line("M106 P3 S" + String(bambuStatus.big_fan2_speed) + "\n");
+    delay(10);
+    xtouch_device_pushall();
+}
+
 void xtouch_device_onPrintSpeedCommand(lv_msg_t *m)
 {
     xtouch_device_set_printing_speed(bambuStatus.printing_speed_lvl);
