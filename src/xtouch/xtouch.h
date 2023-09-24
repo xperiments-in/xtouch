@@ -235,8 +235,6 @@ void xtouch_device_onAuxSpeedCommand(lv_msg_t *m)
 
 void xtouch_device_onChamberSpeedCommand(lv_msg_t *m)
 {
-    Serial.println("xtouch_device_onChamberSpeedCommand");
-    Serial.println(bambuStatus.big_fan2_speed);
     xtouch_device_gcode_line("M106 P3 S" + String(bambuStatus.big_fan2_speed) + "\n");
     delay(10);
     xtouch_device_pushall();
