@@ -107,6 +107,13 @@ void onSettingsAuxFan(lv_event_t *e)
     xTouchConfig.xTouchAuxFanEnabled = !xTouchConfig.xTouchAuxFanEnabled;
     lv_msg_send(XTOUCH_SETTINGS_SAVE, NULL);
 }
+
+void onSettingsChamberFan(lv_event_t *e)
+{
+    xTouchConfig.xTouchChamberFanEnabled = !xTouchConfig.xTouchChamberFanEnabled;
+    lv_msg_send(XTOUCH_SETTINGS_SAVE, NULL);
+}
+
 void onSettingsChamberSensor(lv_event_t *e)
 {
     xTouchConfig.xTouchChamberSensorEnabled = !xTouchConfig.xTouchChamberSensorEnabled;

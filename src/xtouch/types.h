@@ -121,6 +121,7 @@ extern "C"
     typedef struct XTouchTouchConfigStruct
     {
         bool xTouchAuxFanEnabled;
+        bool xTouchChamberFanEnabled;
         bool xTouchChamberSensorEnabled;
         bool xTouchOTAEnabled;
         bool xTouchTFTFlip;

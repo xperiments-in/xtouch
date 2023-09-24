@@ -211,12 +211,12 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
             sendMsg(XTOUCH_ON_PART_AUX_SPEED, bambuStatus.big_fan1_speed);
         }
 
-        // if (incomingJson["print"].containsKey("big_fan2_speed"))
-        // {
-        //     int speed = incomingJson["print"]["big_fan1_speed"].as<int>();
-        //     bambuStatus.big_fan2_speed = round(floor(speed / float(1.5)) * float(25.5));
-        //     sendMsg(XTOUCH_ON_PART_AUX_SPEED, bambuStatus.big_fan2_speed);
-        // }
+        if (incomingJson["print"].containsKey("big_fan2_speed"))
+        {
+            int speed = incomingJson["print"]["big_fan2_speed"].as<int>();
+            bambuStatus.big_fan2_speed = round(floor(speed / float(1.5)) * float(25.5));
+            sendMsg(XTOUCH_ON_PART_CHAMBER_SPEED, bambuStatus.big_fan2_speed);
+        }
 
         if (incomingJson["print"].containsKey("hw_switch_state"))
         {
@@ -629,6 +629,7 @@ void xtouch_mqtt_setup()
     lv_msg_subscribe(XTOUCH_COMMAND_NOZZLE_TARGET_TEMP, (lv_msg_subscribe_cb_t)xtouch_device_onNozzleTargetCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_PART_FAN_SPEED, (lv_msg_subscribe_cb_t)xtouch_device_onPartSpeedCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_AUX_FAN_SPEED, (lv_msg_subscribe_cb_t)xtouch_device_onAuxSpeedCommand, NULL);
+    lv_msg_subscribe(XTOUCH_COMMAND_CHAMBER_FAN_SPEED, (lv_msg_subscribe_cb_t)xtouch_device_onChamberSpeedCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_PRINT_SPEED, (lv_msg_subscribe_cb_t)xtouch_device_onPrintSpeedCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_UNLOAD_FILAMENT, (lv_msg_subscribe_cb_t)xtouch_device_onUnloadFilament, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_LOAD_FILAMENT, (lv_msg_subscribe_cb_t)xtouch_device_onLoadFilament, NULL);

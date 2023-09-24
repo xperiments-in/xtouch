@@ -7,7 +7,6 @@ void xtouch_settings_save(bool onlyRoot = false)
     doc["backlight"] = xTouchConfig.xTouchBacklightLevel;
     doc["tftOff"] = xTouchConfig.xTouchTFTOFFValue;
     doc["tftInvert"] = xTouchConfig.xTouchTFTInvert;
-    doc["auxFan"] = xTouchConfig.xTouchAuxFanEnabled;
     doc["ota"] = xTouchConfig.xTouchOTAEnabled;
     xtouch_filesystem_writeJson(SD, xtouch_paths_settings, doc);
 
@@ -18,6 +17,8 @@ void xtouch_settings_save(bool onlyRoot = false)
 
     DynamicJsonDocument printersSettings(128);
     printersSettings["chamberTemp"] = xTouchConfig.xTouchChamberSensorEnabled;
+    printersSettings["auxFan"] = xTouchConfig.xTouchAuxFanEnabled;
+    printersSettings["chamberFan"] = xTouchConfig.xTouchChamberFanEnabled;
 
     DynamicJsonDocument printers = xtouch_ssdp_load_printer();
     printers[xTouchConfig.xTouchSerialNumber]["settings"] = printersSettings;
@@ -32,7 +33,6 @@ void xtouch_settings_loadSettings()
         xTouchConfig.xTouchBacklightLevel = 128;
         xTouchConfig.xTouchTFTOFFValue = 15;
         xTouchConfig.xTouchTFTInvert = false;
-        xTouchConfig.xTouchAuxFanEnabled = false;
         xTouchConfig.xTouchOTAEnabled = false;
         xtouch_settings_save(true);
     }
@@ -42,18 +42,21 @@ void xtouch_settings_loadSettings()
     xTouchConfig.xTouchBacklightLevel = settings["backlight"].as<int>();
     xTouchConfig.xTouchTFTOFFValue = settings["tftOff"].as<int>();
     xTouchConfig.xTouchTFTInvert = settings["tftInvert"].as<bool>();
-    
-    xTouchConfig.xTouchAuxFanEnabled = settings["auxFan"].as<bool>();
     xTouchConfig.xTouchOTAEnabled = settings["ota"].as<bool>();
 
     if (xtouch_ssdp_is_paired())
     {
         xtouch_ssdp_load_pair();
-        xTouchConfig.xTouchChamberSensorEnabled = xtouch_ssdp_load_printer()[xTouchConfig.xTouchSerialNumber]["settings"]["chamberTemp"].as<bool>();
+        JsonObject currentPrinterSettings = xtouch_ssdp_load_printer()[xTouchConfig.xTouchSerialNumber]["settings"];
+        xTouchConfig.xTouchChamberSensorEnabled = currentPrinterSettings["chamberTemp"].as<bool>();
+        xTouchConfig.xTouchAuxFanEnabled = currentPrinterSettings["auxFan"].as<bool>();
+        xTouchConfig.xTouchChamberFanEnabled = currentPrinterSettings["chamberFan"].as<bool>();
     }
     else
     {
         xTouchConfig.xTouchChamberSensorEnabled = false;
+        xTouchConfig.xTouchAuxFanEnabled = false;
+        xTouchConfig.xTouchChamberFanEnabled = false;
     }
 
     bool isTFTFlipped = xtouch_screen_getTFTFlip();
