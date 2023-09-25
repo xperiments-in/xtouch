@@ -211,12 +211,12 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
             sendMsg(XTOUCH_ON_PART_AUX_SPEED, bambuStatus.big_fan1_speed);
         }
 
-        // if (incomingJson["print"].containsKey("big_fan2_speed"))
-        // {
-        //     int speed = incomingJson["print"]["big_fan1_speed"].as<int>();
-        //     bambuStatus.big_fan2_speed = round(floor(speed / float(1.5)) * float(25.5));
-        //     sendMsg(XTOUCH_ON_PART_AUX_SPEED, bambuStatus.big_fan2_speed);
-        // }
+        if (incomingJson["print"].containsKey("big_fan2_speed"))
+        {
+            int speed = incomingJson["print"]["big_fan2_speed"].as<int>();
+            bambuStatus.big_fan2_speed = round(floor(speed / float(1.5)) * float(25.5));
+            sendMsg(XTOUCH_ON_PART_CHAMBER_SPEED, bambuStatus.big_fan2_speed);
+        }
 
         if (incomingJson["print"].containsKey("hw_switch_state"))
         {
@@ -516,9 +516,8 @@ void xtouch_mqtt_connect()
                     ESP.restart();
                 }
                 break;
-            case -3: // MQTT_CONNECTION_LOST
+            case -3: // MQTT_CONNECTION_LOSTlock
             case -1: // MQTT_DISCONNECTED
-            case -2: // MQTT_CONNECT_FAILED
                 lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT ERROR");
                 lv_timer_handler();
                 lv_task_handler();
@@ -528,50 +527,13 @@ void xtouch_mqtt_connect()
                 lv_task_handler();
                 ESP.restart();
                 break;
-            case 1: // MQTT BAD_PROTOCOL
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT BAD PROTOCOL");
-                lv_timer_handler();
-                lv_task_handler();
-                delay(3000);
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
-                lv_timer_handler();
-                lv_task_handler();
-                ESP.restart();
-                break;
-            case 2: // MQTT BAD_CLIENT_ID
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT BAD CLIENT ID");
-                lv_timer_handler();
-                lv_task_handler();
-                delay(3000);
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
-                lv_timer_handler();
-                lv_task_handler();
-                ESP.restart();
-                break;
-            case 3: // MQTT UNAVAILABLE
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT UNAVAILABLE");
-                lv_timer_handler();
-                lv_task_handler();
-                delay(3000);
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
-                lv_timer_handler();
-                lv_task_handler();
-                ESP.restart();
-                break;
-            case 4: // MQTT BAD_CREDENTIALS
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT BAD CREDENTIALS");
-                lv_timer_handler();
-                lv_task_handler();
-                delay(3000);
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
-                lv_timer_handler();
-                lv_task_handler();
-                xtouch_ssdp_clear_device_list();
-                xtouch_ssdp_clear_pair_list();
-                ESP.restart();
-                break;
-            case 5: // MQTT UNAUTHORIZED
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT UNAUTHORIZED");
+            case -2: // MQTT_CONNECT_FAILED
+            case 1:  // MQTT BAD_PROTOCOL
+            case 2:  // MQTT BAD_CLIENT_ID
+            case 3:  // MQTT UNAVAILABLE
+            case 4:  // MQTT BAD_CREDENTIALS
+            case 5:  // MQTT UNAUTHORIZED
+                lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT ERROR");
                 lv_timer_handler();
                 lv_task_handler();
                 delay(3000);
@@ -629,6 +591,7 @@ void xtouch_mqtt_setup()
     lv_msg_subscribe(XTOUCH_COMMAND_NOZZLE_TARGET_TEMP, (lv_msg_subscribe_cb_t)xtouch_device_onNozzleTargetCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_PART_FAN_SPEED, (lv_msg_subscribe_cb_t)xtouch_device_onPartSpeedCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_AUX_FAN_SPEED, (lv_msg_subscribe_cb_t)xtouch_device_onAuxSpeedCommand, NULL);
+    lv_msg_subscribe(XTOUCH_COMMAND_CHAMBER_FAN_SPEED, (lv_msg_subscribe_cb_t)xtouch_device_onChamberSpeedCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_PRINT_SPEED, (lv_msg_subscribe_cb_t)xtouch_device_onPrintSpeedCommand, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_UNLOAD_FILAMENT, (lv_msg_subscribe_cb_t)xtouch_device_onUnloadFilament, NULL);
     lv_msg_subscribe(XTOUCH_COMMAND_LOAD_FILAMENT, (lv_msg_subscribe_cb_t)xtouch_device_onLoadFilament, NULL);
