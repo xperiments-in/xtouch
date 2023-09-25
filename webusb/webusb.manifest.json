@@ -1,10 +1,16 @@
 {
   "name": "P1Touch",
-  "version": "0.1.1",
+  "version": "0.8.13",
+  "new_install_prompt_erase": true,
   "builds": [
     {
       "chipFamily": "ESP32",
-      "parts": [{ "path": "xtouch.bin", "offset": 0 }]
+      "parts": [
+        {
+          "path": "p1touch.web.0.8.13.bin",
+          "offset": 0
+        }
+      ]
     }
   ]
 }

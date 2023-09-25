@@ -17,10 +17,10 @@
 #endif
 
 #include "xtouch/pair.h"
+#include "xtouch/settings.h"
 #include "xtouch/net.h"
 #include "xtouch/firmware.h"
 #include "xtouch/mqtt.h"
-#include "xtouch/settings.h"
 #include "xtouch/sensors/chamber.h"
 #include "xtouch/events.h"
 #include "xtouch/connection.h"
