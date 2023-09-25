@@ -490,7 +490,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     cui_settings_chamberFanLabel = lv_label_create(cui_settings_chamberFan);
     lv_obj_set_width(cui_settings_chamberFanLabel, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(cui_settings_chamberFanLabel, LV_SIZE_CONTENT); /// 1
-    lv_label_set_text(cui_settings_chamberFanLabel, "CAHMBER FAN");
+    lv_label_set_text(cui_settings_chamberFanLabel, "CHAMBER FAN");
     lv_obj_set_scrollbar_mode(cui_settings_chamberFanLabel, LV_SCROLLBAR_MODE_OFF);
 
     // lv_obj_t *ui_settingsTFTInvertSwitch;
