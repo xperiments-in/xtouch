@@ -1,9 +1,39 @@
 import json
 import subprocess
 import os
+import hashlib
+
 Import("env")
 
 env = DefaultEnvironment()
+
+
+def calculate_md5_and_size(file_path):
+    # Create an MD5 hash object
+    md5_hash = hashlib.md5()
+
+    try:
+        # Open the file in binary read mode
+        with open(file_path, "rb") as file:
+            # Read the file in chunks
+            chunk_size = 4096  # You can adjust the chunk size as needed
+            file_size = 0
+
+            while True:
+                chunk = file.read(chunk_size)
+                if not chunk:
+                    break
+                md5_hash.update(chunk)
+                file_size += len(chunk)
+
+        # Get the hexadecimal representation of the MD5 hash
+        md5_hex = md5_hash.hexdigest()
+
+        return md5_hex, file_size
+
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+        return None, None
 
 
 def delete_bin_files(directory):
@@ -47,11 +77,13 @@ def post_build_increment_semver(json_file, bump_type="patch"):
         json.dump(data, f, indent=2)
 
 
-def post_build_ota(version_value):
+def post_build_create_ota_json(version_value):
 
+    md5, size = calculate_md5_and_size(f"./ota/p1touch.{version_value}.bin")
     ota = {
         "version": version_value,
-        "url": f"http://retroconsol.es/products/p1touch/ota/p1touch.{version_value}.bin"
+        "url": f"http://retroconsol.es/products/p1touch/ota/p1touch.{version_value}.bin",
+        "md5": md5,
     }
 
     # Serialize the webusb_manifest as a JSON string
@@ -87,10 +119,13 @@ def post_build_manifest(version_value):
         webusb_manifest_file.write(webusb_manifest_serialized)
 
 
-def post_build_merge_bin(version):
+def post_build_copy_ota_fw(version):
     ota_bin_source = ".pio/build/esp32dev/firmware.bin"
     ota_bin_target = f"./ota/p1touch.{version}.bin"
     subprocess.run(['cp', ota_bin_source, ota_bin_target])
+
+
+def post_build_merge_bin(version):
 
     web_usb_fw = f"../../../webusb/p1touch.web.{version}.bin"
     esptool_cmd = [
@@ -117,7 +152,8 @@ def post_build_action(source, target, env):
     delete_bin_files("./ota")
     delete_bin_files("./webusb")
     post_build_manifest(version_value)
-    post_build_ota(version_value)
+    post_build_copy_ota_fw(version_value)
+    post_build_create_ota_json(version_value)
     post_build_merge_bin(version_value)
 
     post_build_increment_semver("version.json", bump_type="patch")
