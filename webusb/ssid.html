@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>P1Touch Save SSID & PWD to SD Card</title>
+    <style>
+      body,
+      code {
+        font-family: Arial, sans-serif;
+        background-color: white;
+        color: black;
+        text-align: center;
+      }
+
+      code {
+        color: green;
+      }
+
+      h1,
+      h2 {
+        color: green;
+      }
+
+      form {
+        max-width: 300px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: left;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: black;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-indent: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+
+      input[type="submit"] {
+        background-color: green;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 6px;
+        width: 100%;
+      }
+
+      input[type="submit"]:hover {
+        background-color: darkgreen;
+      }
+
+      a {
+        display: none;
+        color: green;
+        text-decoration: none;
+        margin-top: 10px;
+      }
+
+      p {
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="width: 300px; display: inline-block">
+      <h1>P1Touch</h1>
+      <h2>wifi.json easy setup</h2>
+      <p>
+        This page allows you to enter your WiFi network's SSID and password to
+        generate the <code>wifi.json</code> configuration file. This file is
+        essential for your P1Touch Screen to connect to your WiFi network during
+        installation.
+      </p>
+    </div>
+
+    <form id="ssidPwdForm">
+      <label for="ssid">Enter SSID</label>
+      <input
+        type="text"
+        id="ssid"
+        name="ssid"
+        required="required"
+        placeholder="SSID"
+      />
+      <label for="pwd">Enter SSID Password <small>(*Min 8 chars)</small></label>
+      <input
+        type="text"
+        id="pwd"
+        name="pwd"
+        required="required"
+        pattern="^.{8,}$"
+        placeholder="Password"
+      />
+      <label for="pwd">Timeout*</label>
+      <div>
+        <input
+          type="range"
+          name="timeout"
+          id="timeout"
+          min="3000"
+          max="30000"
+          value="3000"
+          step="1000"
+          oninput="this.form.timeoutValue.value=(this.value+'ms')"
+          style="width: 210px"
+        />
+        <input
+          type="text"
+          name="timeoutValue"
+          maxlength="5"
+          readonly=""
+          value="3000ms"
+          style="display: inline-block; width: 70px"
+        />
+      </div>
+      <input type="submit" value="Generate wifi.json file" />
+      <p>
+        <strong>* Note:</strong> Modifying the WiFi Timeout is recommended only
+        if you encounter Wi-Fi connection problems. Leave as is if you don't
+        experience connectivity issues.
+      </p>
+    </form>
+
+    <a id="downloadLink"></a>
+
+    <script>
+      document
+        .getElementById("ssidPwdForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const ssid = document.getElementById("ssid").value;
+          const pwd = document.getElementById("pwd").value;
+          const timeout = parseInt(
+            document.getElementById("timeout").value,
+            10
+          );
+
+          const jsonData = {
+            ssid,
+            pwd,
+            timeout,
+          };
+
+          const jsonString = JSON.stringify(jsonData, null, 2);
+
+          const blob = new Blob([jsonString], { type: "application/json" });
+
+          const downloadLink = document.getElementById("downloadLink");
+          downloadLink.href = URL.createObjectURL(blob);
+          downloadLink.download = "wifi.json";
+          downloadLink.style.display = "hidden";
+          downloadLink.click();
+        });
+    </script>
+  </body>
+</html>
