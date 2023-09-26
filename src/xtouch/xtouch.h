@@ -126,9 +126,16 @@ void xtouch_device_get_version()
 
 void xtouch_device_pushall()
 {
-    String command = "{\"pushing\":{\"sequence_id\":\"$seq\",\"command\":\"pushall\"},\"user_id\":\"123456789\"}";
-    command.replace("$seq", xtouch_device_next_sequence());
-    xtouch_device_publish(command);
+    DynamicJsonDocument json(256);
+    json["pushing"]["command"] = "pushall";
+    json["pushing"]["version"] = 1;
+    json["pushing"]["push_target"] = 1;
+    json["pushing"]["sequence_id"] = xtouch_device_next_sequence();
+    json["user_id"] = "123456789";
+
+    String result;
+    serializeJson(json, result);
+    xtouch_device_publish(result);
 }
 
 void xtouch_device_set_printing_speed(int lvl)
@@ -146,17 +153,19 @@ void xtouch_device_set_printing_speed(int lvl)
 void xtouch_device_gcode_line(String line)
 {
 
-    String gcode = "{\"print\":{\"sequence_id\":\"$sequence_id\",\"command\":\"gcode_line\",\"param\":\"$gcode\"},\"user_id\":\"1234567890\"}";
-    gcode.replace("$sequence_id", xtouch_device_next_sequence());
-    gcode.replace("$gcode", line);
-    xtouch_device_publish(gcode);
+    DynamicJsonDocument json(256);
+    json["print"]["command"] = "gcode_line";
+    json["print"]["sequence_id"] = xtouch_device_next_sequence();
+    json["print"]["param"] = line;
+    json["user_id"] = "123456789";
+
+    String result;
+    serializeJson(json, result);
+    xtouch_device_publish(result);
 }
 
 void xtouch_device_move_axis(String axis, double value, int speed)
 {
-    String deviceTopic = String("device/") + xTouchConfig.xTouchSerialNumber;
-    String requestTopic = deviceTopic + String("/request");
-
     char cmd[256];
     sprintf(cmd, "M211 S \nM211 X1 Y1 Z1\nM1002 push_ref_mode\nG91 \nG1 %s%0.1f F%d\nM1002 pop_ref_mode\nM211 R\n", axis.c_str(), value, speed);
     xtouch_device_gcode_line(String(cmd));
@@ -164,15 +173,21 @@ void xtouch_device_move_axis(String axis, double value, int speed)
 
 void xtouch_device_onLightToggleCommand(lv_msg_t *m)
 {
-    String deviceTopic = String("device/") + xTouchConfig.xTouchSerialNumber;
-    String requestTopic = deviceTopic + String("/request");
-    String on;
-    String off;
-    on = "{\"system\":{\"sequence_id\":\"$sequence_id\",\"command\":\"ledctrl\",\"led_node\":\"chamber_light\",\"led_mode\":\"on\",\"led_on_time\": 500,\"led_off_time\": 500,\"loop_times\": 0,\"interval_time\":0},\"user_id\":\"123456789\"}";
-    on.replace("$sequence_id", xtouch_device_next_sequence());
-    off = "{\"system\":{\"sequence_id\":\"$sequence_id\",\"command\":\"ledctrl\",\"led_node\":\"chamber_light\",\"led_mode\":\"off\",\"led_on_time\": 500,\"led_off_time\": 500,\"loop_times\": 0,\"interval_time\":0},\"user_id\":\"123456789\"}";
-    off.replace("$sequence_id", xtouch_device_next_sequence());
-    xtouch_pubSubClient.publish(requestTopic.c_str(), bambuStatus.led ? off.c_str() : on.c_str());
+
+    DynamicJsonDocument json(256);
+    json["system"]["command"] = "ledctrl";
+    json["system"]["led_node"] = "chamber_light";
+    json["system"]["sequence_id"] = xtouch_device_next_sequence();
+    json["system"]["led_mode"] = bambuStatus.led ? "off" : "on";
+    json["system"]["led_on_time"] = 500;
+    json["system"]["led_off_time"] = 500;
+    json["system"]["loop_times"] = 0;
+    json["system"]["interval_time"] = 0;
+    json["user_id"] = "123456789";
+
+    String result;
+    serializeJson(json, result);
+    xtouch_device_publish(result);
     delay(10);
 }
 
@@ -291,7 +306,6 @@ void xtouch_device_onLoadFilament(lv_msg_t *m)
 {
     if (xtouch_can_load_filament())
     {
-        // xtouch_device_gcode_line("M620 S2\nM104 S250\nG28 X\nG91\nG1 Z3.0 F1200\nG90\n\nG1 X70 F12000\nG1 Y245\nG1 Y265 F3000\nM109 S250\nG1 X120 F12000\n\nG1 X20 Y50 F12000\nG1 Y-3\n\nT2\n\nG1 X54  F12000\nG1 Y265\nM400\nM106 P1 S0\nG92 E0\nG1 E40 F200\nM400\nM109 S210\nM400\nM106 P1 S255\nG92 E0\nG1 E5 F300\nM400\nM106 P1 S0\nG1 X70  F9000\nG1 X76 F15000\nG1 X65 F15000\nG1 X76 F15000\nG1 X65 F15000\n\nG1 X70 F6000\nG1 X100 F5000\nG1 X70 F15000\nG1 X100 F5000\nG1 X70 F15000\nG1 X165 F5000\nG1 Y245\n\nG91\nG1 Z-3.0 F1200\nG90\nM621 S2\n");
         xtouch_device_gcode_line("M620 S255\nM104 S250\nG28 X\nG91\nG1 Z3.0 F1200\nG90\n\nG1 X70 F12000\nG1 Y245\nG1 Y265 F3000\nM109 S250\nG1 X120 F12000\n\nG1 X20 Y50 F12000\nG1 Y-3\n\nT2\n\nG1 X54  F12000\nG1 Y265\nM400\nM106 P1 S0\nG92 E0\nG1 E40 F200\nM400\nM109 S210\nM400\nM106 P1 S255\nG92 E0\nG1 E5 F300\nM400\nM106 P1 S0\nG1 X70 F9000\nG1 X76 F15000\nG1 X65 F15000\nG1 X76 F15000\nG1 X65 F15000\n\nG1 X70 F6000\nG1 X100 F5000\nG1 X70 F15000\nG1 X100 F5000\nG1 X70 F15000\nG1 X165 F5000\nG1 Y245\n\nG91\nG1 Z-3.0 F1200\nG90\nM621 S255\nM104 S0\n");
     }
 }
