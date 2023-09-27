@@ -516,7 +516,8 @@ void xtouch_mqtt_connect()
                     ESP.restart();
                 }
                 break;
-            case -3: // MQTT_CONNECTION_LOSTlock
+            case -3: // MQTT_CONNECTION_LOST
+            case -2: // MQTT_CONNECT_FAILED
             case -1: // MQTT_DISCONNECTED
                 lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT ERROR");
                 lv_timer_handler();
@@ -527,12 +528,11 @@ void xtouch_mqtt_connect()
                 lv_task_handler();
                 ESP.restart();
                 break;
-            case -2: // MQTT_CONNECT_FAILED
-            case 1:  // MQTT BAD_PROTOCOL
-            case 2:  // MQTT BAD_CLIENT_ID
-            case 3:  // MQTT UNAVAILABLE
-            case 4:  // MQTT BAD_CREDENTIALS
-            case 5:  // MQTT UNAUTHORIZED
+            case 1: // MQTT BAD_PROTOCOL
+            case 2: // MQTT BAD_CLIENT_ID
+            case 3: // MQTT UNAVAILABLE
+            case 4: // MQTT BAD_CREDENTIALS
+            case 5: // MQTT UNAUTHORIZED
                 lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT ERROR");
                 lv_timer_handler();
                 lv_task_handler();
