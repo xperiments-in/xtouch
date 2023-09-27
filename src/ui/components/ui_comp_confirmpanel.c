@@ -75,7 +75,7 @@ lv_obj_t *ui_confirmPanel_create(lv_obj_t *comp_parent)
 
     lv_obj_t *cui_confirmPanelCaption;
     cui_confirmPanelCaption = lv_label_create(cui_confirmPanelContainer);
-    lv_obj_set_width(cui_confirmPanelCaption, LV_SIZE_CONTENT);  /// 1
+    lv_obj_set_width(cui_confirmPanelCaption, lv_pct(100));      /// 1
     lv_obj_set_height(cui_confirmPanelCaption, LV_SIZE_CONTENT); /// 1
     lv_label_set_text(cui_confirmPanelCaption, "Are you sure?");
     lv_obj_clear_flag(cui_confirmPanelCaption, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags

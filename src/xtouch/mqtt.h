@@ -384,8 +384,29 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
                     // Convertir el valor hexadecimal a unsigned long long utilizando strtoull()
                     unsigned long long intValue = strtoull(buffer, &endPtr, 16);
 
-                    hms_enqueue(intValue);
+                    if (isKeyPresent(buffer, hms_error_values))
+                    {
+                        hms_enqueue(intValue);
 
+                        sendMsg(XTOUCH_ON_HMS_ERROR, 0);
+                    }
+                }
+            }
+        }
+
+        if (incomingJson["print"].containsKey("print_error"))
+        {
+            if (incomingJson["print"]["print_error"].is<int>())
+            {
+                Serial.println(F("[XTouch][MQTT] Print Error"));
+                Serial.println(incomingJson["print"]["print_error"].as<int>());
+                bambuStatus.print_error = incomingJson["print"]["print_error"].as<int>();
+                char prefix_str[9];
+                sprintf(prefix_str, "%08X", bambuStatus.print_error);
+
+                if (isKeyPresent(prefix_str, device_error_values))
+                {
+                    hms_enqueue(incomingJson["print"]["print_error"].as<unsigned long long>());
                     sendMsg(XTOUCH_ON_HMS_ERROR, 0);
                 }
             }
@@ -471,6 +492,8 @@ void xtouch_mqtt_onMqttReady()
     {
         loadScreen(0);
         xtouch_screen_startScreenTimer();
+        hms_enqueue(134184967);
+        sendMsg(XTOUCH_ON_HMS_ERROR, 0);
     }
     xtouch_mqtt_firstConnectionDone = true;
 }

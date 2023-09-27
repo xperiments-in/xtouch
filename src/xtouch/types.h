@@ -73,6 +73,8 @@ extern "C"
         int mc_print_percent;
         int printing_speed_lvl;
         int printing_speed_mag;
+        int stage_current;
+        int print_error;
         /* AMS RELATED*/
         int hw_switch_state;
 

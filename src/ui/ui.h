@@ -1,6 +1,7 @@
 #ifndef _V3CONTROLCOMP_UI_H
 #define _V3CONTROLCOMP_UI_H
 #include <Arduino.h>
+#include "xtouch/hms-errors.h"
 
 #ifdef __cplusplus
 extern "C"
