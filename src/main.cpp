@@ -24,6 +24,7 @@
 #include "xtouch/sensors/chamber.h"
 #include "xtouch/events.h"
 #include "xtouch/connection.h"
+#include "xtouch/coldboot.h"
 
 void xtouch_intro_show(void)
 {
@@ -43,9 +44,10 @@ void setup()
   xtouch_globals_init();
   xtouch_screen_setup();
   xtouch_intro_show();
-
   while (!xtouch_sdcard_setup())
     ;
+
+  xtouch_coldboot_check();
 
   xtouch_settings_loadSettings();
 

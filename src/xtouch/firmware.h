@@ -180,7 +180,10 @@ void xtouch_firmware_checkFirmwareUpdate(void)
         File firmware = xtouch_filesystem_open(SD, xtouch_paths_firmware_ota_fw);
         Update.onProgress(xtouch_firmware_onProgress);
         Update.begin(firmware.size(), U_FLASH);
-        Update.setMD5(doc["md5"]);
+        if (doc.containsKey("md5"))
+        {
+            Update.setMD5(doc["md5"]);
+        }
         Update.writeStream(firmware);
         bool updateSucceeded = Update.end();
         firmware.close();

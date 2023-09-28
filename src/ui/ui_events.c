@@ -102,6 +102,12 @@ void onSettingsClearAccesCodeCache(lv_event_t *e)
     ui_confirmPanel_show(LV_SYMBOL_WARNING " Clear Access Code Cache", onSettingsClearAccesCodeCacheConfirm);
 }
 
+void onSettingsWOP(lv_event_t *e)
+{
+    xTouchConfig.xTouchWakeOnPrint = !xTouchConfig.xTouchWakeOnPrint;
+    lv_msg_send(XTOUCH_SETTINGS_SAVE, NULL);
+}
+
 void onSettingsAuxFan(lv_event_t *e)
 {
     xTouchConfig.xTouchAuxFanEnabled = !xTouchConfig.xTouchAuxFanEnabled;
