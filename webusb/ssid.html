@@ -23,7 +23,7 @@
       }
 
       form {
-        max-width: 300px;
+        max-width: 500px;
         margin: 0 auto;
         padding: 20px;
         background-color: white;
@@ -75,7 +75,7 @@
     </style>
   </head>
   <body>
-    <div style="width: 300px; display: inline-block">
+    <form id="ssidPwdForm">
       <h1>P1Touch</h1>
       <h2>wifi.json easy setup</h2>
       <p>
@@ -84,9 +84,6 @@
         essential for your P1Touch Screen to connect to your WiFi network during
         installation.
       </p>
-    </div>
-
-    <form id="ssidPwdForm">
       <label for="ssid">Enter SSID</label>
       <input
         type="text"
@@ -115,7 +112,7 @@
           value="3000"
           step="1000"
           oninput="this.form.timeoutValue.value=(this.value+'ms')"
-          style="width: 210px"
+          style="width: 410px"
         />
         <input
           type="text"
@@ -126,12 +123,42 @@
           style="display: inline-block; width: 70px"
         />
       </div>
-      <input type="submit" value="Generate wifi.json file" />
       <p>
         <strong>* Note:</strong> Modifying the WiFi Timeout is recommended only
         if you encounter Wi-Fi connection problems. Leave as is if you don't
         experience connectivity issues.
       </p>
+      <label for="pwd">ColdBoot*</label>
+      <div>
+        <input
+          type="range"
+          name="coldboot"
+          id="coldboot"
+          min="5000"
+          max="30000"
+          value="5000"
+          step="1000"
+          oninput="this.form.coldbootValue.value=(this.value+'ms')"
+          style="width: 410px"
+        />
+        <input
+          type="text"
+          name="coldbootValue"
+          maxlength="5"
+          readonly=""
+          value="5000ms"
+          style="display: inline-block; width: 70px"
+        />
+      </div>
+      <p>
+        <strong>* Note:</strong> Adjusting the "colboot" value is recommended
+        specifically in situations where you encounter issues during the printer
+        power-on process, leading to a reboot of the p1touch screen because the
+        printer is not ready. The "colboot" value allows you to define the
+        number of seconds the system should wait for initialization to complete
+        after a cold boot.
+      </p>
+      <input type="submit" value="Generate wifi.json file" />
     </form>
 
     <a id="downloadLink"></a>
@@ -148,11 +175,16 @@
             document.getElementById("timeout").value,
             10
           );
+          const coldboot = parseInt(
+            document.getElementById("coldboot").value,
+            10
+          );
 
           const jsonData = {
             ssid,
             pwd,
-            timeout,
+            ...(timeout > 3000 ? { timeout } : {}),
+            ...(coldboot > 5000 ? { coldboot } : {}),
           };
 
           const jsonString = JSON.stringify(jsonData, null, 2);
