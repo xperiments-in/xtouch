@@ -157,6 +157,7 @@ def post_build_action(source, target, env):
     post_build_merge_bin(version_value)
 
     post_build_increment_semver("version.json", bump_type="patch")
+    print(f"XTOUCH POSTBUILD")
 
 
 env.AddPostAction("buildprog", post_build_action)

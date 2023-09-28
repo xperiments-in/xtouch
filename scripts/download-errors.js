@@ -119,12 +119,12 @@ extern "C"
 #endif`
             ].join('\n\n');
             fs.writeFileSync(hmsDataFileH, outputH);
-
+            console.log('[xtouch error downloader] Done!!');
         });
     } else {
-        console.error('Error al descargar el archivo. Código de estado:', response.statusCode);
+        console.error('[xtouch error downloader] Error al descargar el archivo. Código de estado:', response.statusCode);
     }
 }).on('error', (error) => {
-    console.error('Error al realizar la solicitud:', error);
+    console.error('[xtouch error downloader] Error al realizar la solicitud:', error);
 });
 
