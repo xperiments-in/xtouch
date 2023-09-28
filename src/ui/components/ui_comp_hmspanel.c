@@ -80,8 +80,7 @@ void ui_hmsPanelComponent_onXTouchHMSError(lv_event_t *e)
 
                 switch (reversed_msg_level)
                 {
-                case HMS_FATAL:
-                case HMS_SERIOUS:
+                case HMS_INFO:
                     if (ui_hmsPanel_xtouch_errors_getHMSError(ui_hmsPanel_currentError) != "")
                     {
                         ui_hmsPanel_show(ui_hmsPanel_xtouch_errors_getHMSError(ui_hmsPanel_currentError), false, false);
