@@ -19,6 +19,12 @@ bool xtouch_wifi_setup()
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     ConsoleInfo.println(F("[XTOUCH][CONNECTION] Connecting to WiFi .."));
+
+    lv_label_set_text(introScreenCaption, LV_SYMBOL_WIFI " Connecting");
+    lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0x555555), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_timer_handler();
+    lv_task_handler();
+
     delay(timeout);
     wl_status_t status = WiFi.status();
     const char *statusText = "";
