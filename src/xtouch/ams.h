@@ -1,98 +1,23 @@
 #ifndef _XLCD_AMS
 #define _XLCD_AMS
 
-#include <ArduinoJson.h>
-#include "types.h"
-
-void xtouch_ams_parse_tray_now(String tray_now)
+#ifdef __cplusplus
+extern "C"
 {
+#endif
 
-    // strcpy(bambuStatus.m_tray_now, tray_now.c_str());
+#include <Arduino.h>
+#include "xtouch/bbl/bbl-errors.h"
+#include <pgmspace.h>
+    // Function to retrieve a value by key
+    extern void xtouch_ams_parse_tray_now(const char *tray_now);
+    extern void xtouch_ams_parse_status(int ams_status);
+    extern bool xtouch_has_ams();
+    extern bool xtouch_can_load_filament();
+    extern bool xtouch_can_unload_filament();
 
-    if (tray_now == "")
-    {
-        return;
-    }
-    else
-    {
-        int tray_now_int = atoi(tray_now.c_str());
-        if (tray_now_int >= 0 && tray_now_int < 16)
-        {
-            bambuStatus.m_ams_id = tray_now_int >> 2;
-            bambuStatus.m_tray_id = tray_now_int & 0x3;
-        }
-        else if (tray_now_int == 255)
-        {
-            bambuStatus.m_ams_id = 0;
-            bambuStatus.m_tray_id = 0;
-        }
-    }
+#ifdef __cplusplus
 }
-
-void xtouch_ams_parse_status(int ams_status)
-{
-    bambuStatus.ams_status_sub = ams_status & 0xFF;
-    int ams_status_main_int = (ams_status & 0xFF00) >> 8;
-    if (ams_status_main_int == AMS_STATUS_MAIN_IDLE)
-    {
-        bambuStatus.ams_status_main = AMS_STATUS_MAIN_IDLE;
-    }
-    else if (ams_status_main_int == AMS_STATUS_MAIN_FILAMENT_CHANGE)
-    {
-        bambuStatus.ams_status_main = AMS_STATUS_MAIN_FILAMENT_CHANGE;
-    }
-    else if (ams_status_main_int == AMS_STATUS_MAIN_RFID_IDENTIFYING)
-    {
-        bambuStatus.ams_status_main = AMS_STATUS_MAIN_RFID_IDENTIFYING;
-    }
-    else if (ams_status_main_int == AMS_STATUS_MAIN_ASSIST)
-    {
-        bambuStatus.ams_status_main = AMS_STATUS_MAIN_ASSIST;
-    }
-    else if (ams_status_main_int == AMS_STATUS_MAIN_CALIBRATION)
-    {
-        bambuStatus.ams_status_main = AMS_STATUS_MAIN_CALIBRATION;
-    }
-    else if (ams_status_main_int == AMS_STATUS_MAIN_SELF_CHECK)
-    {
-        bambuStatus.ams_status_main = AMS_STATUS_MAIN_SELF_CHECK;
-    }
-    else if (ams_status_main_int == AMS_STATUS_MAIN_DEBUG)
-    {
-        bambuStatus.ams_status_main = AMS_STATUS_MAIN_DEBUG;
-    }
-    else
-    {
-        bambuStatus.ams_status_main = AMS_STATUS_MAIN_UNKNOWN;
-    }
-}
-
-bool xtouch_has_ams() { return bambuStatus.ams_exist_bits != 0; }
-
-bool xtouch_can_load_filament()
-{
-    bool result = false;
-    if (!xtouch_has_ams())
-        return true;
-
-    if (bambuStatus.ams_status_main == AMS_STATUS_MAIN_IDLE && bambuStatus.hw_switch_state == 1 && bambuStatus.m_tray_now == 255)
-    {
-        return true;
-    }
-    return result;
-}
-
-bool xtouch_can_unload_filament()
-{
-    bool result = false;
-    if (!xtouch_has_ams())
-        return true;
-
-    if (bambuStatus.ams_status_main == AMS_STATUS_MAIN_IDLE && bambuStatus.hw_switch_state == 1 && bambuStatus.m_tray_now == 255)
-    {
-        return true;
-    }
-    return result;
-}
+#endif
 
 #endif

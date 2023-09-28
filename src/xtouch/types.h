@@ -50,35 +50,49 @@ extern "C"
 
     typedef struct BambuMQTTPayload
     {
-        double bed_target_temper;
-        double bed_temper;
-        int cooling_fan_speed; // PART
-        int big_fan1_speed;    // AUX
-        int big_fan2_speed;    //
-        double chamber_temper;
-        char command[32];
+        char print_type[32];
+        int home_flag;
+        int hw_switch_state;
+        int mc_left_time;
+        int mc_print_percent;
+        int mc_print_sub_stage;
+        int mc_print_stage;
+        int mc_print_error_code;
+        int mc_print_line_number;
+        int print_error;
         char printer_type[32];
-        double nozzle_target_temper;
+        char subtask_name[32];
+        int current_layer;
+        int total_layers;
+        int print_status;
+        int queue_number;
+        int gcode_file_prepare_percent;
+        char obj_subtask_id[32];
+        char project_id_[32];
+        char profile_id_[32];
+        char subtask_id_[32];
+        char gcode_file[128];
+        int plate_index;
+        char task_id[32];
+        double bed_temper;
+        double bed_target_temper;
+        double frame_temp;
         double nozzle_temper;
-        bool led;
-        bool ams;
+        double nozzle_target_temper;
+        double chamber_temper;
         int wifi_signal;
+        int cooling_fan_speed;
+        int big_fan1_speed;
+        int big_fan2_speed;
+        int printing_speed_lvl;
+        int printing_speed_mag;
+        bool chamberLed;
+        float nozzle_diameter;
         bool camera_recording_when_printing;
         bool camera_timelapse;
         bool has_ipcam;
-        int print_status;
-        int total_layers;
-        int current_layer;
-        int mc_left_time;
-        int mc_print_percent;
-        int printing_speed_lvl;
-        int printing_speed_mag;
-        int stage_current;
-        int print_error;
-        /* AMS RELATED*/
-        int hw_switch_state;
-
         long int ams_exist_bits;
+        bool ams;
         int ams_status_sub;
         int ams_status_main;
         long int ams_version;
@@ -94,7 +108,6 @@ extern "C"
         long tray_is_bbl_bits;
         long tray_read_done_bits;
         long tray_reading_bits;
-
         int m_ams_id;   // local ams  : "0" ~ "3"
         int m_tray_id;  // local tray id : "0" ~ "3"
         int m_tray_now; // tray_now : "0" ~ "15" or "254", "255"
@@ -180,6 +193,12 @@ extern "C"
         int msg_level;
         int msg_code;
     } HMSItem;
+
+    typedef struct
+    {
+        char subtask_id[32];
+        int print_error;
+    } ClearErrorMessage;
 
 #ifdef __cplusplus
 } /*extern "C"*/

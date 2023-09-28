@@ -1,69 +1,12 @@
-#ifndef _XLCD_XTOUCH
-#define _XLCD_XTOUCH
+#ifndef _XLCD_DEVICE
+#define _XLCD_DEVICE
 
 #include <Arduino.h>
 
-#define XTOUCH_CONTROL_MOVE_SPEED_XY 3000
-#define XTOUCH_CONTROL_MOVE_SPEED_Z 1500
-#define XTOUCH_COMMAND_TIME_OUT 3
+#define XTOUCH_DEVICE_CONTROL_MOVE_SPEED_XY 3000
+#define XTOUCH_DEVICE_CONTROL_MOVE_SPEED_Z 1500
 
-String xtouch_device_topic;
-String xtouch_device_request_topic;
 uint32_t xtouch_device_sequence_id = 0;
-
-String get_stage_string(int stage)
-{
-    switch (stage)
-    {
-    case 0:
-        // return _L("Printing");
-        return F("Printing");
-    case 1:
-        return F("Auto bed leveling");
-    case 2:
-        return F("Heatbed preheating");
-    case 3:
-        return F("Sweeping XY mech mode");
-    case 4:
-        return F("Changing filament");
-    case 5:
-        return F("M400 pause");
-    case 6:
-        return F("Paused due to filament runout");
-    case 7:
-        return F("Heating hotend");
-    case 8:
-        return F("Calibrating extrusion");
-    case 9:
-        return F("Scanning bed surface");
-    case 10:
-        return F("Inspecting first layer");
-    case 11:
-        return F("Identifying build plate type");
-    case 12:
-        return F("Calibrating Micro Lidar");
-    case 13:
-        return F("Homing toolhead");
-    case 14:
-        return F("Cleaning nozzle tip");
-    case 15:
-        return F("Checking extruder temperature");
-    case 16:
-        return F("Printing was paused by the user");
-    case 17:
-        return F("Pause of front cover falling");
-    case 18:
-        return F("Calibrating the micro lida");
-    case 19:
-        return F("Calibrating extrusion flow");
-    case 20:
-        return F("Paused due to nozzle temperature malfunction");
-    case 21:
-        return F("Paused due to heat bed temperature malfunction");
-    default:;
-    }
-    return "";
-}
 
 String xtouch_device_next_sequence()
 {
@@ -82,12 +25,6 @@ String xtouch_device_print_action(char const *action)
     String result;
     serializeJson(json, result);
     return result;
-}
-
-void xtouch_mqtt_topic_setup()
-{
-    xtouch_device_topic = String("device/") + xTouchConfig.xTouchSerialNumber;
-    xtouch_device_request_topic = xtouch_device_topic + String("/request");
 }
 
 void xtouch_device_set_print_state(String state)
@@ -110,7 +47,7 @@ void xtouch_device_set_print_state(String state)
 
 void xtouch_device_publish(String request)
 {
-    xtouch_pubSubClient.publish(xtouch_device_request_topic.c_str(), request.c_str());
+    xtouch_pubSubClient.publish(xtouch_mqtt_request_topic.c_str(), request.c_str());
     delay(10);
 }
 
@@ -152,11 +89,10 @@ void xtouch_device_set_printing_speed(int lvl)
 
 void xtouch_device_gcode_line(String line)
 {
-
-    DynamicJsonDocument json(256);
+    DynamicJsonDocument json(line.length() + 256);
     json["print"]["command"] = "gcode_line";
     json["print"]["sequence_id"] = xtouch_device_next_sequence();
-    json["print"]["param"] = line;
+    json["print"]["param"] = line.c_str();
     json["user_id"] = "123456789";
 
     String result;
@@ -178,7 +114,7 @@ void xtouch_device_onLightToggleCommand(lv_msg_t *m)
     json["system"]["command"] = "ledctrl";
     json["system"]["led_node"] = "chamber_light";
     json["system"]["sequence_id"] = xtouch_device_next_sequence();
-    json["system"]["led_mode"] = bambuStatus.led ? "off" : "on";
+    json["system"]["led_mode"] = bambuStatus.chamberLed ? "off" : "on";
     json["system"]["led_on_time"] = 500;
     json["system"]["led_off_time"] = 500;
     json["system"]["loop_times"] = 0;
@@ -198,26 +134,26 @@ void xtouch_device_onHomeCommand(lv_msg_t *m)
 
 void xtouch_device_onLeftCommand(lv_msg_t *m)
 {
-    xtouch_device_move_axis("X", controlMode.inc == 10 ? -10 : -1, XTOUCH_CONTROL_MOVE_SPEED_XY);
+    xtouch_device_move_axis("X", controlMode.inc == 10 ? -10 : -1, XTOUCH_DEVICE_CONTROL_MOVE_SPEED_XY);
 }
 
 void xtouch_device_onRightCommand(lv_msg_t *m)
 {
-    xtouch_device_move_axis("X", controlMode.inc == 10 ? 10 : 1, XTOUCH_CONTROL_MOVE_SPEED_XY);
+    xtouch_device_move_axis("X", controlMode.inc == 10 ? 10 : 1, XTOUCH_DEVICE_CONTROL_MOVE_SPEED_XY);
 }
 
 void xtouch_device_onUpCommand(lv_msg_t *m)
 {
     String axis = controlMode.axis == ControlAxisXY ? "Y" : "Z";
     int multiplier = axis == "Y" ? 1 : -1;
-    xtouch_device_move_axis(axis, controlMode.inc == 10 ? 10 * multiplier : 1 * multiplier, axis == "Y" ? XTOUCH_CONTROL_MOVE_SPEED_XY : XTOUCH_CONTROL_MOVE_SPEED_Z);
+    xtouch_device_move_axis(axis, controlMode.inc == 10 ? 10 * multiplier : 1 * multiplier, axis == "Y" ? XTOUCH_DEVICE_CONTROL_MOVE_SPEED_XY : XTOUCH_DEVICE_CONTROL_MOVE_SPEED_Z);
 }
 
 void xtouch_device_onDownCommand(lv_msg_t *m)
 {
     String axis = controlMode.axis == ControlAxisXY ? "Y" : "Z";
     int multiplier = axis == "Y" ? -1 : 1;
-    xtouch_device_move_axis(axis, controlMode.inc == 10 ? 10 * multiplier : 1 * multiplier, axis == "Y" ? XTOUCH_CONTROL_MOVE_SPEED_XY : XTOUCH_CONTROL_MOVE_SPEED_Z);
+    xtouch_device_move_axis(axis, controlMode.inc == 10 ? 10 * multiplier : 1 * multiplier, axis == "Y" ? XTOUCH_DEVICE_CONTROL_MOVE_SPEED_XY : XTOUCH_DEVICE_CONTROL_MOVE_SPEED_Z);
 }
 
 void xtouch_device_onBedTargetTempCommand(lv_msg_t *m)
@@ -306,7 +242,7 @@ void xtouch_device_onLoadFilament(lv_msg_t *m)
 {
     if (xtouch_can_load_filament())
     {
-        xtouch_device_gcode_line("M620 S254\nM106 S255\nM104 S250\nM17 S\nM17 X0.5 Y0.5\nG91\nG1 Y-5 F1200\nG1 Z3\nG90\nG28 X\nM17 R\nG1 X70 F21000\nG1 Y245\nG1 Y265 F3000\nG4\nM106 S0\nM109 S250\nG1 X90\nG1 Y255\nG1 X120\nG1 X20 Y50 F21000\nG1 Y-3\nT254\nG1 X54\nG1 Y265\nG92 E0\nG1 E40 F180\nG4\nM104 S260\nG1 X70 F15000\nG1 X76\nG1 X65\nG1 X76\nG1 X65\nG1 X90 F3000\nG1 Y255\nG1 X100\nG1 Y265\nG1 X70 F10000\nG1 X100 F5000\nG1 X70 F10000\nG1 X100 F5000\nG1 X165 F12000\nG1 Y245\nG1 X70\nG1 Y265 F3000\nG91\nG1 Z-3 F1200\nG90\nM621 S254\n");
+        xtouch_device_gcode_line("M620 S254\nM106 S255\nM104 S250\nM17 S\nM17 X0.5 Y0.5\nG91\nG1 Y-5 F1200\nG1 Z3\nG90\nG28 X\nM17 R\nG1 X70 F21000\nG1 Y245\nG1 Y265 F3000\nG4\nM106 S0\nM109 S250\nG1 X90\nG1 Y255\nG1 X120\nG1 X20 Y50 F21000\nG1 Y-3\nT254\nG1 X54\nG1 Y265\nG92 E0\nG1 E40 F180\nG4\nM104 S260\nG1 X70 F15000\nG1 X76\nG1 X65\nG1 X76\nG1 X65\nG1 X90 F3000\nG1 Y255\nG1 X100\nG1 Y265\nG1 X70 F10000\nG1 X100 F5000\nG1 X70 F10000\nG1 X100 F5000\nG1 X165 F12000\nG1 Y245\nG1 X70\nG1 Y265 F3000\nG91\nG1 Z-3 F1200\nG90\nM621 S254\n\n");
     }
 }
 
@@ -314,7 +250,41 @@ void xtouch_device_onUnloadFilament(lv_msg_t *m)
 {
     if (xtouch_can_unload_filament())
     {
-        xtouch_device_gcode_line("M620 S255\nM106 P1 S255\nM104 S250\nM17 S\nM17 X0.5 Y0.5\nG91\nG1 Y-5 F3000\nG1 Z3 F1200\nG90\nG28 X\nM17 R\nG1 X70 F21000\nG1 Y245\nG1 Y265 F3000\nG4\nM106 P1 S0\nM109 S250\nG1 X90 F3000\nG1 Y255 F4000\nG1 X100 F5000\nG1 X120 F21000\nG1 X20 Y50\nG1 Y-3\nT255\nG4\nM104 S0\nG1 X70 F3000\nG91\nG1 Z-3 F1200\nG90\nM621 S255\n");
+        xtouch_device_gcode_line("M620 S255\nM106 P1 S255\nM104 S250\nM17 S\nM17 X0.5 Y0.5\nG91\nG1 Y-5 F3000\nG1 Z3 F1200\nG90\nG28 X\nM17 R\nG1 X70 F21000\nG1 Y245\nG1 Y265 F3000\nG4\nM106 P1 S0\nM109 S250\nG1 X90 F3000\nG1 Y255 F4000\nG1 X100 F5000\nG1 X120 F21000\nG1 X20 Y50\nG1 Y-3\nT255\nG4\nM104 S0\nG1 X70 F3000\n\nG91\nG1 Z-3 F1200\nG90\nM621 S255\n\n");
+    }
+}
+
+void xtouch_device_command_ams_control(void *s, lv_msg_t *m)
+{
+    const char *action = (const char *)m->payload;
+
+    if (action == "resume" || action == "reset" || action == "pause" || action == "done")
+    {
+        DynamicJsonDocument json(256);
+        json["print"]["command"] = "ams_control";
+        json["print"]["sequence_id"] = xtouch_device_next_sequence();
+        json["print"]["param"] = action;
+        String result;
+        serializeJson(json, result);
+        xtouch_device_publish(result);
+    }
+}
+
+void xtouch_device_command_clean_print_error(void *s, lv_msg_t *m)
+{
+
+    if (m->payload != NULL)
+    {
+        const ClearErrorMessage *message = static_cast<const ClearErrorMessage *>(m->payload);
+
+        DynamicJsonDocument json(256);
+        json["print"]["command"] = "clean_print_error";
+        json["print"]["sequence_id"] = xtouch_device_next_sequence();
+        json["print"]["subtask_id"] = message->subtask_id;
+        json["print"]["print_error"] = message->print_error;
+        String result;
+        serializeJson(json, result);
+        xtouch_device_publish(result);
     }
 }
 

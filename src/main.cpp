@@ -39,9 +39,6 @@ void setup()
   Serial.begin(115200);
 #endif
 
-  Serial.println("getValueByKey");
-  Serial.println(getHMSError("0300010000010001"));
-  Serial.println(ui_hmsPanel_deviceHMSError(134184967));
   xtouch_eeprom_setup();
   xtouch_globals_init();
   xtouch_screen_setup();
