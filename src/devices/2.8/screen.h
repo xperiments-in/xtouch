@@ -57,6 +57,14 @@ void xtouch_screen_setBackLedOff()
     digitalWrite(17, HIGH); // The LEDs are "active low", meaning HIGH == off, LOW == on
 }
 
+void xtouch_screen_wakeUp()
+{
+    lv_timer_reset(xtouch_screen_onScreenOffTimer);
+    xtouch_screen_touchFromPowerOff = false;
+    loadScreen(0);
+    xtouch_screen_setBrightness(xTouchConfig.xTouchBacklightLevel);
+}
+
 void xtouch_screen_onScreenOff(lv_timer_t *timer)
 {
     if (bambuStatus.print_status == XTOUCH_PRINT_STATUS_RUNNING)
@@ -143,10 +151,7 @@ void xtouch_screen_touchRead(lv_indev_drv_t *indev_driver, lv_indev_data_t *data
         // dont pass first touch after power on
         if (xtouch_screen_touchFromPowerOff)
         {
-            xtouch_screen_touchFromPowerOff = false;
-
-            xtouch_screen_setBrightness(xTouchConfig.xTouchBacklightLevel);
-
+            xtouch_screen_wakeUp();
             while (x_touch_touchScreen.touched())
                 ;
             return;

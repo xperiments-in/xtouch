@@ -51,6 +51,7 @@ extern "C"
     void onSettingsChamberSensor(lv_event_t *e);
     void onSettingsTFTFlip(lv_event_t *e);
     void onSettingsOTA(lv_event_t *e);
+    void onSettingsWOP(lv_event_t *e);
 
     /* -----------Confirm-------------- */
     void onConfirmPanelNO(lv_event_t *e);

@@ -35,9 +35,6 @@ void fillScreenData(int screen)
     case 2:
         sendMqttMsg(XTOUCH_CONTROL_INC_SWITCH, controlMode.inc);
         break;
-    case 4:
-        lv_slider_set_value(ui_settingsBackLightPanelSlider, xTouchConfig.xTouchBacklightLevel, LV_ANIM_OFF);
-        break;
     }
 }
 void loadScreen(int screen)
