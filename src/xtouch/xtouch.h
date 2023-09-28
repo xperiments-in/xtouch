@@ -105,7 +105,10 @@ void xtouch_device_set_print_state(String state)
     else if (state == "FAILED")
         bambuStatus.print_status = XTOUCH_PRINT_STATUS_FAILED;
 
-    // bambuStatus.print_status = XTOUCH_PRINT_STATUS_RUNNING;
+    if (xTouchConfig.xTouchWakeOnPrint && state != "IDLE" && state != "FINISH" && state != "FAILED")
+    {
+        xtouch_screen_wakeUp();
+    }
 }
 
 void xtouch_device_publish(String request)

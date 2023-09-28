@@ -132,6 +132,7 @@ extern "C"
         char xTouchPrinterName[32];
         int xTouchBacklightLevel;
         int xTouchTFTOFFValue;
+        bool xTouchWakeOnPrint;
     } XTouchConfig;
 
     XTouchConfig xTouchConfig;
