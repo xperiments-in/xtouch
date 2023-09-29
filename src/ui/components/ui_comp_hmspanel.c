@@ -4,7 +4,16 @@
 
 unsigned long long ui_hmsPanel_currentError;
 
-void ui_hmsPanel_show(const char *title, bool hasDone, bool hasRetry)
+enum ButtonStyle
+{
+    ONLY_CONFIRM = 0,
+    CONFIRM_AND_CANCEL = 1,
+    CONFIRM_AND_FUNC = 2,
+    CONFIRM_AND_RETRY = 3,
+    MAX_STYLE_NUM = 4
+};
+
+void ui_hmsPanel_show(const char *title, bool hasDone, bool hasRetry, enum ButtonStyle style)
 {
     lv_obj_t *titleLabel = ui_comp_get_child(ui_hmsComponent, UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANELCAPTION);
     lv_obj_t *confirmButton = ui_comp_get_child(ui_hmsComponent, UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_CONFIRM_BUTTON);
@@ -212,35 +221,6 @@ lv_obj_t *ui_hmsPanel_create(lv_obj_t *comp_parent)
     lv_obj_set_style_pad_top(cui_hmsPanelCaption, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(cui_hmsPanelCaption, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_t *cui_hmsPanelConfirmButton;
-    cui_hmsPanelConfirmButton = lv_label_create(cui_hmsPanelContainer);
-    lv_obj_set_height(cui_hmsPanelConfirmButton, LV_SIZE_CONTENT); /// 1
-    lv_obj_set_flex_grow(cui_hmsPanelConfirmButton, 1);
-    lv_obj_set_flex_flow(cui_hmsPanelConfirmButton, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(cui_hmsPanelConfirmButton, LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_label_set_text(cui_hmsPanelConfirmButton, "q");
-    lv_obj_add_flag(cui_hmsPanelConfirmButton, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);                                                                                                                                                                      /// Flags
-    lv_obj_clear_flag(cui_hmsPanelConfirmButton, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
-    lv_obj_set_scrollbar_mode(cui_hmsPanelConfirmButton, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_set_style_text_font(cui_hmsPanelConfirmButton, &ui_font_xlcdmin, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(cui_hmsPanelConfirmButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(cui_hmsPanelConfirmButton, lv_color_hex(0x2AAA00), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(cui_hmsPanelConfirmButton, lv_color_hex(0x2A5500), LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_bg_opa(cui_hmsPanelConfirmButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(cui_hmsPanelConfirmButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(cui_hmsPanelConfirmButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(cui_hmsPanelConfirmButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(cui_hmsPanelConfirmButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    lv_obj_t *cui_hmsPanelConfirmButtonLabel;
-    cui_hmsPanelConfirmButtonLabel = lv_label_create(cui_hmsPanelConfirmButton);
-    lv_obj_set_width(cui_hmsPanelConfirmButtonLabel, LV_SIZE_CONTENT);  /// 1
-    lv_obj_set_height(cui_hmsPanelConfirmButtonLabel, LV_SIZE_CONTENT); /// 1
-    lv_label_set_text(cui_hmsPanelConfirmButtonLabel, "Confirm");
-    lv_obj_clear_flag(cui_hmsPanelConfirmButtonLabel, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
-    lv_obj_set_scrollbar_mode(cui_hmsPanelConfirmButtonLabel, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_set_style_text_font(cui_hmsPanelConfirmButtonLabel, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
-
     lv_obj_t *cui_hmsPanelRetryButton;
     cui_hmsPanelRetryButton = lv_label_create(cui_hmsPanelContainer);
     lv_obj_set_height(cui_hmsPanelRetryButton, LV_SIZE_CONTENT); /// 1
@@ -253,7 +233,6 @@ lv_obj_t *ui_hmsPanel_create(lv_obj_t *comp_parent)
     lv_obj_set_scrollbar_mode(cui_hmsPanelRetryButton, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_hmsPanelRetryButton, &ui_font_xlcdmin, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_radius(cui_hmsPanelRetryButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(cui_hmsPanelRetryButton, lv_color_hex(0x2AAA00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_hmsPanelRetryButton, lv_color_hex(0x2A5500), LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_set_style_bg_opa(cui_hmsPanelRetryButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_hmsPanelRetryButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -282,7 +261,6 @@ lv_obj_t *ui_hmsPanel_create(lv_obj_t *comp_parent)
     lv_obj_set_scrollbar_mode(cui_hmsPanelDoneButton, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_hmsPanelDoneButton, &ui_font_xlcdmin, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_radius(cui_hmsPanelDoneButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(cui_hmsPanelDoneButton, lv_color_hex(0x2AAA00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_hmsPanelDoneButton, lv_color_hex(0x2A5500), LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_set_style_bg_opa(cui_hmsPanelDoneButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_hmsPanelDoneButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -294,21 +272,49 @@ lv_obj_t *ui_hmsPanel_create(lv_obj_t *comp_parent)
     cui_hmsPanelDoneButtonLabel = lv_label_create(cui_hmsPanelDoneButton);
     lv_obj_set_width(cui_hmsPanelDoneButtonLabel, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(cui_hmsPanelDoneButtonLabel, LV_SIZE_CONTENT); /// 1
-    lv_label_set_text(cui_hmsPanelDoneButtonLabel, "done");
+    lv_label_set_text(cui_hmsPanelDoneButtonLabel, "Done");
     lv_obj_clear_flag(cui_hmsPanelDoneButtonLabel, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_scrollbar_mode(cui_hmsPanelDoneButtonLabel, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_hmsPanelDoneButtonLabel, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_t *cui_hmsPanelConfirmButton;
+    cui_hmsPanelConfirmButton = lv_label_create(cui_hmsPanelContainer);
+    lv_obj_set_height(cui_hmsPanelConfirmButton, LV_SIZE_CONTENT); /// 1
+    lv_obj_set_flex_grow(cui_hmsPanelConfirmButton, 1);
+    lv_obj_set_flex_flow(cui_hmsPanelConfirmButton, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(cui_hmsPanelConfirmButton, LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_label_set_text(cui_hmsPanelConfirmButton, "q");
+    lv_obj_add_flag(cui_hmsPanelConfirmButton, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_FLEX_IN_NEW_TRACK);                                                                                                                                                                      /// Flags
+    lv_obj_clear_flag(cui_hmsPanelConfirmButton, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
+    lv_obj_set_scrollbar_mode(cui_hmsPanelConfirmButton, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_set_style_text_font(cui_hmsPanelConfirmButton, &ui_font_xlcdmin, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(cui_hmsPanelConfirmButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(cui_hmsPanelConfirmButton, lv_color_hex(0x2A3300), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_opa(cui_hmsPanelConfirmButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(cui_hmsPanelConfirmButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(cui_hmsPanelConfirmButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(cui_hmsPanelConfirmButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(cui_hmsPanelConfirmButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_t *cui_hmsPanelConfirmButtonLabel;
+    cui_hmsPanelConfirmButtonLabel = lv_label_create(cui_hmsPanelConfirmButton);
+    lv_obj_set_width(cui_hmsPanelConfirmButtonLabel, LV_SIZE_CONTENT);  /// 1
+    lv_obj_set_height(cui_hmsPanelConfirmButtonLabel, LV_SIZE_CONTENT); /// 1
+    lv_label_set_text(cui_hmsPanelConfirmButtonLabel, "Confirm");
+    lv_obj_clear_flag(cui_hmsPanelConfirmButtonLabel, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
+    lv_obj_set_scrollbar_mode(cui_hmsPanelConfirmButtonLabel, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_set_style_text_font(cui_hmsPanelConfirmButtonLabel, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t **children = lv_mem_alloc(sizeof(lv_obj_t *) * _UI_COMP_HMSPANEL_NUM);
     children[UI_COMP_HMSPANEL_HMSPANEL] = cui_hmsPanel;
     children[UI_COMP_HMSPANEL_HMSPANELCONTAINER] = cui_hmsPanelContainer;
     children[UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANELCAPTION] = cui_hmsPanelCaption;
-    children[UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_CONFIRM_BUTTON] = cui_hmsPanelConfirmButton;
-    children[UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_CONFIRM_BUTTON_LABEL] = cui_hmsPanelConfirmButtonLabel;
     children[UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_RETRY_BUTTON] = cui_hmsPanelRetryButton;
     children[UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_RETRY_BUTTON_LABEL] = cui_hmsPanelRetryButtonLabel;
     children[UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_DONE_BUTTON] = cui_hmsPanelDoneButton;
     children[UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_DONE_BUTTON_LABEL] = cui_hmsPanelDoneButtonLabel;
+    children[UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_CONFIRM_BUTTON] = cui_hmsPanelConfirmButton;
+    children[UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_CONFIRM_BUTTON_LABEL] = cui_hmsPanelConfirmButtonLabel;
 
     lv_obj_add_event_cb(cui_hmsPanel, get_component_child_event_cb, LV_EVENT_GET_COMP_CHILD, children);
     lv_obj_add_event_cb(cui_hmsPanel, del_component_child_event_cb, LV_EVENT_DELETE, children);
