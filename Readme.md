@@ -114,7 +114,7 @@ To set up your xtouch screen, you will need to use the Online Web Installer. Fol
 
    - After clicking "Connect," a list of available serial ports will be displayed. Choose the one asigned to your xtouch so establish a connection with the touch screen.
 
-5. \**Install xtouch*s:
+5. **Install xtouch**:
 
    - Once you've selected the correct serial port, click the "Install xtouch"sbutton on the web page. This will initiate the installation process.
 
@@ -126,11 +126,7 @@ To set up your xtouch screen, you will need to use the Online Web Installer. Fol
 
    - Turn off the xtouch screen.
 
-8. **Insert the Prepared SD Card**:
-
-   - Place the SD card prepared with the required configuration (as explained earlier) back into the xtouch screen.
-
-9. **Power On the Screen**:
+8. **Power On the Screen**:
 
    - Turn on the xtouch screen. It will now be fully initialized and ready for use with your 3D printer.
 
