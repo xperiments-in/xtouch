@@ -4,16 +4,7 @@
 
 unsigned long long ui_hmsPanel_currentError;
 
-enum ButtonStyle
-{
-    ONLY_CONFIRM = 0,
-    CONFIRM_AND_CANCEL = 1,
-    CONFIRM_AND_FUNC = 2,
-    CONFIRM_AND_RETRY = 3,
-    MAX_STYLE_NUM = 4
-};
-
-void ui_hmsPanel_show(const char *title, bool hasDone, bool hasRetry, enum ButtonStyle style)
+void ui_hmsPanel_show(const char *title, bool hasDone, bool hasRetry)
 {
     lv_obj_t *titleLabel = ui_comp_get_child(ui_hmsComponent, UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANELCAPTION);
     lv_obj_t *confirmButton = ui_comp_get_child(ui_hmsComponent, UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_CONFIRM_BUTTON);
