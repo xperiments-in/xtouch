@@ -71,19 +71,27 @@ void ui_hmsPanelComponent_onXTouchHMSError(lv_event_t *e)
                 sprintf(ui_hmsPanel_currentErrorString, "%08X", bambuStatus.print_error);
                 bool hasRetry = xtouch_errors_deviceErrorHasRetry(ui_hmsPanel_currentErrorString);
                 bool hasDone = xtouch_errors_deviceErrorHasDone(ui_hmsPanel_currentErrorString);
-                ui_hmsPanel_show(ui_hmsPanel_deviceHMSError(ui_hmsPanel_currentError), hasDone, hasRetry);
+                const char *error = ui_hmsPanel_deviceHMSError(ui_hmsPanel_currentError);
+                if (error != "")
+                {
+                    ui_hmsPanel_show(error, hasDone, hasRetry);
+                }
+                else
+                {
+                    ui_hmsPanelComponent_onXTouchHMSError(NULL);
+                }
             }
             else
             // HMSERROR
             {
                 unsigned int reversed_msg_level = (ui_hmsPanel_currentError >> 16) & 0x1F;
-
+                const char *error = ui_hmsPanel_xtouch_errors_getHMSError(ui_hmsPanel_currentError);
                 switch (reversed_msg_level)
                 {
                 case HMS_INFO:
-                    if (ui_hmsPanel_xtouch_errors_getHMSError(ui_hmsPanel_currentError) != "")
+                    if (error != "")
                     {
-                        ui_hmsPanel_show(ui_hmsPanel_xtouch_errors_getHMSError(ui_hmsPanel_currentError), false, false);
+                        ui_hmsPanel_show(error, false, false);
                     }
                     else
                     {
@@ -224,6 +232,7 @@ lv_obj_t *ui_hmsPanel_create(lv_obj_t *comp_parent)
     lv_obj_set_scrollbar_mode(cui_hmsPanelRetryButton, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_hmsPanelRetryButton, &ui_font_xlcdmin, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_radius(cui_hmsPanelRetryButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(cui_hmsPanelRetryButton, lv_color_hex(0x2AAA00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_hmsPanelRetryButton, lv_color_hex(0x2A5500), LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_set_style_bg_opa(cui_hmsPanelRetryButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_hmsPanelRetryButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -252,6 +261,7 @@ lv_obj_t *ui_hmsPanel_create(lv_obj_t *comp_parent)
     lv_obj_set_scrollbar_mode(cui_hmsPanelDoneButton, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_hmsPanelDoneButton, &ui_font_xlcdmin, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_radius(cui_hmsPanelDoneButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(cui_hmsPanelDoneButton, lv_color_hex(0x2AAA00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_hmsPanelDoneButton, lv_color_hex(0x2A5500), LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_set_style_bg_opa(cui_hmsPanelDoneButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_hmsPanelDoneButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -280,7 +290,8 @@ lv_obj_t *ui_hmsPanel_create(lv_obj_t *comp_parent)
     lv_obj_set_scrollbar_mode(cui_hmsPanelConfirmButton, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_text_font(cui_hmsPanelConfirmButton, &ui_font_xlcdmin, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_radius(cui_hmsPanelConfirmButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(cui_hmsPanelConfirmButton, lv_color_hex(0x2A3300), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(cui_hmsPanelConfirmButton, lv_color_hex(0x2AAA00), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(cui_hmsPanelConfirmButton, lv_color_hex(0x2A5500), LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_set_style_bg_opa(cui_hmsPanelConfirmButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(cui_hmsPanelConfirmButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(cui_hmsPanelConfirmButton, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
