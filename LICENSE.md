@@ -126,3 +126,58 @@ Licensee hereby warrants to hold Licensor harmless and indemnify Licensor for an
 
 Licensee hereby agrees not to initiate class-action lawsuits against Licensor in relation to this license and to compensate Licensor for any legal fees, cost or attorney fees should any claim brought by Licensee against Licensor be denied, in part or in full.
 ```
+
+## Logo Copyright and Usage Agreement
+
+This Logo Copyright and Usage Agreement (the "Agreement") is entered into between:
+
+**Licensor:** Pedro Casaubon Aguilar
+**Licensee:** You, the licensee, as identified in the main software license agreement.
+
+**1. Copyright Ownership**
+
+1.1 The Licensor, Pedro Casaubon Aguilar, retains all intellectual property rights, including copyright, for the Xtouch logo (the "Logo").
+
+1.2 The Licensee, acknowledges and agrees that this Agreement does not grant the Licensee any ownership or copyright rights for the Logo.
+
+**2. Usage Rights and Guidelines**
+
+2.1 The Licensor grants the Licensee a limited, non-exclusive, non-transferable, and revocable license to use the Logo solely for the purposes outlined in this Agreement.
+
+2.2 The Licensee may use the Logo only for the following purposes:
+
+- [Specify the purposes, e.g., "To promote and market the Xtouch Pro Edition software as licensed under the main software license agreement."]
+- [Include any additional purposes as necessary.]
+
+2.3 The Licensee agrees to use the Logo in accordance with the following guidelines:
+
+- The Logo shall not be modified, altered, or distorted in any way.
+- The Logo shall not be used in a manner that could mislead or deceive consumers.
+- The Logo shall not be used in a way that implies endorsement, sponsorship, or affiliation with the Licensor beyond what is explicitly permitted by this Agreement.
+- The Logo shall be used in compliance with all applicable laws and regulations.
+
+2.4 The Licensee shall not use the Logo for any purpose other than those expressly permitted under this Agreement without obtaining prior written consent from the Licensor.
+
+**3. Termination**
+
+3.1 This Agreement and the Licensee's rights to use the Logo may be terminated by the Licensor if the Licensee breaches any of the terms and conditions of this Agreement.
+
+3.2 Upon termination, the Licensee shall immediately cease all use of the Logo and remove any instances of the Logo from their materials, products, or services.
+
+**4. Governing Law and Jurisdiction**
+
+4.1 This Agreement shall be governed by and construed in accordance with the laws of [Jurisdiction], without regard to its conflict of laws principles.
+
+4.2 Any disputes arising out of or in connection with this Agreement shall be subject to the exclusive jurisdiction of the courts located in [Jurisdiction].
+
+**5. Entire Agreement**
+
+5.1 This Agreement constitutes the entire understanding between the Licensor and the Licensee regarding the copyright ownership and usage rights of the Logo and supersedes all prior agreements and understandings, whether oral or written.
+
+IN WITNESS WHEREOF, the Parties hereto have executed this Logo Copyright and Usage Agreement as of the Effective Date.
+
+**Licensor:**
+[Your Name or Entity Name]
+
+**Licensee:**
+[Licensee's Name or Entity Name]
