@@ -1,4 +1,4 @@
-# xtouch
+# ![image](readme-assets/xtouch.png)
 
 ## Table of Contents
 
@@ -29,8 +29,8 @@ The xtouch screen is a revolutionary addition to your BambuLab Printer, enhancin
 
 Currently, it has only been tested on the affordable 2.8-inch ESP32-2432S028R board, which is available for purchase here:
 
-![image](https://github.com/xperiments/p1touch/assets/417709/28bdca76-9e49-4aab-a4c1-b714546077b4)
-![image](https://github.com/xperiments/p1touch/assets/417709/658061e4-d638-4d1e-ab99-268baba40ebc)
+![image](readme-assets/screen-2-8.png)
+![image](readme-assets/screen-2-8-back.png)
 
 [https://fr.aliexpress.com/item/1005004502250619.html](https://fr.aliexpress.com/item/1005004502250619.html)
 
@@ -83,7 +83,7 @@ Before you begin the installation process for the xtouch screen, it's essential 
    Replace `"your_ssid_name"` with your WiFi network's SSID (name) and `"your_ssid_password"` with your WiFi network's password.
 
    > **Warning**
-   > If you are unsure how to create the `wifi.json` file, you can use the [Online wifi.json Form](https://retroconsol.es/products/p1touch/webusb/ssid.html) for step-by-step instructions.
+   > If you are unsure how to create the `wifi.json` file, you can use the [Online wifi.json Form](https://xperiments.in/xtouch-bin/ssid.html) for step-by-step instructions.
 
 4. **Save the Configuration File**:
 
@@ -103,7 +103,7 @@ To set up your xtouch screen, you will need to use the Online Web Installer. Fol
 
    - In the browser's address bar, enter the following URL:
      ```
-     CLOSED BETA
+     https://xperiments.in/xtouch-bin
      ```
 
 3. **Connect Button**:
@@ -302,7 +302,7 @@ If you encounter issues during the installation or operation of your BambuLab Pr
    - In the above example, the `timeout` value is set to `5000` milliseconds `5s`. Adjust this value as needed to ensure a stable WiFi connection. Save the changes to the `wifi.json` file and proceed with the installation.
 
    > **Warning**
-   > If you are unsure how to create the `wifi.json` file, you can use the [Online wifi.json Form](https://retroconsol.es/products/p1touch/webusb/ssid.html) for step-by-step instructions.
+   > If you are unsure how to create the `wifi.json` file, you can use the [Online wifi.json Form](https://xperiments.in/xtouch-bin/ssid.html) for step-by-step instructions.
 
 4. **Endless Reboots in Printer Startup**:
 
@@ -323,7 +323,7 @@ If you encounter issues during the installation or operation of your BambuLab Pr
    - In the above example, the "coldboot" value is set to `10000` milliseconds (10 seconds). You can modify this value according to your requirements to ensure the printer initializes correctly after a cold boot. After making the changes, save the "wifi.json" file and proceed with the printer setup.
 
    > **Note**
-   > If you're unsure about how to modify the "wifi.json" file, you can use the [Online wifi.json Form](https://retroconsol.es/products/p1touch/webusb/ssid.html) for step-by-step instructions.
+   > If you're unsure about how to modify the "wifi.json" file, you can use the [Online wifi.json Form](https://xperiments.in/xtouch-bin/ssid.html) for step-by-step instructions.
 
 5. **Recalibrating the Screen**:
 

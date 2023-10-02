@@ -79,10 +79,11 @@ def post_build_increment_semver(json_file, bump_type="patch"):
 
 def post_build_create_ota_json(version_value):
 
-    md5, size = calculate_md5_and_size(f"./ota/p1touch.{version_value}.bin")
+    md5, size = calculate_md5_and_size(
+        f"../xtouch-bin/ota/xtouch.{version_value}.bin")
     ota = {
         "version": version_value,
-        "url": f"http://retroconsol.es/products/p1touch/ota/p1touch.{version_value}.bin",
+        "url": f"http://xperiments.in/xtouch-bin/ota/xtouch.{version_value}.bin",
         "md5": md5,
     }
 
@@ -90,19 +91,18 @@ def post_build_create_ota_json(version_value):
     ota_serialized = json.dumps(ota, indent=2)
 
     # If you want to save it to a file, you can do:
-    with open("ota/ota.json", "w") as ota_file:
+    with open("../xtouch-bin/ota/ota.json", "w") as ota_file:
         ota_file.write(ota_serialized)
 
 
 def post_build_manifest(version_value):
 
-    webusb_manifest_fw_path = f"p1touch.web.{version_value}.bin"
+    webusb_manifest_fw_path = f"xtouch.web.{version_value}.bin"
 
     # Create a new JSON object with the updated version and path values
     webusb_manifest = {
-        "name": "P1Touch",
+        "name": "xtouch",
         "version": version_value,
-        "new_install_prompt_erase": True,
         "builds": [
             {
                 "chipFamily": "ESP32",
@@ -115,19 +115,19 @@ def post_build_manifest(version_value):
     webusb_manifest_serialized = json.dumps(webusb_manifest, indent=2)
 
     # If you want to save it to a file, you can do:
-    with open("webusb/webusb.manifest.json", "w") as webusb_manifest_file:
+    with open("../xtouch-bin/webusb/webusb.manifest.json", "w") as webusb_manifest_file:
         webusb_manifest_file.write(webusb_manifest_serialized)
 
 
 def post_build_copy_ota_fw(version):
     ota_bin_source = ".pio/build/esp32dev/firmware.bin"
-    ota_bin_target = f"./ota/p1touch.{version}.bin"
+    ota_bin_target = f"../xtouch-bin/ota/xtouch.{version}.bin"
     subprocess.run(['cp', ota_bin_source, ota_bin_target])
 
 
 def post_build_merge_bin(version):
 
-    web_usb_fw = f"../../../webusb/p1touch.web.{version}.bin"
+    web_usb_fw = f"../../../../xtouch-bin/webusb/xtouch.web.{version}.bin"
     esptool_cmd = [
         'esptool.py',
         '--chip', 'ESP32',
@@ -149,8 +149,8 @@ def post_build_action(source, target, env):
         version_data = json.load(version_file)
         version_value = version_data.get("version", "UNKNOWN")
 
-    delete_bin_files("./ota")
-    delete_bin_files("./webusb")
+    delete_bin_files("../xtouch-bin/ota")
+    delete_bin_files("../xtouch-bin/webusb")
     post_build_manifest(version_value)
     post_build_copy_ota_fw(version_value)
     post_build_create_ota_json(version_value)

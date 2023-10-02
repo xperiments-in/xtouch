@@ -12,7 +12,7 @@ const char *xtouch_paths_pair = "/xtouch/printer-pair.json";
 const char *xtouch_paths_touch = "/xtouch/touch.json";
 
 const char *xtouch_paths_firmware_ota_json = "/xtouch/ota.json";
-const char *xtouch_paths_firmware_ota_file = "http://retroconsol.es/products/p1touch/ota/ota.json";
+const char *xtouch_paths_firmware_ota_file = "http://xperiments.in/xtouch-bin/ota/ota.json";
 const char *xtouch_paths_firmware_ota_fw = "/firmware.bin";
 
 const char *xtouch_paths_hms_key_db = "/xtouch/device_hms.key.db";
