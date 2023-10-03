@@ -296,7 +296,7 @@ void ui_temperatureComponent_onXtouchPartFanSpeed(lv_event_t *e)
     struct XTOUCH_MESSAGE_DATA *message = (struct XTOUCH_MESSAGE_DATA *)m->payload;
     char value[3];
 
-    itoa(message->data * 100 / 255, value, 10);
+    itoa(round(message->data * 100 / 255.), value, 10);
     lv_textarea_set_text(target, value);
 }
 
@@ -308,7 +308,7 @@ void ui_temperatureComponent_onXtouchAuxFanSpeed(lv_event_t *e)
     struct XTOUCH_MESSAGE_DATA *message = (struct XTOUCH_MESSAGE_DATA *)m->payload;
     char value[3];
 
-    itoa(message->data * 100 / 255, value, 10);
+    itoa(round(message->data * 100 / 255.), value, 10);
     lv_textarea_set_text(target, value);
 }
 
@@ -320,7 +320,7 @@ void ui_temperatureComponent_onXtouchChamberFanSpeed(lv_event_t *e)
     struct XTOUCH_MESSAGE_DATA *message = (struct XTOUCH_MESSAGE_DATA *)m->payload;
     char value[4];
 
-    itoa(message->data * 100 / 255, value, 10);
+    itoa(round(message->data * 100 / 255.), value, 10);
     lv_textarea_set_text(target, value);
 }
 
