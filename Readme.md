@@ -1,8 +1,13 @@
 # ![image](readme-assets/xtouch.png)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I8PSAYU)
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
+   - [Required Hardware](#required-hardware)
+   - [Optional Hardware](#optional-hardware)
+   - [Powering the xtouch Screen](#powering-the-xtouch-screen)
 2. [Features](#features)
 3. [Installation](#installation)
    - [Install Drivers](#install-drivers)
@@ -36,6 +41,38 @@ Currently, it has only been tested on the affordable 2.8-inch ESP32-2432S028R bo
 
 - **[DS18B20 Temperature Sensor](docs/temperature-sensor.md)**: For printers that do not have an integrated chamber temperature sensor, you have the option to add an external DS18B20 temperature sensor. This sensor will provide accurate chamber temperature readings and enhance the functionality of your xtouch screen. Connector on the screen is 1.25 MZ JST 4P.
 - **DS18B20 P1P/P1S Chamber Temp Enclosure**: Additionally, we have created a 3D model that allows you to easily integrate the DS18B20 Temperature Sensor inside your P1P/P1S printer. You can find the 3D model [here](https://makerworld.com/en/models/19658).
+
+### Powering the xtouch Screen
+
+The xtouch screen can be powered in two different ways: through a USB port or via a JST 1.25 4-pin connector. Below are the details on how to power the screen using each method:
+
+#### Powering via USB
+
+1. Connect a suitable USB cable to an available USB port on your computer or a USB power source.
+
+2. At the opposite end of the USB cable, connect the USB connector to the xtouch screen.
+
+3. Ensure that the xtouch screen is turned on and that power is being supplied properly through the USB cable. The screen should light up and display the startup information.
+
+#### Powering via the JST 1.25 4-Pin Connector
+
+The JST 1.25 4-pin connector is an alternative method for powering the xtouch screen. Here is a pinout diagram of this connector:
+
+<img src="readme-assets/power-pinout.png" width="300" style="padding-bottom:16px">
+
+To power the screen using this connector, follow these steps:
+
+1. Locate the JST 1.25 4-pin connector on the xtouch screen.
+
+2. Align the pins of the JST 1.25 connector with the corresponding pins on the xtouch screen.
+
+3. Connect the JST 1.25 connector to the xtouch screen, ensuring that the pins are properly aligned.
+
+4. Provide the proper power through the JST 1.25 connector using a compatible power source. Make sure the polarity is correct to prevent damage to the screen.
+
+5. Turn on the xtouch screen and verify that it is receiving power properly.
+
+The choice between USB and the JST 1.25 4-pin connector depends on your preference and resource availability. Make sure the xtouch screen receives the necessary power for optimal operation.
 
 ## Features
 
@@ -361,3 +398,5 @@ If you encounter issues during the installation or operation of your BambuLab Pr
       - Another option is to revert the printer's firmware to version 1.3, where the LAN mode bug is not present. This solution allows users to continue using LAN mode without disruptions while avoiding the bug associated with version 1.4.
 
       - However, downgrading firmware versions should be performed carefully, following the manufacturer's instructions, as firmware changes can have their own implications.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I8PSAYU)
