@@ -1,5 +1,7 @@
 # ![image](readme-assets/xtouch.png)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I8PSAYU)
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
@@ -396,3 +398,5 @@ If you encounter issues during the installation or operation of your BambuLab Pr
       - Another option is to revert the printer's firmware to version 1.3, where the LAN mode bug is not present. This solution allows users to continue using LAN mode without disruptions while avoiding the bug associated with version 1.4.
 
       - However, downgrading firmware versions should be performed carefully, following the manufacturer's instructions, as firmware changes can have their own implications.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I8PSAYU)
