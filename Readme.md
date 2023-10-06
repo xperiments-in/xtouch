@@ -35,7 +35,10 @@ The xtouch screen is a revolutionary addition to your BambuLab Printer, enhancin
 ![image](readme-assets/screen-2-8.png)
 ![image](readme-assets/screen-2-8-back.png)
 
-Currently, it has only been tested on the affordable 2.8-inch ESP32-2432S028R board, which is available for purchase here: [Aliexpress Affiliate Link](https://s.click.aliexpress.com/e/_EwiGjNZ)
+Currently, it has only been tested on the affordable 2.8-inch ESP32-2432S028R board, which is available for purchase here:
+
+- [ESP32-2432S028R](https://s.click.aliexpress.com/e/_DmcFFVz)
+- [ESP32-2432S028R](https://s.click.aliexpress.com/e/_EwiGjNZ)
 
 ### Optional Hardware
 
