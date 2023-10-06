@@ -1,6 +1,6 @@
 # DS18B20 Temperature Sensor Integration Guide
 
-You can purchase a DS18B20 temperature sensor from various suppliers. Here's an example from [AliExpress](https://fr.aliexpress.com/item/1005001665962941.html).
+You can purchase a DS18B20 temperature sensor from various suppliers. Here's an example from [AliExpress](https://s.click.aliexpress.com/e/_okaSknf).
 
 ## Table of Contents
 
