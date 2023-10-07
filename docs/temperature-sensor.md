@@ -1,6 +1,6 @@
 # DS18B20 Temperature Sensor Integration Guide
 
-You can purchase a DS18B20 temperature sensor from various suppliers. Here's an example from [AliExpress](https://s.click.aliexpress.com/e/_okaSknf).
+You can purchase a DS18B20 temperature sensor from various suppliers. Here's an example from [here](https://s.click.aliexpress.com/e/_ol1shM9)
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@ The DS18B20 Temperature Sensor offers an additional layer of control and precisi
 
 Before you begin the installation process, make sure you have the following hardware components ready:
 
-- DS18B20 Temperature Sensor
+- DS18B20 Temperature Sensor [link](https://s.click.aliexpress.com/e/_ol1shM9)
 - xtouch Screen (already installed on your 3D printer)
 
 ## Installation Instructions
