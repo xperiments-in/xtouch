@@ -1,4 +1,4 @@
-# SUBLICENSES
+# Third Party LICENSES
 
 ## ArduinoJson
 

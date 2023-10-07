@@ -1,12 +1,15 @@
-# License
+# LICENSE
 
-Xtouch is licensed under GPLv3 and a Commercial License for OEM uses.
+- [Standard Edition GPLv3](#standard-edition)
+- [Commercial License for OEM use](#xtouch-commercial-license-for-oem-use)
+- [Logo Copyright and Usage Agreement](#logo-copyright-and-usage-agreement)
+- [Third Party Licenses](LICENSE-3RD-PARTY.md)
 
 ## Standard Edition
 
-Licensed under GPL, Version 3.0 (the “License”); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
-https://www.gnu.org/licenses/gpl-3.0.en.html#license-text
+```
+Licensed under GPL, Version 3.0 (the “License”); you may not use this file except in compliance with the License. You may obtain a copy of the License at https://www.gnu.org/licenses/gpl-3.0.en.html#license-text
+```
 
 ## Xtouch Commercial License for OEM Use
 
@@ -129,6 +132,7 @@ Licensee hereby agrees not to initiate class-action lawsuits against Licensor in
 
 ## Logo Copyright and Usage Agreement
 
+```markdown
 This Logo Copyright and Usage Agreement (the "Agreement") is entered into between:
 
 **Licensor:** Pedro Casaubon Aguilar
@@ -146,17 +150,16 @@ This Logo Copyright and Usage Agreement (the "Agreement") is entered into betwee
 
 2.2 The Licensee may use the Logo only for the following purposes:
 
-- [Specify the purposes, e.g., "To promote and market the Xtouch Pro Edition software as licensed under the main software license agreement."]
-- [Include any additional purposes as necessary.]
+- To promote and market the Xtouch software as licensed under the main software license agreement.
 
-2.3 The Licensee agrees to use the Logo in accordance with the following guidelines:
+  2.3 The Licensee agrees to use the Logo in accordance with the following guidelines:
 
 - The Logo shall not be modified, altered, or distorted in any way.
 - The Logo shall not be used in a manner that could mislead or deceive consumers.
 - The Logo shall not be used in a way that implies endorsement, sponsorship, or affiliation with the Licensor beyond what is explicitly permitted by this Agreement.
 - The Logo shall be used in compliance with all applicable laws and regulations.
 
-2.4 The Licensee shall not use the Logo for any purpose other than those expressly permitted under this Agreement without obtaining prior written consent from the Licensor.
+  2.4 The Licensee shall not use the Logo for any purpose other than those expressly permitted under this Agreement without obtaining prior written consent from the Licensor.
 
 **3. Termination**
 
@@ -166,18 +169,13 @@ This Logo Copyright and Usage Agreement (the "Agreement") is entered into betwee
 
 **4. Governing Law and Jurisdiction**
 
-4.1 This Agreement shall be governed by and construed in accordance with the laws of [Jurisdiction], without regard to its conflict of laws principles.
+4.1 This Agreement shall be governed by and construed in accordance with French Law, without regard to its conflict of laws principles.
 
-4.2 Any disputes arising out of or in connection with this Agreement shall be subject to the exclusive jurisdiction of the courts located in [Jurisdiction].
+4.2 Any disputes arising out of or in connection with this Agreement shall be subject to the exclusive jurisdiction of the courts located in France.
 
 **5. Entire Agreement**
 
 5.1 This Agreement constitutes the entire understanding between the Licensor and the Licensee regarding the copyright ownership and usage rights of the Logo and supersedes all prior agreements and understandings, whether oral or written.
 
 IN WITNESS WHEREOF, the Parties hereto have executed this Logo Copyright and Usage Agreement as of the Effective Date.
-
-**Licensor:**
-[Your Name or Entity Name]
-
-**Licensee:**
-[Licensee's Name or Entity Name]
+```
