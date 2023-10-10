@@ -2,7 +2,7 @@
 #include <pgmspace.h>
 
 
-int hms_error_length = 740;
+int hms_error_length = 741;
 
 const char *hms_error_keys[] PROGMEM = {
   "0300010000010001",
@@ -744,7 +744,8 @@ const char *hms_error_keys[] PROGMEM = {
   "1201230000020006",
   "1202230000020006",
   "1203230000020006",
-  "0300020000010009"
+  "0300020000010009",
+  "0300940000020003"
 };
 
 const char *hms_error_values[] PROGMEM = {
@@ -1487,7 +1488,8 @@ const char *hms_error_values[] PROGMEM = {
   "Failed to extrude AMS2 Slot4 filament, the extruder may be clogged, or the filament may be too thin, causing the extruder slipping.",
   "Failed to extrude AMS3 Slot4 filament, the extruder may be clogged, or the filament may be too thin, causing the extruder slipping.",
   "Failed to extrude AMS4 Slot4 filament, the extruder may be clogged, or the filament may be too thin, causing the extruder slipping.",
-  "The nozzle temperature control is abnormal, he hot end may not be installed. If you want to heat the hot end without it being installed, please turn on the maintenance mode on the settings page."
+  "The nozzle temperature control is abnormal, he hot end may not be installed. If you want to heat the hot end without it being installed, please turn on the maintenance mode on the settings page.",
+  "Chamber failed to reach the desired temperature. The mechine will sttop waiting chamber temperature."
 };
 
 int device_error_length = 251;
@@ -1811,7 +1813,7 @@ const char *device_error_values[] PROGMEM = {
   "Failed to extrude the filament. Please check if the extruder clogged. After troubleshooting, click the retry button.",
   "AMS assist motor is overloaded. Please check if the spool or filament is stuck. After troubleshooting, click the retry button.",
   "AMS filament ran out. Please put a new filament into AMS and click the retry button.",
-  "First layer defects were detected. If the defects are acceptable, click resume icon to resume the print job.",
+  "First layer defects were detected. If the defects are acceptable, click \"Resume\" button to resume the print job.",
   "Spaghetti failure was detected.",
   "Possible defects were detected in the first layer.",
   "Possible spaghetti failure was detected.",
@@ -1820,7 +1822,7 @@ const char *device_error_values[] PROGMEM = {
   "Heatbed temperature malfunction.",
   "Print jobs are not allowed to be sent while updating logs.",
   "The file name is not supported. Please rename and restart the printing job.",
-  "Purged filaments have piled up in excess chute, which may cause a tool head collision. Please clean the filament. If cleaned or acceptable, tap the resume icon to resume the print job.",
+  "Purged filaments have piled up in excess chute, which may cause a tool head collision. Please clean the filament. If cleaned or acceptable, tap the resume button to resume the print job.",
   "Purged filament has piled up in the excess chute, which may cause a tool head collision.",
   "Purged filament may have piled up in the excess chute.",
   "The motor self-check failed.",
@@ -1838,14 +1840,14 @@ const char *device_error_values[] PROGMEM = {
   "Filament is still loaded from the AMS after it has been disabled. Please unload the filament, load from the spool holder, and restart printing.",
   "Filament is still loaded from the AMS after it has been disabled. Please unload the filament, load from the spool holder, and restart printing.",
   "There was a problem downloading a file. Please check you network connection and resend the printing job.",
-  "The bed temperature exceeds filament's vitrification temperature, which may cause a nozzle clog. Please keep the front door of the printer open or lower the bed temperature.",
+  "High bed temperature may lead to filament clogging in the nozzle. Please ensure ventilation for the printer.",
   "The nozzle hardness required by the filament is higher than the default nozzle hardness of the printer. Please replace with a hardened nozzle or filament. Otherwise, the nozzle will become worn down or damaged.",
   "Please insert a MicroSD card and restart the printing job.",
   "Please run a self-test and restart the printing job.",
   "Skipping step detected, auto-recover complete; please resume print and check if there are any layer shift problems.",
   "Build plate localization marker was not found.",
   "Printing was cancelled.",
-  "Some objects have fallen down, or the extruder is not extruding normally. If the defects are acceptable, click \"Resume\" icon to resume the print job.",
+  "Some objects have fallen down, or the extruder is not extruding normally. If the defects are acceptable, click \"Resume\" button to resume the print job.",
   "Failed to cut the filament. Please check the cutter. After troubleshooting, click the retry button.",
   "The cutter is stuck. Please pull out the cutter handle and click the retry button.",
   "Please pull out the filament on the spool holder from the extruder or check if there is filament  broken in the extruder, if AMS is to be used later,please connect PTFE tube to the coupler and click the \"retry\" button.",
