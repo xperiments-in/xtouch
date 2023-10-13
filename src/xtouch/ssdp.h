@@ -25,6 +25,11 @@ DynamicJsonDocument xtouch_ssdp_load_printerIPs()
     return xtouch_filesystem_readJson(SD, xtouch_paths_printer_ips, false);
 }
 
+bool xtouch_ssdp_clear_printerIPs()
+{
+    return xtouch_filesystem_deleteFile(SD, xtouch_paths_printer_ips);
+}
+
 void xtouch_ssdp_clear_device_list()
 {
     DynamicJsonDocument pairDoc(32);
@@ -38,8 +43,10 @@ void xtouch_ssdp_clear_pair_list()
 
 bool xtouch_ssdp_is_paired()
 {
+    DynamicJsonDocument printerIps = xtouch_ssdp_load_printerIPs();
     DynamicJsonDocument pairDoc = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
-    if (pairDoc.isNull())
+
+    if (pairDoc.isNull() || printerIps.isNull())
     {
         return false;
     }
