@@ -43,8 +43,10 @@ void xtouch_ssdp_clear_pair_list()
 
 bool xtouch_ssdp_is_paired()
 {
+    DynamicJsonDocument printerIps = xtouch_ssdp_load_printerIPs();
     DynamicJsonDocument pairDoc = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
-    if (pairDoc.isNull())
+
+    if (pairDoc.isNull() || printerIps.isNull())
     {
         return false;
     }
