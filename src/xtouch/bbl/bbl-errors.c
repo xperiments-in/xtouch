@@ -1492,7 +1492,7 @@ const char *hms_error_values[] PROGMEM = {
   "Chamber failed to reach the desired temperature. The machine will stop waiting for the chamber temperature."
 };
 
-int device_error_length = 251;
+int device_error_length = 253;
 
 const char *device_error_keys[] PROGMEM = {
   "03004000",
@@ -1745,7 +1745,9 @@ const char *device_error_keys[] PROGMEM = {
   "12038015",
   "1000C003",
   "05014034",
-  "05014035"
+  "05014035",
+  "1001C001",
+  "1001C002"
 };
 
 const char *device_error_values[] PROGMEM = {
@@ -1841,7 +1843,7 @@ const char *device_error_values[] PROGMEM = {
   "Filament is still loaded from the AMS after it has been disabled. Please unload the filament, load from the spool holder, and restart printing.",
   "There was a problem downloading a file. Please check you network connection and resend the printing job.",
   "High bed temperature may lead to filament clogging in the nozzle. Please ensure ventilation for the printer.",
-  "The nozzle hardness required by the filament is higher than the default nozzle hardness of the printer. Please replace with a hardened nozzle or filament. Otherwise, the nozzle will become worn down or damaged.",
+  "Printing CF material with stainless steel may cause nozzle damage.",
   "Please insert a MicroSD card and restart the printing job.",
   "Please run a self-test and restart the printing job.",
   "Skipping step detected, auto-recover complete; please resume print and check if there are any layer shift problems.",
@@ -1997,9 +1999,11 @@ const char *device_error_values[] PROGMEM = {
   "Failed to pull back the filament from the toolhead. Please check if the filament is stuck or the filament is broken inside the extruder. After troubleshooting, click the \"Retry\" button.",
   "Failed to pull back the filament from the toolhead. Please check if the filament is stuck or is broken inside the extruder. After troubleshooting, click the \"Retry\" button.",
   "Failed to pull back the filament from the toolhead. Please check if the filament is stuck or is broken inside the extruder. After troubleshooting, click the \"Retry\" button.",
-  "Timelapse recording may affect the print quality, please confirm whether to enable it.",
+  "Enabling traditional timelapse might lead to defects. Continue?",
   "The slicing progress has not been updated for a long time, and the printing task has exited. Please confirm the parameters and reinitiate printing.",
-  "The device is in the process of binding and cannot respond to new binding requests."
+  "The device is in the process of binding and cannot respond to new binding requests.",
+  "Timelapse is not supported because Spiral vase is enabled in slicing presets.",
+  "Timelapse is not supported because Print sequence is set to \"By object\"."
 };
 
 int message_containing_retry_total = 18;
