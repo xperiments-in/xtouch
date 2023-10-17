@@ -20,6 +20,7 @@ extern "C"
     lv_obj_t *ui_confirmPanel_create(lv_obj_t *comp_parent);
     void ui_confirmPanel_show(const char *title, void (*onYES)(void));
     void ui_confirmPanel_hide();
+    void ui_confirmPanel_NOOP();
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

@@ -4,6 +4,8 @@
 
 void (*ui_confirmPanel_showOnYes)();
 
+void ui_confirmPanel_NOOP(){};
+
 void ui_confirmPanel_show(const char *title, void (*onYES)(void))
 {
     ui_confirmPanel_showOnYes = onYES;
