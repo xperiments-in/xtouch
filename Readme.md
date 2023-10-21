@@ -2,6 +2,9 @@
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I8PSAYU)
 
+[Discord Server](https://discord.gg/RytEDEgfR3)
+
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
