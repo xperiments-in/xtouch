@@ -37,8 +37,10 @@ void fillScreenData(int screen)
         break;
     }
 }
+
 void loadScreen(int screen)
 {
+    xTouchConfig.currentScreenIndex = screen;
     lv_obj_t *current = lv_scr_act();
     if (current != NULL)
     {

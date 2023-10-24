@@ -1492,7 +1492,7 @@ const char *hms_error_values[] PROGMEM = {
   "Chamber failed to reach the desired temperature. The machine will stop waiting for the chamber temperature."
 };
 
-int device_error_length = 253;
+int device_error_length = 256;
 
 const char *device_error_keys[] PROGMEM = {
   "03004000",
@@ -1747,7 +1747,10 @@ const char *device_error_keys[] PROGMEM = {
   "05014034",
   "05014035",
   "1001C001",
-  "1001C002"
+  "1001C002",
+  "05008036",
+  "05004037",
+  "05004038"
 };
 
 const char *device_error_values[] PROGMEM = {
@@ -2003,7 +2006,10 @@ const char *device_error_values[] PROGMEM = {
   "The slicing progress has not been updated for a long time, and the printing task has exited. Please confirm the parameters and reinitiate printing.",
   "The device is in the process of binding and cannot respond to new binding requests.",
   "Timelapse is not supported because Spiral vase is enabled in slicing presets.",
-  "Timelapse is not supported because Print sequence is set to \"By object\"."
+  "Timelapse is not supported because Print sequence is set to \"By object\".",
+  "Your sliced file is not consistent with the current printer model. Continue?",
+  "Your sliced file is not compatible with current printer model. This file can't be printed on this printer.",
+  "The nozzle diameter in sliced file is not consistent with the current nozzle setting. This file can't be printed."
 };
 
 int message_containing_retry_total = 18;

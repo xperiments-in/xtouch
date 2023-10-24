@@ -148,6 +148,7 @@ extern "C"
         int xTouchBacklightLevel;
         int xTouchTFTOFFValue;
         bool xTouchWakeOnPrint;
+        int currentScreenIndex;
     } XTouchConfig;
 
     XTouchConfig xTouchConfig;

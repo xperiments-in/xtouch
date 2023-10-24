@@ -23,6 +23,7 @@ String xtouch_mqtt_report_topic;
 
 /* ---------------------------------------------- */
 bool xtouch_mqtt_firstConnectionDone = false;
+int xtouch_mqtt_connection_timeout_count = 5;
 int xtouch_mqtt_connection_fail_count = 5;
 
 void xtouch_mqtt_sendMsg(XTOUCH_MESSAGE message, unsigned long long data = 0)
@@ -695,10 +696,14 @@ void xtouch_mqtt_connect()
 
     ConsoleInfo.println(F("[XTouch][MQTT] Connecting"));
 
-    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Connecting to Printer");
-    lv_timer_handler();
-    lv_task_handler();
-    delay(32);
+    if (!xtouch_mqtt_firstConnectionDone)
+    {
+        lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Connecting to Printer");
+        lv_timer_handler();
+        lv_task_handler();
+        delay(32);
+    }
+
     xtouch_mqtt_firstConnectionDone = false;
 
     while (!xtouch_pubSubClient.connected())
@@ -722,22 +727,42 @@ void xtouch_mqtt_connect()
             {
 
             case -4: // MQTT_CONNECTION_TIMEOUT
-                xtouch_mqtt_connection_fail_count--;
-                if (xtouch_mqtt_connection_fail_count == 0)
+                xtouch_mqtt_connection_timeout_count--;
+                if (xtouch_mqtt_connection_timeout_count == 0)
                 {
                     ESP.restart();
                 }
                 break;
-            case -3: // MQTT_CONNECTION_LOST
             case -2: // MQTT_CONNECT_FAILED
+                xtouch_mqtt_connection_fail_count--;
+                if (xtouch_mqtt_connection_fail_count == 0)
+                {
+                    if (!xtouch_mqtt_firstConnectionDone)
+                    {
+                        lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT ERROR");
+                        lv_timer_handler();
+                        lv_task_handler();
+                        delay(3000);
+                        lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
+                        lv_timer_handler();
+                        lv_task_handler();
+                    }
+                    ESP.restart();
+                }
+                break;
+            case -3: // MQTT_CONNECTION_LOST
             case -1: // MQTT_DISCONNECTED
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT ERROR");
-                lv_timer_handler();
-                lv_task_handler();
-                delay(3000);
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
-                lv_timer_handler();
-                lv_task_handler();
+                if (!xtouch_mqtt_firstConnectionDone)
+                {
+                    lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT ERROR");
+                    lv_timer_handler();
+                    lv_task_handler();
+                    delay(3000);
+                    lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
+                    lv_timer_handler();
+                    lv_task_handler();
+                }
+
                 ESP.restart();
                 break;
             case 1: // MQTT BAD_PROTOCOL
@@ -745,13 +770,16 @@ void xtouch_mqtt_connect()
             case 3: // MQTT UNAVAILABLE
             case 4: // MQTT BAD_CREDENTIALS
             case 5: // MQTT UNAUTHORIZED
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT ERROR");
-                lv_timer_handler();
-                lv_task_handler();
-                delay(3000);
-                lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
-                lv_timer_handler();
-                lv_task_handler();
+                if (!xtouch_mqtt_firstConnectionDone)
+                {
+                    lv_label_set_text(introScreenCaption, LV_SYMBOL_WARNING " MQTT ERROR");
+                    lv_timer_handler();
+                    lv_task_handler();
+                    delay(3000);
+                    lv_label_set_text(introScreenCaption, LV_SYMBOL_REFRESH " REBOOTING");
+                    lv_timer_handler();
+                    lv_task_handler();
+                }
                 xtouch_ssdp_clear_device_list();
                 xtouch_ssdp_clear_pair_list();
                 ESP.restart();
@@ -819,6 +847,7 @@ void xtouch_mqtt_loop()
 {
     if (!xtouch_pubSubClient.connected())
     {
+        Serial.println("π-----DISCONNECTED-----");
         xtouch_mqtt_connect();
         return;
     }
