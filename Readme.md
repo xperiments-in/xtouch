@@ -46,7 +46,22 @@ Currently, it has only been tested on the affordable 2.8-inch ESP32-2432S028R bo
 ### Optional Hardware
 
 - **[DS18B20 Temperature Sensor](docs/temperature-sensor.md)**: For printers that do not have an integrated chamber temperature sensor, you have the option to add an external DS18B20 temperature sensor. This sensor will provide accurate chamber temperature readings and enhance the functionality of your xtouch screen. Connector on the screen is 1.25 MZ JST 4P.
-- **DS18B20 P1P/P1S Chamber Temp Enclosure**: Additionally, we have created a 3D model that allows you to easily integrate the DS18B20 Temperature Sensor inside your P1P/P1S printer. You can find the 3D model [here](https://makerworld.com/en/models/19658).
+- **DS18B20 P1P/P1S Chamber Temp Enclosure**: Additionally, we have created a 3D model that allows you to easily integrate the DS18B20 Temperature Sensor inside your P1P/P1S printer. 
+
+You can buy the Temperature Sensor here:
+
+- [Temp Sensor A](https://s.click.aliexpress.com/e/_ol1shM9)
+- [Temp Sensor B](https://s.click.aliexpress.com/e/_EvOTULH)
+
+You can find the 3D models
+
+<img src="https://github.com/xperiments-in/xtouch/assets/417709/a8d14564-09e9-4d36-9ad9-10fd8f295c86" width="200">
+<img src="https://github.com/xperiments-in/xtouch/assets/417709/22871bdf-ba37-44f0-a4b3-33c6352f7f86" width="300">
+
+- [Model A](https://makerworld.com/en/models/19658)
+- [Model B](https://makerworld.com/en/models/42533)
+
+
 
 ### Powering the xtouch Screen
 
