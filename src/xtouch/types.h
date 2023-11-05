@@ -138,6 +138,7 @@ extern "C"
         bool xTouchAuxFanEnabled;
         bool xTouchChamberFanEnabled;
         bool xTouchChamberSensorEnabled;
+        int8_t xTouchChamberSensorReadingDiff;
         bool xTouchOTAEnabled;
         bool xTouchTFTFlip;
         bool xTouchTFTInvert;

@@ -24,7 +24,7 @@ void xtouch_chamber_timer_create()
 
 void xtouch_chamber_requestTemperatures(lv_timer_t *timer)
 {
-    int temperatureC = xtouch_chamber_sensors.getTempCByIndex(0);
+    int temperatureC = xtouch_chamber_sensors.getTempCByIndex(0) + xTouchConfig.xTouchChamberSensorReadingDiff;
     bambuStatus.chamber_temper = temperatureC;
     xtouch_mqtt_sendMsg(XTOUCH_ON_CHAMBER_TEMP, temperatureC);
     xtouch_chamber_sensors.requestTemperatures();

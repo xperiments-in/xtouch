@@ -9,6 +9,7 @@ void xtouch_settings_save(bool onlyRoot = false)
     doc["tftInvert"] = xTouchConfig.xTouchTFTInvert;
     doc["ota"] = xTouchConfig.xTouchOTAEnabled;
     doc["wop"] = xTouchConfig.xTouchWakeOnPrint;
+    doc["chamberTempDiff"] = xTouchConfig.xTouchChamberSensorReadingDiff;
 
     xtouch_filesystem_writeJson(SD, xtouch_paths_settings, doc);
 
@@ -37,6 +38,7 @@ void xtouch_settings_loadSettings()
         xTouchConfig.xTouchTFTInvert = false;
         xTouchConfig.xTouchOTAEnabled = false;
         xTouchConfig.xTouchWakeOnPrint = true;
+        xTouchConfig.xTouchChamberSensorReadingDiff = 0;
         xtouch_settings_save(true);
     }
 
@@ -47,6 +49,7 @@ void xtouch_settings_loadSettings()
     xTouchConfig.xTouchTFTInvert = settings.containsKey("tftInvert") ? settings["tftInvert"].as<bool>() : false;
     xTouchConfig.xTouchOTAEnabled = settings.containsKey("ota") ? settings["ota"].as<bool>() : false;
     xTouchConfig.xTouchWakeOnPrint = settings.containsKey("wop") ? settings["wop"].as<bool>() : true;
+    xTouchConfig.xTouchChamberSensorReadingDiff = settings.containsKey("chamberTempDiff") ? settings["chamberTempDiff"].as<int8_t>() : 0;
 
     if (xtouch_ssdp_is_paired())
     {
