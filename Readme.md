@@ -341,7 +341,20 @@ If you encounter issues during the installation or operation of your BambuLab Pr
 
 3. **No printers are discovered during the search process**:
 
-   - In certain instances, users have encountered an issue where no printers are discovered during the search process. Typically, this concern can be addressed by restarting both the printer and the screen.
+   - In certain instances, users have encountered an issue where no printers are discovered during the search process.
+   - Posible solutions
+      
+      1. Device Check:
+
+         - Restart the router: Unplug the power cable from the router, wait for about 30 seconds, and then plug it back in. This helps refresh the router's settings and can resolve temporary connectivity issues.
+         - Restart the xtouch screen and printer: Turn off both devices, wait for a moment, and then turn them back on. This ensures that any temporary glitches in the devices' connectivity are resolved.
+
+      2. Hotspot Test:
+
+         - Create a hotspot with your phone: Go to the settings on your phone, find the "Hotspot" or "Tethering" option, and enable it. This turns your phone into a WiFi hotspot that other devices can connect to.
+         - Connect both the xtouch screen and the printer to this access point
+         - If both devices connect successfully: This means that the xtouch screen and printer are capable of connecting to a WiFi network, and the issue may lie with the router or its configuration.
+
    
 4. **WiFi Connection Loop**:
 
