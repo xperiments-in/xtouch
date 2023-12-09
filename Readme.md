@@ -111,7 +111,8 @@ The choice between USB and the JST 1.25 4-pin connector depends on your preferen
 
 ### Install Drivers
 
-[Install CH340 Drivers](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all)
+[Install CH340 Drivers](https://www.wch.cn/download/CH341SER_ZIP.html)
+[Install CH340 Drivers + Tutorial](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all)
 
 ### Prepare the SD card
 
