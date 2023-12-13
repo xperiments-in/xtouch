@@ -18,7 +18,7 @@ String xtouch_mqtt_report_topic;
 #include "device.h"
 
 #define XTOUCH_MQTT_SERVER_TIMEOUT 20
-#define XTOUCH_MQTT_SERVER_BUFFER_SIZE 8192
+#define XTOUCH_MQTT_SERVER_BUFFER_SIZE 16384
 #define XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE 8192
 
 /* ---------------------------------------------- */

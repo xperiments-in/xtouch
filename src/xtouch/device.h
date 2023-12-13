@@ -27,6 +27,7 @@ String xtouch_device_print_action(char const *action)
     return result;
 }
 
+String lastPrintState = "IDLE";
 void xtouch_device_set_print_state(String state)
 {
     if (state == "IDLE")
@@ -42,10 +43,12 @@ void xtouch_device_set_print_state(String state)
     else if (state == "FAILED")
         bambuStatus.print_status = XTOUCH_PRINT_STATUS_FAILED;
 
-    if (xTouchConfig.xTouchWakeOnPrint && state != "IDLE" && state != "FINISH" && state != "FAILED")
+    if (lastPrintState != state && xTouchConfig.xTouchWakeOnPrint && state != "IDLE" && state != "FINISH" && state != "FAILED")
     {
         xtouch_screen_wakeUp();
     }
+    
+    lastPrintState = state;
 }
 
 void xtouch_device_publish(String request)
