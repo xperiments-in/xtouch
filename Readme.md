@@ -111,7 +111,8 @@ The choice between USB and the JST 1.25 4-pin connector depends on your preferen
 
 ### Install Drivers
 
-[Install CH340 Drivers](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all)
+[Install CH340 Drivers](https://www.wch.cn/download/CH341SER_ZIP.html)
+[Install CH340 Drivers + Tutorial](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all)
 
 ### Prepare the SD card
 
@@ -339,7 +340,24 @@ If you encounter issues during the installation or operation of your BambuLab Pr
 
    - Keep in mind that SD cards from different manufacturers may behave differently. While many SD cards work seamlessly, some may not be fully compatible with the touch screen. If you experience issues with an SD card, consider trying a different brand or model to see if it resolves the problem.
 
-3. **WiFi Connection Loop**:
+3. **No printers are discovered during the search process**:
+
+   - In certain instances, users have encountered an issue where no printers are discovered during the search process.
+   - Posible solutions
+      
+      1. Device Check:
+
+         - Restart the router: Unplug the power cable from the router, wait for about 30 seconds, and then plug it back in. This helps refresh the router's settings and can resolve temporary connectivity issues.
+         - Restart the xtouch screen and printer: Turn off both devices, wait for a moment, and then turn them back on. This ensures that any temporary glitches in the devices' connectivity are resolved.
+
+      2. Hotspot Test:
+
+         - Create a hotspot with your phone: Go to the settings on your phone, find the "Hotspot" or "Tethering" option, and enable it. This turns your phone into a WiFi hotspot that other devices can connect to.
+         - Connect both the xtouch screen and the printer to this access point
+         - If both devices connect successfully: This means that the xtouch screen and printer are capable of connecting to a WiFi network, and the issue may lie with the router or its configuration.
+
+   
+4. **WiFi Connection Loop**:
 
    - In some cases, users have reported that after confirming their WiFi credentials are correct, the device enters into a continuous loop without establishing a connection. This issue can sometimes be resolved by adjusting the WiFi connection timeout.
 
@@ -360,7 +378,7 @@ If you encounter issues during the installation or operation of your BambuLab Pr
    > **Warning**
    > If you are unsure how to create the `wifi.json` file, you can use the [Online wifi.json Form](https://xperiments.in/xtouch-bin/ssid.html) for step-by-step instructions.
 
-4. **Endless Reboots in Printer Startup**:
+5. **Endless Reboots in Printer Startup**:
 
    - Sometimes, users may encounter an issue where the printer and xtouch screen go through an endless reboot cycle during the device's power-on process, preventing xtouch from becoming ready. This problem can often be resolved by adjusting the "coldboot" value within the "wifi.json" configuration file.
 
@@ -381,7 +399,7 @@ If you encounter issues during the installation or operation of your BambuLab Pr
    > **Note**
    > If you're unsure about how to modify the "wifi.json" file, you can use the [Online wifi.json Form](https://xperiments.in/xtouch-bin/ssid.html) for step-by-step instructions.
 
-5. **Recalibrating the Screen**:
+6. **Recalibrating the Screen**:
 
    If you encounter touch screen calibration issues or misalignment, you can recalibrate the screen by removing the `touch.json` file located in the `xtouch` directory on the SD card. Follow these steps:
 
@@ -396,7 +414,7 @@ If you encounter issues during the installation or operation of your BambuLab Pr
 
    The touch screen will automatically perform a recalibration process upon startup.
 
-6. **P1P/S 01.04.00.00 LAN Mode Bug**:
+7. **P1P/S 01.04.00.00 LAN Mode Bug**:
 
    #### P1P/S 01.04.00.00 LAN Mode Bug
 
