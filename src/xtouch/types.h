@@ -8,6 +8,12 @@ extern "C"
 {
 #endif
 
+    enum XTouchPrinterSeries {
+        SERIES_X1 = 0,
+        SERIES_P1P,
+        SERIES_UNKNOWN,
+    };
+
     struct XTouchPanelConfig
     {
         float xCalM;
@@ -103,6 +109,7 @@ extern "C"
         bool ams_insert_flag;
         bool ams_power_on_flag;
         bool ams_calibrate_remain_flag;
+        bool ams_support_virtual_tray;
         bool is_ams_need_update;
         long tray_exist_bits;
         long tray_is_bbl_bits;

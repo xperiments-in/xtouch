@@ -19,7 +19,7 @@ String xtouch_mqtt_report_topic;
 
 #define XTOUCH_MQTT_SERVER_TIMEOUT 20
 #define XTOUCH_MQTT_SERVER_BUFFER_SIZE 16384
-#define XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE 8192
+#define XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE 16384
 
 /* ---------------------------------------------- */
 bool xtouch_mqtt_firstConnectionDone = false;
@@ -63,23 +63,9 @@ String xtouch_mqtt_parse_printer_type(String type_str)
 
 void xtouch_mqtt_update_slice_info(const char *project_id, const char *profile_id, const char *subtask_id, int plate_idx)
 {
-
-    if (bambuStatus.project_id_ != project_id || bambuStatus.profile_id_ != profile_id || bambuStatus.subtask_id_ != subtask_id)
-    {
         strcpy(bambuStatus.project_id_, project_id);
         strcpy(bambuStatus.profile_id_, profile_id);
         strcpy(bambuStatus.subtask_id_, subtask_id);
-
-        if (project_id == "" || profile_id == "" || subtask_id == "")
-        {
-            return;
-        }
-
-        if (project_id == "0" || profile_id == "0")
-        {
-            return;
-        }
-    }
 }
 
 void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
@@ -165,7 +151,7 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
                 bambuStatus.print_error = incomingJson["print"]["print_error"].as<int>();
                 sprintf(prefix_str, "%08X", bambuStatus.print_error);
 
-                if (xtouch_errors_isKeyPresent(prefix_str, device_error_keys))
+                if (xtouch_errors_isKeyPresent(prefix_str, device_error_keys, device_error_length))
                 {
                     hms_enqueue(incomingJson["print"]["print_error"].as<unsigned long long>());
                     xtouch_mqtt_sendMsg(XTOUCH_ON_ERROR, 0);
@@ -462,7 +448,7 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
 
                     unsigned long long intValue = strtoull(buffer, &endPtr, 16);
 
-                    if (xtouch_errors_isKeyPresent(buffer, hms_error_values))
+                    if (xtouch_errors_isKeyPresent(buffer, hms_error_values, hms_error_length))
                     {
                         hms_enqueue(intValue);
                         xtouch_mqtt_sendMsg(XTOUCH_ON_ERROR, 0);
@@ -584,7 +570,13 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
         }
 
         // vt_tray
-
+        if (incomingJson["print"].containsKey("vt_tray"))
+        {
+            bambuStatus.ams_support_virtual_tray = true;
+        }
+        else{
+            bambuStatus.ams_support_virtual_tray = false;
+        }
         // #pragma endregion
 
         if (incomingJson["print"].containsKey("gcode_state") ||
@@ -607,7 +599,7 @@ void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length)
     ConsoleDebug.println(F("[XTouch][MQTT] ParseMessage"));
     DynamicJsonDocument incomingJson(XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE);
     auto deserializeError = deserializeJson(incomingJson, payload, length);
-    xtouch_debug_json(incomingJson);
+    // xtouch_debug_json(incomingJson);
     if (!deserializeError)
     {
 
