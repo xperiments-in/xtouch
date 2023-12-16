@@ -47,7 +47,7 @@ void xtouch_device_set_print_state(String state)
     {
         xtouch_screen_wakeUp();
     }
-    
+
     lastPrintState = state;
 }
 
@@ -248,15 +248,35 @@ void xtouch_device_onLoadFilament(lv_msg_t *m)
 {
     if (xtouch_can_load_filament())
     {
-        xtouch_device_gcode_line("M620 S254\nM106 S255\nM104 S250\nM17 S\nM17 X0.5 Y0.5\nG91\nG1 Y-5 F1200\nG1 Z3\nG90\nG28 X\nM17 R\nG1 X70 F21000\nG1 Y245\nG1 Y265 F3000\nG4\nM106 S0\nM109 S250\nG1 X90\nG1 Y255\nG1 X120\nG1 X20 Y50 F21000\nG1 Y-3\nT254\nG1 X54\nG1 Y265\nG92 E0\nG1 E40 F180\nG4\nM104 S260\nG1 X70 F15000\nG1 X76\nG1 X65\nG1 X76\nG1 X65\nG1 X90 F3000\nG1 Y255\nG1 X100\nG1 Y265\nG1 X70 F10000\nG1 X100 F5000\nG1 X70 F10000\nG1 X100 F5000\nG1 X165 F12000\nG1 Y245\nG1 X70\nG1 Y265 F3000\nG91\nG1 Z-3 F1200\nG90\nM621 S254\n\n");
+        xtouch_device_gcode_line("M620 S254\nM106 S255\nM104 S250\nM17 S\nM17 X0.5 Y0.5\nG91\nG1 Y-5 F1200\nG1 Z3\nG90\nG28 X\nM17 R\nG1 X70 F21000\nG1 Y245\nG1 Y265 F3000\nG4\nM106 S0\nM109 S250\nG1 X90\nG1 Y255\nG1 X120\nG1 X20 Y50 F21000\nG1 Y-3\nT254\nG1 X54\nG1 Y265\nG92 E0\nG1 E40 F180\nG4\nM104 S0\nG1 X70 F15000\nG1 X76\nG1 X65\nG1 X76\nG1 X65\nG1 X90 F3000\nG1 Y255\nG1 X100\nG1 Y265\nG1 X70 F10000\nG1 X100 F5000\nG1 X70 F10000\nG1 X100 F5000\nG1 X165 F12000\nG1 Y245\nG1 X70\nG1 Y265 F3000\nG91\nG1 Z-3 F1200\nG90\nM621 S254\n\n");
     }
 }
 
 void xtouch_device_onUnloadFilament(lv_msg_t *m)
 {
-    if (xtouch_can_unload_filament())
+    if (xtouch_bblp_is_x1Series() && !bambuStatus.ams_support_virtual_tray)
+    {
+
+        DynamicJsonDocument json(256);
+        json["print"]["command"] = "gcode_file";
+        json["print"]["param"] = "/usr/etc/print/filament_unload.gcode";
+        json["print"]["sequence_id"] = xtouch_device_next_sequence();
+        String result;
+        serializeJson(json, result);
+        xtouch_device_publish(result);
+    }
+    else if (xtouch_bblp_is_p1Series() || (xtouch_bblp_is_x1Series() && bambuStatus.ams_support_virtual_tray))
     {
         xtouch_device_gcode_line("M620 S255\nM106 P1 S255\nM104 S250\nM17 S\nM17 X0.5 Y0.5\nG91\nG1 Y-5 F3000\nG1 Z3 F1200\nG90\nG28 X\nM17 R\nG1 X70 F21000\nG1 Y245\nG1 Y265 F3000\nG4\nM106 P1 S0\nM109 S250\nG1 X90 F3000\nG1 Y255 F4000\nG1 X100 F5000\nG1 X120 F21000\nG1 X20 Y50\nG1 Y-3\nT255\nG4\nM104 S0\nG1 X70 F3000\n\nG91\nG1 Z-3 F1200\nG90\nM621 S255\n\n");
+    }
+    else
+    {
+        DynamicJsonDocument json(256);
+        json["print"]["command"] = "unload_filament";
+        json["print"]["sequence_id"] = xtouch_device_next_sequence();
+        String result;
+        serializeJson(json, result);
+        xtouch_device_publish(result);
     }
 }
 
@@ -264,7 +284,11 @@ void xtouch_device_command_ams_control(void *s, lv_msg_t *m)
 {
     const char *action = (const char *)m->payload;
 
-    if (action == "resume" || action == "reset" || action == "pause" || action == "done")
+    if (
+        strcmp(action, "resume") == 0 ||
+        strcmp(action, "reset") == 0 ||
+        strcmp(action, "pause") == 0 ||
+        strcmp(action, "done") == 0)
     {
         DynamicJsonDocument json(256);
         json["print"]["command"] = "ams_control";

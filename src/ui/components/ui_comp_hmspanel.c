@@ -4,30 +4,36 @@
 
 unsigned long long ui_hmsPanel_currentError;
 
-void ui_hmsPanel_show(const char *title, bool hasDone, bool hasRetry)
+void ui_hmsPanel_show(const char *title, enum XtouchDialogButtonStyle btn_style)
 {
     lv_obj_t *titleLabel = ui_comp_get_child(ui_hmsComponent, UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANELCAPTION);
     lv_obj_t *confirmButton = ui_comp_get_child(ui_hmsComponent, UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_CONFIRM_BUTTON);
     lv_obj_t *retryButton = ui_comp_get_child(ui_hmsComponent, UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_RETRY_BUTTON);
     lv_obj_t *doneButton = ui_comp_get_child(ui_hmsComponent, UI_COMP_HMSPANEL_HMSPANELCONTAINER_HMSPANEL_DONE_BUTTON);
 
-    lv_obj_add_flag(confirmButton, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(confirmButton, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(retryButton, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(doneButton, LV_OBJ_FLAG_HIDDEN);
 
-    if (hasDone)
+    if (btn_style == CONFIRM_AND_DONE)
     {
         lv_obj_clear_flag(doneButton, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_clear_flag(confirmButton, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(retryButton, LV_OBJ_FLAG_HIDDEN);
     }
-    else if (hasRetry)
+    else if (btn_style == CONFIRM_AND_RETRY)
+    {
+        lv_obj_add_flag(doneButton, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(retryButton, LV_OBJ_FLAG_HIDDEN);
+    }
+    else if (btn_style == DONE_AND_RETRY)
     {
         lv_obj_clear_flag(retryButton, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_clear_flag(confirmButton, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(doneButton, LV_OBJ_FLAG_HIDDEN);
     }
     else
     {
-        lv_obj_clear_flag(confirmButton, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(retryButton, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(doneButton, LV_OBJ_FLAG_HIDDEN);
     }
 
     lv_label_set_text(titleLabel, title);
@@ -74,7 +80,8 @@ void ui_hmsPanelComponent_onXTouchHMSError(lv_event_t *e)
                 const char *error = ui_hmsPanel_deviceHMSError(ui_hmsPanel_currentError);
                 if (error != "")
                 {
-                    ui_hmsPanel_show(error, hasDone, hasRetry);
+                    ui_hmsPanel_show(error,
+                                     hasRetry ? (hasDone ? DONE_AND_RETRY : CONFIRM_AND_RETRY) : (hasDone ? CONFIRM_AND_DONE : ONLY_CONFIRM));
                 }
                 else
                 {
@@ -91,7 +98,7 @@ void ui_hmsPanelComponent_onXTouchHMSError(lv_event_t *e)
                 case HMS_INFO:
                     if (error != "")
                     {
-                        ui_hmsPanel_show(error, false, false);
+                        ui_hmsPanel_show(error, ONLY_CONFIRM);
                     }
                     else
                     {
@@ -117,18 +124,6 @@ void ui_event_comp_hmsPanel_onButtonDequeue()
     lv_timer_t *ui_event_comp_hmsPanel_buttonDequeueTimer = lv_timer_create(ui_event_comp_hmsPanel_onButtonDequeueOnTimer, 500, NULL);
     lv_timer_set_repeat_count(ui_event_comp_hmsPanel_buttonDequeueTimer, 1);
 }
-void ui_event_comp_hmsPanel_hmsPanelButtonA(lv_event_t *e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    if (event_code == LV_EVENT_CLICKED)
-    {
-        ui_hmsPanel_hide();
-        if (!hms_isQueueEmpty())
-        {
-            ui_event_comp_hmsPanel_onButtonDequeue();
-        }
-    }
-}
 
 void ui_event_comp_hmsPanel_onDoneClick(lv_event_t *e)
 {
@@ -143,6 +138,7 @@ void ui_event_comp_hmsPanel_onDoneClick(lv_event_t *e)
         }
     }
 }
+
 void ui_event_comp_hmsPanel_onConfirmClick(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
