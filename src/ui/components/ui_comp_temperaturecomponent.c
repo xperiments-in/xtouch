@@ -197,8 +197,6 @@ void ui_event_comp_temperatureComponent_numpadKeyOk(lv_event_t *e)
     lv_obj_t **comp_temperatureComponent = lv_event_get_user_data(e);
     if (event_code == LV_EVENT_CLICKED)
     {
-        // ON OK
-        // ui_temperatureComponent_keypad(e);
         lv_obj_t *bed = ui_comp_get_child(ui_temperatureComponent, UI_COMP_TEMPERATURECOMPONENT_TEMPERATURECOMPONENTTEMPS_TEMPERATURECOMPONENTBED_MAINSCREENBEDTEMPINPUT);
         lv_obj_t *nozzle = ui_comp_get_child(ui_temperatureComponent, UI_COMP_TEMPERATURECOMPONENT_TEMPERATURECOMPONENTTEMPS_TEMPERATURECOMPONENTNOZZLE_MAINSCREENNOZZLETEMPINPUT);
         lv_obj_t *part = ui_comp_get_child(ui_temperatureComponent, UI_COMP_TEMPERATURECOMPONENT_TEMPERATURECOMPONENTFANS_TEMPERATURECOMPONENTPARTFAN_TEMPERATURECOMPONENTPARTFANINPUT);
@@ -228,13 +226,7 @@ void ui_event_comp_temperatureComponent_numpadKeyOk(lv_event_t *e)
         else if (ui_temperatureComponent_input_target == aux)
         {
             const char *data = lv_textarea_get_text(aux);
-            int speed = atoi(data);
-            // limit here to 95 as aux fan does not like values above 95
-            if (speed > 95)
-            {
-                speed = 95;
-            }
-            bambuStatus.big_fan1_speed = speed * 255 / 100;
+            bambuStatus.big_fan1_speed = atoi(data) * 255 / 100;
             lv_msg_send(XTOUCH_COMMAND_AUX_FAN_SPEED, NULL);
             lv_textarea_set_text(aux, "");
         }
@@ -296,7 +288,7 @@ void ui_temperatureComponent_onXtouchPartFanSpeed(lv_event_t *e)
     struct XTOUCH_MESSAGE_DATA *message = (struct XTOUCH_MESSAGE_DATA *)m->payload;
     char value[3];
 
-    itoa(message->data * 100 / 255, value, 10);
+    itoa(round(message->data * 100 / 255.), value, 10);
     lv_textarea_set_text(target, value);
 }
 
@@ -308,7 +300,7 @@ void ui_temperatureComponent_onXtouchAuxFanSpeed(lv_event_t *e)
     struct XTOUCH_MESSAGE_DATA *message = (struct XTOUCH_MESSAGE_DATA *)m->payload;
     char value[3];
 
-    itoa(message->data * 100 / 255, value, 10);
+    itoa(round(message->data * 100 / 255.), value, 10);
     lv_textarea_set_text(target, value);
 }
 
@@ -320,7 +312,7 @@ void ui_temperatureComponent_onXtouchChamberFanSpeed(lv_event_t *e)
     struct XTOUCH_MESSAGE_DATA *message = (struct XTOUCH_MESSAGE_DATA *)m->payload;
     char value[4];
 
-    itoa(message->data * 100 / 255, value, 10);
+    itoa(round(message->data * 100 / 255.), value, 10);
     lv_textarea_set_text(target, value);
 }
 
