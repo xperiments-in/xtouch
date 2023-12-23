@@ -11,7 +11,7 @@ void ui_event_comp_filamentComponent_onNozzleTemp(lv_event_t *e)
     char value[10];
     itoa(message->data, value, 10);
     lv_label_set_text(target, value);
-    lv_obj_set_style_text_color(target, message->data < 170 ? lv_color_hex(0x0000DD) : lv_color_hex(0xDD0000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(target, message->data < 170 ? lv_color_hex(0x39a1fd) : lv_color_hex(0xfaa61e), LV_PART_MAIN | LV_STATE_DEFAULT);
 
 }
 
