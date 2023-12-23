@@ -7,6 +7,7 @@
 #include <ArduinoJson.h>
 #include "ui/ui_msgs.h"
 #include "types.h"
+#include "autogrowstream.h"
 
 WiFiClientSecure xtouch_wiFiClientSecure;
 PubSubClient xtouch_pubSubClient(xtouch_wiFiClientSecure);
@@ -18,13 +19,14 @@ String xtouch_mqtt_report_topic;
 #include "device.h"
 
 #define XTOUCH_MQTT_SERVER_TIMEOUT 20
-#define XTOUCH_MQTT_SERVER_BUFFER_SIZE 16384
-#define XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE 16384
+#define XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE 8192
 
 /* ---------------------------------------------- */
 bool xtouch_mqtt_firstConnectionDone = false;
 int xtouch_mqtt_connection_timeout_count = 5;
 int xtouch_mqtt_connection_fail_count = 5;
+
+XtouchAutoGrowBufferStream stream;
 
 void xtouch_mqtt_sendMsg(XTOUCH_MESSAGE message, unsigned long long data = 0)
 {
@@ -63,9 +65,9 @@ String xtouch_mqtt_parse_printer_type(String type_str)
 
 void xtouch_mqtt_update_slice_info(const char *project_id, const char *profile_id, const char *subtask_id, int plate_idx)
 {
-        strcpy(bambuStatus.project_id_, project_id);
-        strcpy(bambuStatus.profile_id_, profile_id);
-        strcpy(bambuStatus.subtask_id_, subtask_id);
+    strcpy(bambuStatus.project_id_, project_id);
+    strcpy(bambuStatus.profile_id_, profile_id);
+    strcpy(bambuStatus.subtask_id_, subtask_id);
 }
 
 void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
@@ -574,7 +576,8 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
         {
             bambuStatus.ams_support_virtual_tray = true;
         }
-        else{
+        else
+        {
             bambuStatus.ams_support_virtual_tray = false;
         }
         // #pragma endregion
@@ -593,12 +596,19 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
     }
 }
 
-void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length)
+void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length, byte type = 0)
 {
 
     ConsoleDebug.println(F("[XTouch][MQTT] ParseMessage"));
     DynamicJsonDocument incomingJson(XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE);
-    auto deserializeError = deserializeJson(incomingJson, payload, length);
+
+    DynamicJsonDocument amsFilter(128);
+    amsFilter["print"]["*"] =  type == 0;
+    amsFilter["camera"]["*"] =  type == 0;
+    amsFilter["print"]["ams"] = type == 1;
+
+    auto deserializeError = deserializeJson(incomingJson, payload, length, DeserializationOption::Filter(amsFilter));
+
     // xtouch_debug_json(incomingJson);
     if (!deserializeError)
     {
@@ -655,6 +665,30 @@ void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length)
     {
         ConsoleError.println(F("[XTouch][MQTT] ParseMessage deserializeJson failed"));
     }
+}
+
+void callback(char *topic, byte *payload, unsigned int length)
+{
+
+    ConsoleLog.println("ESP.getFreeHeap() / ESP.getMaxAllocHeap()");
+    ConsoleLog.println(ESP.getFreeHeap());
+    ConsoleLog.println(ESP.getMaxAllocHeap());
+    
+    xtouch_mqtt_parseMessage(topic, (byte *)stream.get_buffer(), stream.current_length(),0);
+
+ // Search for the string "ams" in the payload
+    char *amsPosition = strstr((char *)payload, "\"ams\"");
+
+    // Check if "ams" was found in the payload
+    if (amsPosition != nullptr)
+    {
+        xtouch_mqtt_parseMessage(topic, (byte *)stream.get_buffer(), stream.current_length(),1);
+    }
+    
+    
+    stream.flush();
+    ConsoleLog.println(ESP.getFreeHeap());
+    ConsoleLog.println(ESP.getMaxAllocHeap());
 }
 
 const char *xtouch_mqtt_generateRandomKey(int keyLength)
@@ -802,9 +836,13 @@ void xtouch_mqtt_setup()
     xtouch_mqtt_topic_setup();
 
     xtouch_wiFiClientSecure.setInsecure();
-    xtouch_pubSubClient.setBufferSize(XTOUCH_MQTT_SERVER_BUFFER_SIZE);
+    // xtouch_pubSubClient.setBufferSize(XTOUCH_MQTT_SERVER_BUFFER_SIZE);
     xtouch_pubSubClient.setServer(ip, 8883);
-    xtouch_pubSubClient.setCallback(xtouch_mqtt_parseMessage);
+    // xtouch_pubSubClient.setCallback(xtouch_mqtt_parseMessage);
+    // xtouch_pubSubClient.setSocketTimeout(XTOUCH_MQTT_SERVER_TIMEOUT);
+
+    xtouch_pubSubClient.setStream(stream);
+    xtouch_pubSubClient.setCallback(callback);
     xtouch_pubSubClient.setSocketTimeout(XTOUCH_MQTT_SERVER_TIMEOUT);
 
     /* home */
