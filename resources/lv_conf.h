@@ -49,7 +49,7 @@
 #define LV_MEM_CUSTOM 0
 #if LV_MEM_CUSTOM == 0
     /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
-    #define LV_MEM_SIZE (32U * 1024U)          /*[bytes]*/
+    #define LV_MEM_SIZE (28U * 1024U)          /*[bytes]*/
 
     /*Set an address for the memory pool instead of allocating it as a normal array. Can be in external SRAM too.*/
     #define LV_MEM_ADR 0     /*0: unused*/
@@ -78,7 +78,7 @@
  *====================*/
 
 /*Default display refresh period. LVG will redraw changed areas with this period time*/
-#define LV_DISP_DEF_REFR_PERIOD 40      /*[ms]*/
+#define LV_DISP_DEF_REFR_PERIOD 25      /*[ms]*/
 
 /*Input device read period in milliseconds*/
 #define LV_INDEV_DEF_READ_PERIOD 40     /*[ms]*/
@@ -194,7 +194,7 @@
  *-----------*/
 
 /*Enable the log module*/
-#define LV_USE_LOG 1
+#define LV_USE_LOG 0
 #if LV_USE_LOG
 
     /*How important log should be added:
@@ -501,7 +501,7 @@
 
 #define LV_USE_COLORWHEEL 0
 
-#define LV_USE_IMGBTN     1
+#define LV_USE_IMGBTN     0
 
 #define LV_USE_KEYBOARD   1
 
@@ -674,16 +674,16 @@
  ====================*/
 
 /*Show some widget. It might be required to increase `LV_MEM_SIZE` */
-#define LV_USE_DEMO_WIDGETS        1
+#define LV_USE_DEMO_WIDGETS        0
 #if LV_USE_DEMO_WIDGETS
 #define LV_DEMO_WIDGETS_SLIDESHOW  1
 #endif
 
-/*Demonstrate the usage of encoder and keyboard*/
+/*Demonstrate the usage of encoder and keyboard*0
 #define LV_USE_DEMO_KEYPAD_AND_ENCODER     1
 
 /*Benchmark your system*/
-#define LV_USE_DEMO_BENCHMARK   1
+#define LV_USE_DEMO_BENCHMARK   0
 
 /*Stress test for LVGL*/
 #define LV_USE_DEMO_STRESS      0
