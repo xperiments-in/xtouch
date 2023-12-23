@@ -5,7 +5,7 @@ const url = 'https://e.bambulab.com/query.php?lang=en';
 const hmsDataFileC = 'src/xtouch/bbl/bbl-errors.c';
 const hmsDataFileH = 'src/xtouch/bbl/bbl-errors.h';
 
-
+// StatusPanel.cpp
 const message_containing_retry = [
     "07018004",
     "07018005",
@@ -25,6 +25,7 @@ const message_containing_retry = [
     "07FF8011",
     "07FF8012",
     "07FF8013",
+    "12FF8007"
 ];
 const message_containing_done = [
     "07FF8007",
