@@ -123,7 +123,9 @@ def post_build_copy_ota_fw(version):
     ota_bin_source = ".pio/build/esp32dev/firmware.bin"
     ota_bin_target = f"../xtouch-bin/ota/xtouch.{version}.bin"
     subprocess.run(['cp', ota_bin_source, ota_bin_target])
-
+    fw_bin_source = ".pio/build/esp32dev/firmware.bin"
+    fw_bin_target = f"../xtouch-bin/fw/firmware.bin"
+    subprocess.run(['cp', fw_bin_source, fw_bin_target])
 
 def post_build_merge_bin(version):
 
