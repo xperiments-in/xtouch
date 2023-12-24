@@ -1,5 +1,20 @@
 #include "../ui.h"
 
+
+void ui_event_comp_filamentComponent_onNozzleTemp(lv_event_t *e)
+{
+    lv_obj_t *target = lv_event_get_target(e);
+    lv_msg_t *m = lv_event_get_msg(e);
+
+    struct XTOUCH_MESSAGE_DATA *message = (struct XTOUCH_MESSAGE_DATA *)m->payload;
+
+    char value[10];
+    itoa(message->data, value, 10);
+    lv_label_set_text(target, value);
+    lv_obj_set_style_text_color(target, message->data < 170 ? lv_color_hex(0x39a1fd) : lv_color_hex(0xfaa61e), LV_PART_MAIN | LV_STATE_DEFAULT);
+
+}
+
 void ui_event_comp_filamentComponent_filamentScreenNozzleUp(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -140,7 +155,7 @@ lv_obj_t *ui_filamentComponent_create(lv_obj_t *comp_parent)
     lv_label_set_text(cui_filamentScreenNozzleIcon, "p");
     lv_obj_clear_flag(cui_filamentScreenNozzleIcon, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_scrollbar_mode(cui_filamentScreenNozzleIcon, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_set_style_text_align(cui_filamentScreenNozzleIcon, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(cui_filamentScreenNozzleIcon, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(cui_filamentScreenNozzleIcon, &ui_font_xlcd, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_radius(cui_filamentScreenNozzleIcon, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_filamentScreenNozzleIcon, lv_color_hex(0x777777), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -152,6 +167,12 @@ lv_obj_t *ui_filamentComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_pad_bottom(cui_filamentScreenNozzleIcon, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_filamentScreenNozzleIcon, lv_color_hex(0x777777), LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_set_style_bg_opa(cui_filamentScreenNozzleIcon, 255, LV_PART_MAIN | LV_STATE_PRESSED);
+
+    lv_obj_t *cui_filamentScreenNozzleTemp;
+    cui_filamentScreenNozzleTemp = lv_label_create(cui_filamentScreenNozzleIcon);
+    lv_label_set_text(cui_filamentScreenNozzleTemp, "");
+    lv_obj_set_style_text_font(cui_filamentScreenNozzleTemp, &lv_font_montserrat_28, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(cui_filamentScreenNozzleTemp, -8, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t *cui_filamentScreenNozzleDown;
     cui_filamentScreenNozzleDown = lv_label_create(cui_filamentScreenNozzle);
@@ -271,6 +292,7 @@ lv_obj_t *ui_filamentComponent_create(lv_obj_t *comp_parent)
     children[UI_COMP_FILAMENTCOMPONENT_FILAMENTSCREENNOZZLE] = cui_filamentScreenNozzle;
     children[UI_COMP_FILAMENTCOMPONENT_FILAMENTSCREENNOZZLE_FILAMENTSCREENNOZZLEUP] = cui_filamentScreenNozzleUp;
     children[UI_COMP_FILAMENTCOMPONENT_FILAMENTSCREENNOZZLE_FILAMENTSCREENNOZZLEICON] = cui_filamentScreenNozzleIcon;
+    children[UI_COMP_FILAMENTCOMPONENT_FILAMENTSCREENNOZZLE_FILAMENTSCREENNOZZLETEMP] = cui_filamentScreenNozzleTemp;
     children[UI_COMP_FILAMENTCOMPONENT_FILAMENTSCREENNOZZLE_FILAMENTSCREENNOZZLEDOWN] = cui_filamentScreenNozzleDown;
     children[UI_COMP_FILAMENTCOMPONENT_FILAMENTSCREENFILAMENT] = cui_filamentScreenFilament;
     children[UI_COMP_FILAMENTCOMPONENT_FILAMENTSCREENFILAMENT_FILAMENTSCREENUNLOAD] = cui_filamentScreenUnload;
@@ -285,6 +307,10 @@ lv_obj_t *ui_filamentComponent_create(lv_obj_t *comp_parent)
 
     lv_obj_add_event_cb(cui_filamentComponent, ui_filamentComponent_onAMSBits, LV_EVENT_MSG_RECEIVED, NULL);
     lv_msg_subsribe_obj(XTOUCH_ON_AMS_BITS, cui_filamentComponent, NULL);
+
+
+    lv_obj_add_event_cb(cui_filamentScreenNozzleTemp, ui_event_comp_filamentComponent_onNozzleTemp, LV_EVENT_MSG_RECEIVED, NULL);
+    lv_msg_subsribe_obj(XTOUCH_ON_NOZZLE_TEMP, cui_filamentScreenNozzleTemp, NULL);    
 
     ui_comp_filamentComponent_create_hook(cui_filamentComponent);
     return cui_filamentComponent;

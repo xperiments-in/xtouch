@@ -240,7 +240,11 @@ void onXTouchPrintStatus(lv_event_t *e)
 
     char remainingTimeText[48];
     _ui_seconds_to_timeleft(bambuStatus.mc_left_time, remainingTimeText);
-    lv_label_set_text(target, remainingTimeText);
+
+    char percentAndRemaining[100]; // Adjust the size accordingly
+    sprintf(percentAndRemaining, "%d%% -- %s", bambuStatus.mc_print_percent, remainingTimeText);
+
+    lv_label_set_text(target, percentAndRemaining);
 
     lv_obj_t *playPauseButton = comp_homeComponent[UI_COMP_HOMECOMPONENT_MAINSCREENLEFT_MAINSCREENPLAYER_MAINSCREENCONTROLLER_MAINSCREENPLAYPAUSEBUTTON];
     lv_obj_t *dropDown = comp_homeComponent[UI_COMP_HOMECOMPONENT_MAINSCREENLEFT_MAINSCREENCENTRAL_MAINSCREENSPEEDDROPDOWN];

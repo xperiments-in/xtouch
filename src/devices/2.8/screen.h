@@ -23,7 +23,7 @@ static const uint16_t screenWidth = 240;
 static const uint16_t screenHeight = 320;
 
 static lv_disp_draw_buf_t draw_buf;
-static lv_color_t buf[screenWidth * screenHeight / 10];
+static lv_color_t buf[4096];
 
 TFT_eSPI tft = TFT_eSPI(screenWidth, screenHeight); /* TFT instance */
 
@@ -67,10 +67,10 @@ void xtouch_screen_wakeUp()
 
 void xtouch_screen_onScreenOff(lv_timer_t *timer)
 {
-    if (bambuStatus.print_status == XTOUCH_PRINT_STATUS_RUNNING)
-    {
-        return;
-    }
+    // if (bambuStatus.print_status == XTOUCH_PRINT_STATUS_RUNNING)
+    // {
+    //     return;
+    // }
 
     if (xTouchConfig.xTouchTFTOFFValue < XTOUCH_LCD_MIN_SLEEP_TIME)
     {
@@ -198,7 +198,7 @@ void xtouch_screen_setup()
 
     xtouch_screen_setBrightness(255);
 
-    lv_disp_draw_buf_init(&draw_buf, buf, NULL, screenWidth * screenHeight / 10);
+    lv_disp_draw_buf_init(&draw_buf, buf, NULL, 4096);
 
     /*Initialize the display*/
     static lv_disp_drv_t disp_drv;

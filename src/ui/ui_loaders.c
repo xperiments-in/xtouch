@@ -35,6 +35,9 @@ void fillScreenData(int screen)
     case 2:
         sendMqttMsg(XTOUCH_CONTROL_INC_SWITCH, controlMode.inc);
         break;
+    case 3:
+        sendMqttMsg(XTOUCH_ON_NOZZLE_TEMP, bambuStatus.nozzle_temper);
+        break;
     }
 }
 

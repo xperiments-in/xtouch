@@ -146,26 +146,13 @@ void onSettingsTFTFlip(lv_event_t *e)
 /* filament */
 void onNozzleUp(lv_event_t *e)
 {
-    if (bambuStatus.nozzle_temper < 170)
-    {
-        ui_confirmPanel_show(LV_SYMBOL_WARNING " Please heat the nozzle to 170°", ui_confirmPanel_NOOP);
-    }
-    else
-    {
-        lv_msg_send(XTOUCH_COMMAND_EXTRUDE_UP, NULL);
-    }
+    lv_msg_send(XTOUCH_COMMAND_EXTRUDE_UP, NULL);
 }
 
 void onNozzleDown(lv_event_t *e)
 {
-    if (bambuStatus.nozzle_temper < 170)
-    {
-        ui_confirmPanel_show(LV_SYMBOL_WARNING " Please heat the nozzle to 170°", ui_confirmPanel_NOOP);
-    }
-    else
-    {
-        lv_msg_send(XTOUCH_COMMAND_EXTRUDE_DOWN, NULL);
-    }
+    lv_msg_send(XTOUCH_COMMAND_EXTRUDE_DOWN, NULL);
+
 }
 
 void onFilamentUnloadConfirm() { lv_msg_send(XTOUCH_COMMAND_UNLOAD_FILAMENT, NULL); }

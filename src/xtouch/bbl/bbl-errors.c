@@ -1515,16 +1515,21 @@ const char *hms_error_values[] PROGMEM = {
 int device_error_length = 263;
 
 const char *device_error_keys[] PROGMEM = {
-  "03004005",
-  "03008010",
-  "12028016",
-  "12038016",
-  "0300400F",
+  "12008007",
+  "12018007",
+  "12038007",
   "12008016",
   "12018016",
+  "12028016",
+  "12038016",
+  "12028007",
+  "03008014",
+  "03008016",
+  "03004005",
+  "03008010",
+  "0300400F",
   "05014038",
   "05004002",
-  "03008016",
   "03008017",
   "05008036",
   "05004037",
@@ -1535,7 +1540,6 @@ const char *device_error_keys[] PROGMEM = {
   "1001C002",
   "1000C001",
   "05014035",
-  "03008014",
   "03008015",
   "05014032",
   "05014033",
@@ -1545,8 +1549,6 @@ const char *device_error_keys[] PROGMEM = {
   "12028006",
   "12038006",
   "12FF8006",
-  "12028007",
-  "12038007",
   "12028010",
   "12038010",
   "12FF8010",
@@ -1630,7 +1632,6 @@ const char *device_error_keys[] PROGMEM = {
   "12018005",
   "12008006",
   "12018006",
-  "12018007",
   "12008010",
   "12018010",
   "12008011",
@@ -1676,7 +1677,6 @@ const char *device_error_keys[] PROGMEM = {
   "07FFC003",
   "12FF8003",
   "12FFC003",
-  "12008007",
   "07FF8003",
   "0C00800A",
   "12FF8007",
@@ -1781,16 +1781,21 @@ const char *device_error_keys[] PROGMEM = {
 };
 
 const char *device_error_values[] PROGMEM = {
+  "Failed to extrude the filament. The extruder may be clogged or the filament may be stuck, please refer to HMS. After troubleshooting, click \"Retry\" button.",
+  "Failed to extrude the filament. The extruder may be clogged or the filament may be stuck, please refer to HMS. After troubleshooting, click \"Retry\" button.",
+  "Failed to extrude the filament. The extruder may be clogged or the filament may be stuck, please refer to HMS. After troubleshooting, click \"Retry\" button.",
+  "The extruder is not extruding normally, please refer to the HMS. After trouble shooting. If the defects are acceptable, please click \"Retry\" button.",
+  "The extruder is not extruding normally, please refer to the HMS. After trouble shooting. If the defects are acceptable, please click \"Retry\" button.",
+  "The extruder is not extruding normally, please refer to the HMS. After trouble shooting. If the defects are acceptable, please click \"Retry\" button.",
+  "The extruder is not extruding normally, please refer to the HMS. After trouble shooting. If the defects are acceptable, please click \"Retry\" button.",
+  "Failed to extrude the filament. The extruder may be clogged or the filament may be stuck, please refer to HMS. After troubleshooting, click \"Retry\" button.",
+  "The nozzle is covered with filaments, or the build plate is installed incorrectly. Please cancel this printing and clean the nozzle or adjust the build plate according to the actual status, or tap \"Resume\" button to resume the print job.",
+  "The nozzle is clogged up with filaments. Please cancel this printing and clean the nozzle according to the actual status, or tap \"Resume\" button to resume the print job.",
   "The nozzle fan speed is abnormal.",
   "The nozzle fan speed is abnormal.",
-  "The extruder is not extruding normally, please refer to the HMS, after trouble shooting, click the retry button.",
-  "The extruder is not extruding normally, please refer to the HMS, after trouble shooting, click the retry button.",
   "No build plate is placed.",
-  "The extruder is not extruding normally, please refer to the HMS, after trouble shooting, click the retry button.",
-  "The extruder is not extruding normally, please refer to the HMS, after trouble shooting, click the retry button.",
   "The regional settings do not match the printer, please check the printer's regional settings.",
   "Unsupported print file path or name. Please resend the printing job.",
-  "The nozzle is clogged up with filaments. Please check the nozzle. Then you can tap \"Resume\" to resume the print job.",
   "Foreign objects detected on  hotbed, Please check and clean the hotbed, Then tap \"Resume\" button to resume the print job.",
   "Your sliced file is not consistent with the current printer model. Continue?",
   "Your sliced file is not compatible with current printer model. This file can't be printed on this printer.",
@@ -1801,7 +1806,6 @@ const char *device_error_values[] PROGMEM = {
   "Timelapse is not supported because Print sequence is set to \"By object\".",
   "High bed temperature may lead to filament clogging in the nozzle. Please ensure ventilation for the printer.",
   "The device is in the process of binding and cannot respond to new binding requests.",
-  "The nozzle is covered with filament, or the build plate is installed incorrectly. Please clean the nozzle or adjust the position of the build plate. Then you can tap \"Resume\" to resume the print job.",
   "The filament has run out, please load new filament in the \"filament\" page, then return back to the print page and tap \"Resume\" to resume the print job.",
   "QR code binding is in progress, so device discovery binding cannot be performed. You can scan the QR code on the screen for binding or exit the QR code display page on screen and try device discovery binding.",
   "Your APP region is not matched with your printer, please download the APP in the corresponding region and register your account again.",
@@ -1811,8 +1815,6 @@ const char *device_error_values[] PROGMEM = {
   "Failed to feed the filament into the toolhead. Please check whether the filament is stuck. After troubleshooting, click the \"Retry\" button.",
   "Failed to feed the filament into the toolhead. Please check whether the filament is stuck. After troubleshooting, click the \"Retry\" button.",
   "Please feed from the spool holder until the tool head filament sensor is triggered, and then click the \"Retry\" button.",
-  "Failed to extrude the filament. Please check if the extruder clogged. After troubleshooting, click the \"Retry\" button.",
-  "Failed to extrude the filament. Please check if the extruder clogged. After troubleshooting, click the \"Retry\" button.",
   "Please check if the spool or filament is stuck. After troubleshooting, click the \"Retry\" button.",
   "Please check if the spool or filament is stuck. After troubleshooting, click the \"Retry\" button.",
   "Please check if the spool or filament is stuck. After troubleshooting, click the \"Retry\" button.",
@@ -1896,7 +1898,6 @@ const char *device_error_values[] PROGMEM = {
   "Failed to feed the filament. Please load the filament and then click the \"Retry\" button.",
   "Failed to feed the filament into the toolhead. Please check whether the filament is stuck. After troubleshooting, click the \"Retry\" button.",
   "Failed to feed the filament into the toolhead. Please check whether the filament is stuck. After troubleshooting, click the \"Retry\" button.",
-  "Failed to extrude the filament. Please check if the extruder clogged. After troubleshooting, click the \"Retry\" button.",
   "Please check if the spool or filament is stuck. After troubleshooting, click the \"Retry\" button.",
   "Please check if the spool or filament is stuck. After troubleshooting, click the \"Retry\" button.",
   "AMS filament has run out. Please insert a new filament into the AMS and click the \"Retry\" button.",
@@ -1942,7 +1943,6 @@ const char *device_error_values[] PROGMEM = {
   "Please pull out the filament on the spool holder from the extruder or check if there is filament  broken in the extruder, if AMS is to be used later,please connect PTFE tube to the coupler.",
   "Please pull out the filament on the spool holder from the extruder or check if there is filament  broken in the extruder, if AMS is to be used later,please connect PTFE tube to the coupler and click the \"retry\" button.",
   "Please pull out the filament on the spool holder from the extruder or check if there is filament  broken in the extruder, if AMS is to be used later,please connect PTFE tube to the coupler.",
-  "Failed to extrude the filament. Please check whether the filament is stuck or the extruder clogged. After troubleshooting, click the \"retry\" button.",
   "Please pull out the filament on the spool holder from the extruder or check if there is filament  broken in the extruder, if AMS is to be used later,please connect PTFE tube to the coupler and click the \"retry\" button.",
   "The detected build plate is not the same as in G-code.",
   "Check nozzle. Click \"Done\" if filament was extruded, otherwise push filament forward slightly and click \"Retry.\"",
@@ -2046,7 +2046,7 @@ const char *device_error_values[] PROGMEM = {
   "Heatbed temperature malfunction."
 };
 
-int message_containing_retry_total = 18;
+int message_containing_retry_total = 19;
 
 int message_containing_done_total = 2;
 
@@ -2069,7 +2069,8 @@ const char *message_containing_retry[] PROGMEM = {
   "07FF8010",
   "07FF8011",
   "07FF8012",
-  "07FF8013"
+  "07FF8013",
+  "12FF8007"
 
 };
 const char *message_containing_done[] PROGMEM = {
