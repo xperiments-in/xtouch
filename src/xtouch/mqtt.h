@@ -824,6 +824,7 @@ void xtouch_mqtt_setup()
 
     xtouch_wiFiClientSecure.setInsecure();
     xtouch_pubSubClient.setServer(ip, 8883);
+    xtouch_pubSubClient.setBufferSize(1024); // 1KB for mqtt message output
     xtouch_pubSubClient.setStream(stream);
     xtouch_pubSubClient.setCallback(xtouch_pubSubClient_streamCallback);
     xtouch_pubSubClient.setSocketTimeout(XTOUCH_MQTT_SERVER_TIMEOUT);
