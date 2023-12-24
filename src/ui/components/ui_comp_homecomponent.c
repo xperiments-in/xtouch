@@ -76,7 +76,7 @@ void ui_event_comp_homeComponent_mainScreenNozzleTemp(lv_event_t *e)
     lv_obj_t **comp_homeComponent = lv_event_get_user_data(e);
     if (event_code == LV_EVENT_CLICKED)
     {
-        onHomeNozzleTemp(e);
+        onHomeNozzleTemp(e, 0);
     }
 }
 

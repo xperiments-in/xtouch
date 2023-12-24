@@ -48,15 +48,15 @@ void onHomeBedTemp(lv_event_t *e)
 {
     loadScreen(1);
 
-    ui_temperatureComponent_show_keypad(0, 0);
+    ui_temperatureComponent_show_keypad_and_back(0, 0, 0);
 
     lv_obj_t *target = ui_comp_get_child(ui_temperatureComponent, UI_COMP_TEMPERATURECOMPONENT_TEMPERATURECOMPONENTTEMPS_TEMPERATURECOMPONENTBED);
     lv_obj_add_state(target, LV_STATE_CHECKED);
 }
-void onHomeNozzleTemp(lv_event_t *e)
+void onHomeNozzleTemp(lv_event_t *e, int backToScreen)
 {
     loadScreen(1);
-    ui_temperatureComponent_show_keypad(0, 1);
+    ui_temperatureComponent_show_keypad_and_back(0, 1, backToScreen);
 
     lv_obj_t *target = ui_comp_get_child(ui_temperatureComponent, UI_COMP_TEMPERATURECOMPONENT_TEMPERATURECOMPONENTTEMPS_TEMPERATURECOMPONENTNOZZLE);
     lv_obj_add_state(target, LV_STATE_CHECKED);

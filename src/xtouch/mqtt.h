@@ -603,9 +603,9 @@ void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length, b
     DynamicJsonDocument incomingJson(XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE);
 
     DynamicJsonDocument amsFilter(128);
-    amsFilter["print"]["*"] =  type == 0;
-    amsFilter["camera"]["*"] =  type == 0;
-    amsFilter["print"]["ams"] = type == 1;
+    amsFilter["print"]["*"] =  true;
+    amsFilter["camera"]["*"] =  true;
+    amsFilter["print"]["ams"] = type == 0;
 
     auto deserializeError = deserializeJson(incomingJson, payload, length, DeserializationOption::Filter(amsFilter));
 
@@ -667,28 +667,15 @@ void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length, b
     }
 }
 
-void callback(char *topic, byte *payload, unsigned int length)
-{
-
-    ConsoleLog.println("ESP.getFreeHeap() / ESP.getMaxAllocHeap()");
-    ConsoleLog.println(ESP.getFreeHeap());
-    ConsoleLog.println(ESP.getMaxAllocHeap());
-    
+void xtouch_pubSubClient_streamCallback(char *topic, byte *payload, unsigned int length)
+{    
     xtouch_mqtt_parseMessage(topic, (byte *)stream.get_buffer(), stream.current_length(),0);
 
- // Search for the string "ams" in the payload
-    char *amsPosition = strstr((char *)payload, "\"ams\"");
-
-    // Check if "ams" was found in the payload
-    if (amsPosition != nullptr)
-    {
-        xtouch_mqtt_parseMessage(topic, (byte *)stream.get_buffer(), stream.current_length(),1);
+    if(stream.includes("\"ams\"")) {
+        xtouch_mqtt_parseMessage(topic, (byte *)stream.get_buffer(), stream.current_length(), 1);
     }
     
-    
     stream.flush();
-    ConsoleLog.println(ESP.getFreeHeap());
-    ConsoleLog.println(ESP.getMaxAllocHeap());
 }
 
 const char *xtouch_mqtt_generateRandomKey(int keyLength)
@@ -836,13 +823,9 @@ void xtouch_mqtt_setup()
     xtouch_mqtt_topic_setup();
 
     xtouch_wiFiClientSecure.setInsecure();
-    // xtouch_pubSubClient.setBufferSize(XTOUCH_MQTT_SERVER_BUFFER_SIZE);
     xtouch_pubSubClient.setServer(ip, 8883);
-    // xtouch_pubSubClient.setCallback(xtouch_mqtt_parseMessage);
-    // xtouch_pubSubClient.setSocketTimeout(XTOUCH_MQTT_SERVER_TIMEOUT);
-
     xtouch_pubSubClient.setStream(stream);
-    xtouch_pubSubClient.setCallback(callback);
+    xtouch_pubSubClient.setCallback(xtouch_pubSubClient_streamCallback);
     xtouch_pubSubClient.setSocketTimeout(XTOUCH_MQTT_SERVER_TIMEOUT);
 
     /* home */

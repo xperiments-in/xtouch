@@ -42,6 +42,7 @@ public:
 
   // Get the buffer pointer
   const char* get_buffer() const { return _buffer; }
+  bool includes(const char* target);
 
   // Get the buffer as a null-terminated string
   const char* get_string() const { 
