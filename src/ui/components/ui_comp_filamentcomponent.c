@@ -73,6 +73,16 @@ void ui_filamentComponent_onAMSBits(lv_event_t *e)
     }
 }
 
+void ui_event_comp_filamentComponent_onNozzleTempClick(lv_event_t *e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    if (event_code == LV_EVENT_CLICKED)
+    {
+        onHomeNozzleTemp(e, 3);
+    }
+}
+
+
 // COMPONENT filamentComponent
 
 lv_obj_t *ui_filamentComponent_create(lv_obj_t *comp_parent)
@@ -167,6 +177,7 @@ lv_obj_t *ui_filamentComponent_create(lv_obj_t *comp_parent)
     lv_obj_set_style_pad_bottom(cui_filamentScreenNozzleIcon, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_filamentScreenNozzleIcon, lv_color_hex(0x777777), LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_set_style_bg_opa(cui_filamentScreenNozzleIcon, 255, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_add_flag(cui_filamentScreenNozzleIcon, LV_OBJ_FLAG_CLICKABLE);    
 
     lv_obj_t *cui_filamentScreenNozzleTemp;
     cui_filamentScreenNozzleTemp = lv_label_create(cui_filamentScreenNozzleIcon);
@@ -304,6 +315,7 @@ lv_obj_t *ui_filamentComponent_create(lv_obj_t *comp_parent)
     lv_obj_add_event_cb(cui_filamentScreenNozzleDown, ui_event_comp_filamentComponent_filamentScreenNozzleDown, LV_EVENT_ALL, children);
     lv_obj_add_event_cb(cui_filamentScreenUnload, ui_event_comp_filamentComponent_filamentScreenUnload, LV_EVENT_ALL, children);
     lv_obj_add_event_cb(cui_filamentScreenLoad, ui_event_comp_filamentComponent_filamentScreenLoad, LV_EVENT_ALL, children);
+    lv_obj_add_event_cb(cui_filamentScreenNozzleIcon, ui_event_comp_filamentComponent_onNozzleTempClick, LV_EVENT_ALL, children);
 
     lv_obj_add_event_cb(cui_filamentComponent, ui_filamentComponent_onAMSBits, LV_EVENT_MSG_RECEIVED, NULL);
     lv_msg_subsribe_obj(XTOUCH_ON_AMS_BITS, cui_filamentComponent, NULL);
