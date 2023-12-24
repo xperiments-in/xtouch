@@ -52,6 +52,7 @@ extern "C"
 #define _UI_COMP_TEMPERATURECOMPONENT_NUM 40
     lv_obj_t *ui_temperatureComponent_create(lv_obj_t *comp_parent);
     void ui_temperatureComponent_show_keypad(int type, int index);
+    void ui_temperatureComponent_show_keypad_and_back(int type, int index, int backToScreen);
     void ui_temperatureComponent_hide_keypad();
     void ui_temperatureComponent_on_keypad(char *key);
     void ui_event_comp_temperatureComponent_temperatureComponentBed(lv_event_t *e);
