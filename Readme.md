@@ -299,12 +299,12 @@ If you prefer to manually update the firmware of your xtouch screen or if OTA up
 
 1. **Download the Update Firmware File**:
 
-   - Visit the official xtouch sebsite or the designated firmware update source to download the latest firmware update file. Ensure that you download the file with the `firmware.bin` name.
+   - Visit the official xtouch sebsite or the designated firmware update source to download the latest firmware update file. Ensure that you download this file with the [firmware.bin](https://xperiments.in/xtouch-bin/fw/firmware.bin) name.
 
 2. **Copy the Firmware File to the Root of the SD Card**:
 
    - Insert the SD card into your computer's card reader.
-   - Copy the downloaded firmware update file `firmware.bin` to the root directory of the SD card. Do not place it in any subdirectories.
+   - Copy the downloaded firmware update file [firmware.bin](https://xperiments.in/xtouch-bin/fw/firmware.bin) to the root directory of the SD card. Do not place it in any subdirectories.
 
 3. **Reboot the xtouch screen**:
 
