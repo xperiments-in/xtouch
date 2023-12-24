@@ -2,6 +2,7 @@
 
 lv_obj_t *ui_temperatureComponent_input_target;
 bool ui_temperatureComponent_backOrCancel = true;
+int ui_temperatureComponent_backToScreen = -1;
 
 void ui_temperatureComponent_show_backOrCancel()
 {
@@ -48,7 +49,13 @@ void ui_temperatureComponent_hide_keypad()
     lv_obj_clear_state(aux, LV_STATE_DISABLED);
     lv_obj_clear_state(chamber, LV_STATE_DISABLED);
     ui_temperatureComponent_input_target = NULL;
+
+    if(ui_temperatureComponent_backToScreen != -1){
+        loadScreen(ui_temperatureComponent_backToScreen);
+        ui_temperatureComponent_backToScreen = -1;
+    }
 }
+
 
 void ui_temperatureComponent_show_keypad(int type, int index)
 {
@@ -102,6 +109,12 @@ void ui_temperatureComponent_show_keypad(int type, int index)
     }
     lv_textarea_set_text(ui_temperatureComponent_input_target, "");
     lv_obj_clear_flag(keyboard, LV_OBJ_FLAG_HIDDEN);
+}
+
+void ui_temperatureComponent_show_keypad_and_back(int type, int index, int backToScreen)
+{
+    ui_temperatureComponent_backToScreen = backToScreen;
+    ui_temperatureComponent_show_keypad(type, index);
 }
 
 void ui_event_comp_temperatureComponent_temperatureComponentBed(lv_event_t *e)
