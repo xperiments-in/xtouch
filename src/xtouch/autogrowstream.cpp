@@ -10,6 +10,11 @@ XtouchAutoGrowBufferStream::XtouchAutoGrowBufferStream()
     this->_buffer = (char*)malloc(BUFFER_INCREMENTS); // Allocate initial buffer
 }
 
+
+bool XtouchAutoGrowBufferStream::includes(const char* target) {
+  return strstr(this->_buffer, target) != nullptr;
+}
+
 // Write a byte to the buffer
 size_t XtouchAutoGrowBufferStream::write(uint8_t byte) {
     // Check if there is enough space in the buffer
