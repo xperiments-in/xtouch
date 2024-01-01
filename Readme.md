@@ -28,7 +28,7 @@
 
 ## Introduction
 
-The xtouch screen is a revolutionary addition to your BambuLab Printer, enhancing the user experience and providing advanced control and monitoring capabilities. This detailed README.md guide will walk you through the product's features, installation process, and the functionality of different screens.
+The xtouch screen is a revolutionary addition to your BambuLab Printer, enhancing the user experience and providing advanced control and monitoring capabilities. This detailed guide will walk you through the product's features, installation process, and the functionality of different screens.
 
 ### Required Hardware
 
@@ -106,8 +106,9 @@ The choice between USB and the JST 1.25 4-pin connector depends on your preferen
 
 ### Install Drivers
 
-[Install CH340 Drivers](https://www.wch.cn/download/CH341SER_ZIP.html)
-[Install CH340 Drivers + Tutorial](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all)
+* [CH340 Drivers (en)](https://www.wch-ic.com/downloads/CH341SER_ZIP.html)
+* [CH340 Drivers (zh)](https://www.wch.cn/download/CH341SER_ZIP.html)
+* [How to Install CH340 Drivers - SparkFun Learn](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all)
 
 ### Prepare the SD card
 
@@ -134,7 +135,10 @@ To set up your xtouch screen, you will need to use the Online Web Installer. Fol
 
 2. **Enter the Web Installer URL**:
 
-   - In the browser's address bar, enter the following URL: [https://xperiments.in/xtouch-bin](https://xperiments.in/xtouch-bin)
+   - In the browser's (use Google Chrome or Microsoft Edge) address bar, enter the following URL:
+     ```
+     https://xperiments.in/xtouch-bin
+     ```
 
 3. **Connect Button**:
 
@@ -142,11 +146,11 @@ To set up your xtouch screen, you will need to use the Online Web Installer. Fol
 
 4. **Select xtouch serial Port**:
 
-   - After clicking "Connect," a list of available serial ports will be displayed. Choose the one asigned to your xtouch so establish a connection with the touch screen.
+   - After clicking "Connect", a list of available serial ports will be displayed. Choose the one assigned to your xtouch so establish a connection with the touch screen.
 
 5. **Install xtouch**:
 
-   - Once you've selected the correct serial port, click the "Install xtouch"sbutton on the web page. This will initiate the installation process.
+   - Once you've selected the correct serial port, click the "Install xtouch" button on the web page. This will initiate the installation process.
 
 6. **Installation Completion**:
 
@@ -257,7 +261,7 @@ If you prefer to manually update the firmware of your xtouch screen or if OTA up
 
 1. **Download the Update Firmware File**:
 
-   - Visit the official xtouch sebsite or the designated firmware update source to download the latest firmware update file. Ensure that you download this file with the [firmware.bin](https://xperiments.in/xtouch-bin/fw/firmware.bin) name.
+   - Visit the official xtouch website or the designated firmware update source to download the latest firmware update file. Ensure that you download this file with the [firmware.bin](https://xperiments.in/xtouch-bin/fw/firmware.bin) name.
 
 2. **Copy the Firmware File to the Root of the SD Card**:
 
