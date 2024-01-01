@@ -31,7 +31,7 @@
 
 ## Introduction
 
-The xtouch screen is a revolutionary addition to your BambuLab Printer, enhancing the user experience and providing advanced control and monitoring capabilities. This detailed README.md guide will walk you through the product's features, installation process, and the functionality of different screens.
+The xtouch screen is a revolutionary addition to your BambuLab Printer, enhancing the user experience and providing advanced control and monitoring capabilities. This detailed guide will walk you through the product's features, installation process, and the functionality of different screens.
 
 ### Required Hardware
 
@@ -60,8 +60,6 @@ You can find the 3D models
 
 - [Model A](https://makerworld.com/en/models/19658)
 - [Model B](https://makerworld.com/en/models/42533)
-
-
 
 ### Powering the xtouch Screen
 
@@ -111,8 +109,9 @@ The choice between USB and the JST 1.25 4-pin connector depends on your preferen
 
 ### Install Drivers
 
-[Install CH340 Drivers](https://www.wch.cn/download/CH341SER_ZIP.html)
-[Install CH340 Drivers + Tutorial](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all)
+* [CH340 Drivers (en)](https://www.wch-ic.com/downloads/CH341SER_ZIP.html)
+* [CH340 Drivers (zh)](https://www.wch.cn/download/CH341SER_ZIP.html)
+* [How to Install CH340 Drivers - SparkFun Learn](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all)
 
 ### Prepare the SD card
 
@@ -146,7 +145,7 @@ Before you begin the installation process for the xtouch screen, it's essential 
 
    Save the changes you made to the `wifi.json` file.
 
-   Your SD card is now properly initialized with the required WiFi configuration. This configuration will enable the xtouch screen to connect to your WiFi network during the installation process. Ensure that the SD card is securely inserted into the touch screen before proceeding with the installation steps outlined in the previous sections of this README.md file.
+   Your SD card is now properly initialized with the required WiFi configuration. This configuration will enable the xtouch screen to connect to your WiFi network during the installation process. Ensure that the SD card is securely inserted into the touch screen before proceeding with the installation steps outlined in the previous sections of this file.
 
 ### Online Web Installer
 
@@ -158,7 +157,7 @@ To set up your xtouch screen, you will need to use the Online Web Installer. Fol
 
 2. **Enter the Web Installer URL**:
 
-   - In the browser's address bar, enter the following URL:
+   - In the browser's (use Google Chrome or Microsoft Edge) address bar, enter the following URL:
      ```
      https://xperiments.in/xtouch-bin
      ```
@@ -169,11 +168,11 @@ To set up your xtouch screen, you will need to use the Online Web Installer. Fol
 
 4. **Select xtouch serial Port**:
 
-   - After clicking "Connect," a list of available serial ports will be displayed. Choose the one asigned to your xtouch so establish a connection with the touch screen.
+   - After clicking "Connect", a list of available serial ports will be displayed. Choose the one assigned to your xtouch so establish a connection with the touch screen.
 
 5. **Install xtouch**:
 
-   - Once you've selected the correct serial port, click the "Install xtouch"sbutton on the web page. This will initiate the installation process.
+   - Once you've selected the correct serial port, click the "Install xtouch" button on the web page. This will initiate the installation process.
 
 6. **Installation Completion**:
 
@@ -299,7 +298,7 @@ If you prefer to manually update the firmware of your xtouch screen or if OTA up
 
 1. **Download the Update Firmware File**:
 
-   - Visit the official xtouch sebsite or the designated firmware update source to download the latest firmware update file. Ensure that you download this file with the [firmware.bin](https://xperiments.in/xtouch-bin/fw/firmware.bin) name.
+   - Visit the official xtouch website or the designated firmware update source to download the latest firmware update file. Ensure that you download this file with the [firmware.bin](https://xperiments.in/xtouch-bin/fw/firmware.bin) name.
 
 2. **Copy the Firmware File to the Root of the SD Card**:
 
@@ -373,7 +372,7 @@ If you encounter issues during the installation or operation of your BambuLab Pr
    }
    ```
 
-   - In the above example, the `timeout` value is set to `5000` milliseconds `5s`. Adjust this value as needed to ensure a stable WiFi connection. Save the changes to the `wifi.json` file and proceed with the installation.
+   - In the above example, the `timeout` value is set to `5000` milliseconds (5 seconds). Adjust this value as needed to ensure a stable WiFi connection. Save the changes to the `wifi.json` file and proceed with the installation.
 
    > **Warning**
    > If you are unsure how to create the `wifi.json` file, you can use the [Online wifi.json Form](https://xperiments.in/xtouch-bin/ssid.html) for step-by-step instructions.
