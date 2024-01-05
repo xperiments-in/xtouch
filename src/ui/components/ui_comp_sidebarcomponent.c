@@ -76,7 +76,7 @@ lv_obj_t *ui_sidebarComponent_create(lv_obj_t *comp_parent)
 
     lv_obj_t *cui_sidebarComponent;
     cui_sidebarComponent = lv_obj_create(comp_parent);
-    lv_obj_set_width(cui_sidebarComponent, 48);
+    lv_obj_set_width(cui_sidebarComponent, lv_pct(15));
     lv_obj_set_height(cui_sidebarComponent, lv_pct(100));
     lv_obj_set_x(cui_sidebarComponent, 387);
     lv_obj_set_y(cui_sidebarComponent, 178);

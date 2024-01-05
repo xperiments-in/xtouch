@@ -14,6 +14,8 @@
 
 #if defined(__XTOUCH_SCREEN_28__)
 #include "devices/2.8/screen.h"
+#elif defined(__XTOUCH_SCREEN_35__)
+#include "devices/3.5/screen.h"
 #endif
 
 #include "xtouch/pair.h"
