@@ -17,7 +17,7 @@ String xtouch_device_next_sequence()
 
 String xtouch_device_print_action(char const *action)
 {
-    DynamicJsonDocument json(256);
+    JsonDocument json;
     json["print"]["command"] = action;
     json["print"]["param"] = "";
     json["print"]["sequence_id"] = xtouch_device_next_sequence();
@@ -59,7 +59,7 @@ void xtouch_device_publish(String request)
 
 void xtouch_device_get_version()
 {
-    DynamicJsonDocument json(256);
+    JsonDocument json;
     json["info"]["command"] = "get_version";
     json["info"]["sequence_id"] = xtouch_device_next_sequence();
     String result;
@@ -69,7 +69,7 @@ void xtouch_device_get_version()
 
 void xtouch_device_pushall()
 {
-    DynamicJsonDocument json(256);
+    JsonDocument json;
     json["pushing"]["command"] = "pushall";
     json["pushing"]["version"] = 1;
     json["pushing"]["push_target"] = 1;
@@ -83,7 +83,7 @@ void xtouch_device_pushall()
 
 void xtouch_device_set_printing_speed(int lvl)
 {
-    DynamicJsonDocument json(256);
+    JsonDocument json;
     json["print"]["command"] = "print_speed";
     json["print"]["sequence_id"] = xtouch_device_next_sequence();
     json["print"]["param"] = String(lvl);
@@ -95,7 +95,7 @@ void xtouch_device_set_printing_speed(int lvl)
 
 void xtouch_device_gcode_line(String line)
 {
-    DynamicJsonDocument json(line.length() + 256);
+    JsonDocument json;
     json["print"]["command"] = "gcode_line";
     json["print"]["sequence_id"] = xtouch_device_next_sequence();
     json["print"]["param"] = line.c_str();
@@ -116,7 +116,7 @@ void xtouch_device_move_axis(String axis, double value, int speed)
 void xtouch_device_onLightToggleCommand(lv_msg_t *m)
 {
 
-    DynamicJsonDocument json(256);
+    JsonDocument json;
     json["system"]["command"] = "ledctrl";
     json["system"]["led_node"] = "chamber_light";
     json["system"]["sequence_id"] = xtouch_device_next_sequence();
@@ -257,7 +257,7 @@ void xtouch_device_onUnloadFilament(lv_msg_t *m)
     if (xtouch_bblp_is_x1Series() && !bambuStatus.ams_support_virtual_tray)
     {
 
-        DynamicJsonDocument json(256);
+        JsonDocument json;
         json["print"]["command"] = "gcode_file";
         json["print"]["param"] = "/usr/etc/print/filament_unload.gcode";
         json["print"]["sequence_id"] = xtouch_device_next_sequence();
@@ -271,7 +271,7 @@ void xtouch_device_onUnloadFilament(lv_msg_t *m)
     }
     else
     {
-        DynamicJsonDocument json(256);
+        JsonDocument json;
         json["print"]["command"] = "unload_filament";
         json["print"]["sequence_id"] = xtouch_device_next_sequence();
         String result;
@@ -290,7 +290,7 @@ void xtouch_device_command_ams_control(void *s, lv_msg_t *m)
         strcmp(action, "pause") == 0 ||
         strcmp(action, "done") == 0)
     {
-        DynamicJsonDocument json(256);
+        JsonDocument json;
         json["print"]["command"] = "ams_control";
         json["print"]["sequence_id"] = xtouch_device_next_sequence();
         json["print"]["param"] = action;
@@ -307,7 +307,7 @@ void xtouch_device_command_clean_print_error(void *s, lv_msg_t *m)
     {
         const ClearErrorMessage *message = static_cast<const ClearErrorMessage *>(m->payload);
 
-        DynamicJsonDocument json(256);
+        JsonDocument json;
         json["print"]["command"] = "clean_print_error";
         json["print"]["sequence_id"] = xtouch_device_next_sequence();
         json["print"]["subtask_id"] = message->subtask_id;

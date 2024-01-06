@@ -600,9 +600,9 @@ void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length, b
 {
 
     ConsoleDebug.println(F("[XTouch][MQTT] ParseMessage"));
-    DynamicJsonDocument incomingJson(XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE);
+    JsonDocument incomingJson;
 
-    DynamicJsonDocument amsFilter(128);
+    JsonDocument amsFilter;
     amsFilter["print"]["*"] =  true;
     amsFilter["camera"]["*"] =  true;
     amsFilter["print"]["ams"] = type == 0;
@@ -814,8 +814,8 @@ void xtouch_mqtt_setup()
     delay(32);
 
     IPAddress ip;
-    DynamicJsonDocument printer = xtouch_ssdp_load_printer();
-    DynamicJsonDocument printerIps = xtouch_ssdp_load_printerIPs();
+    JsonDocument printer = xtouch_ssdp_load_printer();
+    JsonDocument printerIps = xtouch_ssdp_load_printerIPs();
 
     ip.fromString(printerIps[xTouchConfig.xTouchSerialNumber].as<String>());
     strcpy(xTouchConfig.xTouchPrinterModel, printer[xTouchConfig.xTouchSerialNumber]["model"]);

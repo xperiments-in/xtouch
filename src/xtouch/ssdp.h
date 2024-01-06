@@ -15,12 +15,12 @@ WiFiUDP xtouch_ssdp_udp;
 char xtouch_ssdp_packetBuffer[XTOUCH_SSDP_PACKET_SIZE];
 int xtouch_ssdp_search_count = 0;
 
-DynamicJsonDocument xtouch_ssdp_load_printer()
+JsonDocument xtouch_ssdp_load_printer()
 {
     return xtouch_filesystem_readJson(SD, xtouch_paths_printers, false);
 }
 
-DynamicJsonDocument xtouch_ssdp_load_printerIPs()
+JsonDocument xtouch_ssdp_load_printerIPs()
 {
     return xtouch_filesystem_readJson(SD, xtouch_paths_printer_ips, false);
 }
@@ -32,7 +32,7 @@ bool xtouch_ssdp_clear_printerIPs()
 
 void xtouch_ssdp_clear_device_list()
 {
-    DynamicJsonDocument pairDoc(32);
+    JsonDocument pairDoc;
     xtouch_filesystem_writeJson(SD, xtouch_paths_printers, pairDoc);
 }
 
@@ -43,8 +43,8 @@ void xtouch_ssdp_clear_pair_list()
 
 bool xtouch_ssdp_is_paired()
 {
-    DynamicJsonDocument printerIps = xtouch_ssdp_load_printerIPs();
-    DynamicJsonDocument pairDoc = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
+    JsonDocument printerIps = xtouch_ssdp_load_printerIPs();
+    JsonDocument pairDoc = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
 
     if (pairDoc.isNull() || printerIps.isNull())
     {
@@ -57,7 +57,7 @@ bool xtouch_ssdp_is_paired()
         String pairedSN = pairDoc["paired"].as<String>();
         if (pairDoc.containsKey(pairedSN))
         {
-            DynamicJsonDocument pairDevices = xtouch_filesystem_readJson(SD, xtouch_paths_printers, false);
+            JsonDocument pairDevices = xtouch_filesystem_readJson(SD, xtouch_paths_printers, false);
             if (pairDevices.containsKey(pairedSN))
             {
                 return true;
@@ -70,7 +70,7 @@ bool xtouch_ssdp_is_paired()
 
 String xtouch_ssdp_getStoredCode(String usn)
 {
-    DynamicJsonDocument pairDoc = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
+    JsonDocument pairDoc = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
     if (pairDoc.containsKey(usn))
     {
         return pairDoc[usn].as<String>();
@@ -80,8 +80,8 @@ String xtouch_ssdp_getStoredCode(String usn)
 
 void xtouch_ssdp_load_pair()
 {
-    DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
-    DynamicJsonDocument printers = xtouch_ssdp_load_printer();
+    JsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
+    JsonDocument printers = xtouch_ssdp_load_printer();
     String usn = pairFile["paired"].as<String>();
     String name = printers[usn]["name"].as<String>();
     strcpy(xTouchConfig.xTouchSerialNumber, pairFile["paired"].as<String>().c_str());
@@ -92,7 +92,7 @@ void xtouch_ssdp_load_pair()
 void xtouch_ssdp_unpair()
 {
     ConsoleInfo.println("[XTOUCH][SSDP] Unpairing device");
-    DynamicJsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
+    JsonDocument pairFile = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
     pairFile.remove("paired");
     xtouch_filesystem_writeJson(SD, xtouch_paths_pair, pairFile);
     ESP.restart();
@@ -101,7 +101,7 @@ void xtouch_ssdp_unpair()
 void xtouch_ssdp_save_pair(String usn, String accessCode)
 {
     ConsoleInfo.println("[XTOUCH][SSDP] Saving AccessCode Pair");
-    DynamicJsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
+    JsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_paths_pair, false);
 
     doc["paired"] = usn.c_str();
     doc[usn] = accessCode.c_str();
@@ -111,7 +111,7 @@ void xtouch_ssdp_save_pair(String usn, String accessCode)
 
 void xtouch_ssdp_parseResponse(String input)
 {
-    StaticJsonDocument<512> doc;
+    JsonDocument doc;
     int startPos = 0;
     int endPos = 0;
     String keyIndex;
@@ -175,11 +175,11 @@ void xtouch_ssdp_parseResponse(String input)
         startPos = endPos + 1;
     }
 
-    DynamicJsonDocument printerIPs = xtouch_ssdp_load_printerIPs();
+    JsonDocument printerIPs = xtouch_ssdp_load_printerIPs();
     printerIPs[keyIndex] = ip;
     xtouch_filesystem_writeJson(SD, xtouch_paths_printer_ips, printerIPs);
 
-    DynamicJsonDocument printers = xtouch_ssdp_load_printer();
+    JsonDocument printers = xtouch_ssdp_load_printer();
     if (!isEmptyDoc && !printers.containsKey(keyIndex))
     {
         doc.remove("ip");
@@ -212,7 +212,7 @@ void xtouch_ssdp_setupButtonTimer()
 
 void xtouch_ssdp_onButtonTimer(lv_timer_t *timer)
 {
-    DynamicJsonDocument printers = xtouch_ssdp_load_printer();
+    JsonDocument printers = xtouch_ssdp_load_printer();
     String output = "";
     for (JsonPair keyValue : printers.as<JsonObject>())
     {

@@ -3,7 +3,7 @@
 
 bool xtouch_wifi_setup()
 {
-    DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_paths_wifi);
+    JsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_paths_wifi);
     if (wifiConfig.isNull() || !wifiConfig.containsKey("ssid") || !wifiConfig.containsKey("pwd"))
     {
         lv_label_set_text(introScreenCaption, wifiConfig.isNull() ? LV_SYMBOL_SD_CARD " Missing wifi.json" : LV_SYMBOL_WARNING " Inaccurate wifi.json");

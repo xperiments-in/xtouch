@@ -79,7 +79,7 @@ void xtouch_pair_check()
     xtouch_ssdp_load_pair();
 
     IPAddress ip;
-    DynamicJsonDocument printerIps = xtouch_ssdp_load_printerIPs();
+    JsonDocument printerIps = xtouch_ssdp_load_printerIPs();
     ip.fromString(printerIps[xTouchConfig.xTouchSerialNumber].as<String>());
 
     const int ports[] = {1883, 8883};

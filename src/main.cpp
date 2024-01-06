@@ -16,6 +16,8 @@
 #include "devices/2.8/screen.h"
 #elif defined(__XTOUCH_SCREEN_35__)
 #include "devices/3.5/screen.h"
+#elif defined(__XTOUCH_SCREEN_43_5__)
+#include "devices/4.3_5.0/screen.h"
 #endif
 
 #include "xtouch/pair.h"
