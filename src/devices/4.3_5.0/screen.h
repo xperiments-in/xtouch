@@ -66,7 +66,7 @@ public:
       cfg.pin_vsync   = GPIO_NUM_41;
       cfg.pin_hsync   = GPIO_NUM_39;
       cfg.pin_pclk    = GPIO_NUM_42;
-      cfg.freq_write  = 14000000;
+      cfg.freq_write  = 16000000; // TBD: 14000000;
 
       cfg.hsync_polarity    = 0;
       cfg.hsync_front_porch = 8;
@@ -91,18 +91,30 @@ public:
     {
       auto cfg = _touch_instance.config();
       cfg.x_min      = 0;
-      cfg.x_max      = 800;
       cfg.y_min      = 0;
-      cfg.y_max      = 480;
-      cfg.pin_int    = GPIO_NUM_18;
       cfg.bus_shared = false;
       cfg.offset_rotation = 0;
       // I2C
       cfg.i2c_port   = I2C_NUM_1;
       cfg.pin_sda    = GPIO_NUM_19;
       cfg.pin_scl    = GPIO_NUM_20;
+#if 0
+      // Board v1.3 (800x480)
+      cfg.pin_int    = GPIO_NUM_NC;
+      cfg.pin_rst    = GPIO_NUM_38;
+      cfg.x_max      = 800;
+      cfg.y_max      = 480;
+#endif
+#if 1
+      // for Board v1.1 / v1.2
+      cfg.pin_int    = GPIO_NUM_NC;
+      cfg.pin_rst    = GPIO_NUM_38;
+      cfg.x_max      = 480;
+      cfg.y_max      = 272;
+#endif
+
       cfg.freq       = 400000;
-      cfg.i2c_addr   = 0x14;        // 0x5D , 0x14
+      // TBD  cfg.i2c_addr   = 0x14;        // 0x5D , 0x14
       _touch_instance.config(cfg);
       _panel_instance.setTouch(&_touch_instance);
     }
@@ -135,6 +147,7 @@ void xtouch_screen_setBrightness(byte brightness)
 
 void xtouch_screen_setBackLedOff()
 {
+    tft.setBrightness(0);
     // TBD!!!
     //pinMode(4, OUTPUT);
     //pinMode(16, OUTPUT);
