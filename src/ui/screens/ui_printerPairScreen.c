@@ -31,7 +31,7 @@ void ui_printerPairScreen_screen_init(void)
     lv_obj_set_width(ui_printerPairScreenCaption, lv_pct(100));
     lv_label_set_text(ui_printerPairScreenCaption, "Pair Printer");
     lv_obj_set_style_text_align(ui_printerPairScreenCaption, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_printerPairScreenCaption, &lv_font_montserrat_28, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_printerPairScreenCaption, lv_font_big, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(ui_printerPairScreenCaption, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui_printerPairScreenCaption, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_printerPairScreenCaption, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -45,7 +45,7 @@ void ui_printerPairScreen_screen_init(void)
     lv_obj_set_flex_grow(ui_printerPairScreenRoller, 5);
     lv_obj_set_x(ui_printerPairScreenRoller, 344);
     lv_obj_set_y(ui_printerPairScreenRoller, 193);
-    lv_obj_set_style_text_font(ui_printerPairScreenRoller, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_printerPairScreenRoller, lv_font_small, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui_printerPairScreenRoller, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_printerPairScreenRoller, lv_color_hex(0x444444), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_printerPairScreenRoller, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -84,7 +84,7 @@ void ui_printerPairScreen_screen_init(void)
     lv_label_set_text(ui_printerPairScreenSubmitIcon, "q");
     lv_obj_set_style_text_color(ui_printerPairScreenSubmitIcon, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_printerPairScreenSubmitIcon, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_printerPairScreenSubmitIcon, &ui_font_xlcd, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_printerPairScreenSubmitIcon, lv_icon_font_big, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_printerPairScreenSubmitButton, ui_event_printerPairScreenSubmitButton, LV_EVENT_ALL, NULL);
 }
