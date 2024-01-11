@@ -40,7 +40,7 @@ lv_obj_t *ui_mainScreenStatus_create(lv_obj_t *comp_parent)
     lv_obj_set_width(cui_mainScreenStatusCaption, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(cui_mainScreenStatusCaption, LV_SIZE_CONTENT); /// 1
     lv_label_set_text(cui_mainScreenStatusCaption, "N/A");
-    lv_obj_set_style_text_font(cui_mainScreenStatusCaption, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(cui_mainScreenStatusCaption, lv_font_small, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t **children = lv_mem_alloc(sizeof(lv_obj_t *) * _UI_COMP_MAINSCREENSTATUS_NUM);
     children[UI_COMP_MAINSCREENSTATUS_MAINSCREENSTATUS] = cui_mainScreenStatus;

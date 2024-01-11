@@ -91,7 +91,7 @@ void xtouch_firmware_checkOnlineFirmwareUpdate(void)
     if (hasOTAConfigFile)
     {
 
-        DynamicJsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_paths_firmware_ota_json);
+        JsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_paths_firmware_ota_json);
         if (xtouch_firmware_semverNeedsUpdate(doc["version"]))
         {
 
@@ -176,7 +176,7 @@ void xtouch_firmware_checkFirmwareUpdate(void)
 
     if (xtouch_filesystem_exist(SD, xtouch_paths_firmware_ota_fw))
     {
-        DynamicJsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_paths_firmware_ota_json);
+        JsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_paths_firmware_ota_json);
         File firmware = xtouch_filesystem_open(SD, xtouch_paths_firmware_ota_fw);
         Update.onProgress(xtouch_firmware_onProgress);
         Update.begin(firmware.size(), U_FLASH);

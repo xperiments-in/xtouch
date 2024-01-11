@@ -46,7 +46,7 @@ void ui_introScreen_screen_init()
     lv_label_set_text(introScreenCaption, LV_SYMBOL_SD_CARD);
     lv_obj_clear_flag(introScreenCaption, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN); /// Flags
     lv_obj_set_scrollbar_mode(introScreenCaption, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_set_style_text_font(introScreenCaption, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(introScreenCaption, lv_font_small, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(introScreenCaption, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0x555555), LV_PART_MAIN | LV_STATE_DEFAULT);
 }
