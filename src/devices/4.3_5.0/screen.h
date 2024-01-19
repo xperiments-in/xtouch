@@ -98,14 +98,14 @@ public:
       cfg.i2c_port   = I2C_NUM_1;
       cfg.pin_sda    = GPIO_NUM_19;
       cfg.pin_scl    = GPIO_NUM_20;
-#if 0
+#if 1
       // Board v1.3 (800x480)
       cfg.pin_int    = GPIO_NUM_NC;
       cfg.pin_rst    = GPIO_NUM_38;
       cfg.x_max      = 800;
       cfg.y_max      = 480;
 #endif
-#if 1
+#if 0
       // for Board v1.1 / v1.2
       cfg.pin_int    = GPIO_NUM_NC;
       cfg.pin_rst    = GPIO_NUM_38;
