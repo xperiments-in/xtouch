@@ -4,7 +4,6 @@
 
 [Discord Server](https://discord.gg/RytEDEgfR3)
 
-
 ## Table of Contents
 
 1. [Introduction](#introduction)
@@ -27,8 +26,6 @@
 6. [Standard Firmware Update](#standard-firmware-update)
 7. [Troubleshooting](#troubleshooting)
 
-> **Warning** > [P1P/S 01.04.00.00 LAN Mode Bug](#p1ps-01040000-lan-mode-bug)
-
 ## Introduction
 
 The xtouch screen is a revolutionary addition to your BambuLab Printer, enhancing the user experience and providing advanced control and monitoring capabilities. This detailed README.md guide will walk you through the product's features, installation process, and the functionality of different screens.
@@ -46,7 +43,7 @@ Currently, it has only been tested on the affordable 2.8-inch ESP32-2432S028R bo
 ### Optional Hardware
 
 - **[DS18B20 Temperature Sensor](docs/temperature-sensor.md)**: For printers that do not have an integrated chamber temperature sensor, you have the option to add an external DS18B20 temperature sensor. This sensor will provide accurate chamber temperature readings and enhance the functionality of your xtouch screen. Connector on the screen is 1.25 MZ JST 4P.
-- **DS18B20 P1P/P1S Chamber Temp Enclosure**: Additionally, we have created a 3D model that allows you to easily integrate the DS18B20 Temperature Sensor inside your P1P/P1S printer. 
+- **DS18B20 P1P/P1S Chamber Temp Enclosure**: Additionally, we have created a 3D model that allows you to easily integrate the DS18B20 Temperature Sensor inside your P1P/P1S printer.
 
 You can buy the Temperature Sensor here:
 
@@ -60,8 +57,6 @@ You can find the 3D models
 
 - [Model A](https://makerworld.com/en/models/19658)
 - [Model B](https://makerworld.com/en/models/42533)
-
-
 
 ### Powering the xtouch Screen
 
@@ -124,29 +119,10 @@ Before you begin the installation process for the xtouch screen, it's essential 
 
 2. **Create a Configuration File**:
 
-   - On the root directory of the SD card, create a JSON configuration file named `wifi.json`. You can use a plain text editor to create this file.
+   - Use the online configuration [TOOL](https://xperiments.in/xtouch-bin/config.html) to generate a `config.json` file.
+   - Place it on the root directory of the SD card.
 
-3. **Edit the Configuration File**:
-
-   - Open the `wifi.json` file in a text editor and replace the following placeholders with the actual information for your WiFi network:
-
-   ```json
-   {
-     "ssid": "your_ssid_name",
-     "pwd": "your_ssid_password"
-   }
-   ```
-
-   Replace `"your_ssid_name"` with your WiFi network's SSID (name) and `"your_ssid_password"` with your WiFi network's password.
-
-   > **Warning**
-   > If you are unsure how to create the `wifi.json` file, you can use the [Online wifi.json Form](https://xperiments.in/xtouch-bin/ssid.html) for step-by-step instructions.
-
-4. **Save the Configuration File**:
-
-   Save the changes you made to the `wifi.json` file.
-
-   Your SD card is now properly initialized with the required WiFi configuration. This configuration will enable the xtouch screen to connect to your WiFi network during the installation process. Ensure that the SD card is securely inserted into the touch screen before proceeding with the installation steps outlined in the previous sections of this README.md file.
+   Your SD card is now properly initialized with the required configuration. This configuration will enable the xtouch screen to connect to your WiFi network and BambuLab servers during the installation process. Ensure that the SD card is securely inserted into the touch screen before proceeding with the installation steps outlined in the previous sections of this README.md file.
 
 ### Online Web Installer
 
@@ -158,10 +134,7 @@ To set up your xtouch screen, you will need to use the Online Web Installer. Fol
 
 2. **Enter the Web Installer URL**:
 
-   - In the browser's address bar, enter the following URL:
-     ```
-     https://xperiments.in/xtouch-bin
-     ```
+   - In the browser's address bar, enter the following URL: [https://xperiments.in/xtouch-bin](https://xperiments.in/xtouch-bin)
 
 3. **Connect Button**:
 
@@ -193,35 +166,21 @@ During the installation process, you will need to link your xtouch screen with y
 
 1. **Searching for Printers**:
 
-   - After powering on the touch screen, you will be greeted with a "Searching for printers" screen. The touch screen will scan the network for available printers.
+   - After powering on the touch screen, you will be greeted with a "Searching for printers" screen. The touch screen will scan for available printers.
 
 2. **Select a Printer to Link**:
 
-   - Once the scanning process is complete, you will be presented with a listing of the printers that were found on the network. Select the printer you wish to link.
+   - Once the scanning process is complete, you will be presented with a listing of the printers that were found. Select the printer you wish to link.
 
 3. **Click the Checkmark Button**:
 
    - After selecting the desired printer, click the green checkmark button to initiate the linking process.
 
-4. **Enter the Access Code**:
-
-   - You will be prompted to enter the access code for the selected printer. Provide the correct access code and proceed.
-
-5. **Connecting to the Printer**:
-
-   - The xtouch screen will attempt to establish a connection with the selected printer. If the connection is unsuccessful, the process will restart, allowing you to try again.
-
-6. **Success and Main Screen**:
+4. **Success and Main Screen**:
 
    - Upon successfully linking the touch screen with the printer, you will be redirected to the Main Screen. Your printer and touch screen are now connected and ready for use.
 
-7. **Saving Access Code**:
-
-   - The access code for the linked printer will be saved for future use. This means that for subsequent printer links (if the printer is the same), you will not be asked for the access code again. You can clear these saved access codes in the Settings Screen if needed.
-
 By following these steps, you will be able to link your xtouch screen with your 3D printer seamlessly, ensuring a smooth user experience and easy access to all the features of the touch screen.
-
-Please ensure that the access code is kept secure and that you clear the access code cache in the Settings Screen if you wish to unlink the printer or start the linking process for a different printer.
 
 ## Screens
 
@@ -263,7 +222,6 @@ This screen provides essential controls for managing your printer:
 #### PRINTERS
 
 - **Unlink Printer**: Disconnect the current printer from the touch screen. This allows you to switch between different printers seamlessly.
-- **Clear Access Code Cache**: Erases stored printer serial numbers and access codes. Requires reestablishing printer pair connections.
 
 #### XTOUCH
 
@@ -340,66 +298,23 @@ If you encounter issues during the installation or operation of your BambuLab Pr
 
    - Keep in mind that SD cards from different manufacturers may behave differently. While many SD cards work seamlessly, some may not be fully compatible with the touch screen. If you experience issues with an SD card, consider trying a different brand or model to see if it resolves the problem.
 
-3. **No printers are discovered during the search process**:
-
-   - In certain instances, users have encountered an issue where no printers are discovered during the search process.
-   - Posible solutions
-      
-      1. Device Check:
-
-         - Restart the router: Unplug the power cable from the router, wait for about 30 seconds, and then plug it back in. This helps refresh the router's settings and can resolve temporary connectivity issues.
-         - Restart the xtouch screen and printer: Turn off both devices, wait for a moment, and then turn them back on. This ensures that any temporary glitches in the devices' connectivity are resolved.
-
-      2. Hotspot Test:
-
-         - Create a hotspot with your phone: Go to the settings on your phone, find the "Hotspot" or "Tethering" option, and enable it. This turns your phone into a WiFi hotspot that other devices can connect to.
-         - Connect both the xtouch screen and the printer to this access point
-         - If both devices connect successfully: This means that the xtouch screen and printer are capable of connecting to a WiFi network, and the issue may lie with the router or its configuration.
-
-   
-4. **WiFi Connection Loop**:
+3. **WiFi Connection Loop**:
 
    - In some cases, users have reported that after confirming their WiFi credentials are correct, the device enters into a continuous loop without establishing a connection. This issue can sometimes be resolved by adjusting the WiFi connection timeout.
 
-   - To do this, modify the `wifi.json` file and include a numerical parameter for the timeout. Increasing the timeout value can help address this issue.
+   - To do this, modify the `config.json` file and include a numerical parameter for the timeout. Increasing the timeout value can help address this issue.
 
-   Example `wifi.json` with a timeout parameter:
+   - Use the [Online config.json Form](https://xperiments.in/xtouch-bin/config.html) for step-by-step instructions.
 
-   ```json
-   {
-     "ssid": "your_ssid_name",
-     "pwd": "your_ssid_password",
-     "timeout": 5000
-   }
-   ```
+4. **Endless Reboots in Printer Startup**:
 
-   - In the above example, the `timeout` value is set to `5000` milliseconds `5s`. Adjust this value as needed to ensure a stable WiFi connection. Save the changes to the `wifi.json` file and proceed with the installation.
+   - Sometimes, users may encounter an issue where the printer and xtouch screen go through an endless reboot cycle during the device's power-on process, preventing xtouch from becoming ready. This problem can often be resolved by adjusting the "coldboot" value within the `config.json` configuration file.
 
-   > **Warning**
-   > If you are unsure how to create the `wifi.json` file, you can use the [Online wifi.json Form](https://xperiments.in/xtouch-bin/ssid.html) for step-by-step instructions.
+   - To address this issue, open the `config.json` file and include a numerical parameter for the "coldboot" parameter. This parameter specifies the duration in milliseconds the system should wait for initialization after a cold boot. By increasing the "coldboot" value, you provide the system with more time to complete the startup process successfully.
 
-5. **Endless Reboots in Printer Startup**:
+   - Use the [Online config.json Form](https://xperiments.in/xtouch-bin/config.html) for step-by-step instructions.
 
-   - Sometimes, users may encounter an issue where the printer and xtouch screen go through an endless reboot cycle during the device's power-on process, preventing xtouch from becoming ready. This problem can often be resolved by adjusting the "coldboot" value within the "wifi.json" configuration file.
-
-   - To address this issue, open the "wifi.json" file and include a numerical parameter for the "coldboot" parameter. This parameter specifies the duration in milliseconds the system should wait for initialization after a cold boot. By increasing the "coldboot" value, you provide the system with more time to complete the startup process successfully.
-
-   Example "wifi.json" with an adjusted "coldboot" parameter:
-
-   ```json
-   {
-     "ssid": "your_ssid_name",
-     "pwd": "your_ssid_password",
-     "coldboot": 10000
-   }
-   ```
-
-   - In the above example, the "coldboot" value is set to `10000` milliseconds (10 seconds). You can modify this value according to your requirements to ensure the printer initializes correctly after a cold boot. After making the changes, save the "wifi.json" file and proceed with the printer setup.
-
-   > **Note**
-   > If you're unsure about how to modify the "wifi.json" file, you can use the [Online wifi.json Form](https://xperiments.in/xtouch-bin/ssid.html) for step-by-step instructions.
-
-6. **Recalibrating the Screen**:
+5. **Recalibrating the Screen**:
 
    If you encounter touch screen calibration issues or misalignment, you can recalibrate the screen by removing the `touch.json` file located in the `xtouch` directory on the SD card. Follow these steps:
 
@@ -413,29 +328,5 @@ If you encounter issues during the installation or operation of your BambuLab Pr
    - Power on the touch screen.
 
    The touch screen will automatically perform a recalibration process upon startup.
-
-7. **P1P/S 01.04.00.00 LAN Mode Bug**:
-
-   #### P1P/S 01.04.00.00 LAN Mode Bug
-
-   In firmware version 1.4 of the printer, a critical bug has been identified that prevents the successful use of LAN mode. This bug disrupts the connection between the printer and BambuStudio, causing frequent disconnections and rendering LAN mode unusable.
-
-   #### Impact
-
-   The impact of this bug is significant, as LAN mode is a preferred choice for many users for its reliability and speed advantages. Disconnections disrupt the seamless interaction between the printer and BambuStudio, making it difficult to monitor and control print jobs effectively.
-
-   #### Possible Solutions
-
-   To address the LAN mode bug in firmware version 1.4, users can consider the following possible solutions:
-
-   1. **Change to Cloud Mode**:
-
-      - Users can switch from LAN mode to Cloud mode, where the bug does not exist. Cloud mode enables remote monitoring and control of the printer through the BambuStudio cloud platform. While this solution maintains connectivity, it may require an active internet connection.
-
-   2. **Revert Firmware to Version 1.3**:
-
-      - Another option is to revert the printer's firmware to version 1.3, where the LAN mode bug is not present. This solution allows users to continue using LAN mode without disruptions while avoiding the bug associated with version 1.4.
-
-      - However, downgrading firmware versions should be performed carefully, following the manufacturer's instructions, as firmware changes can have their own implications.
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I8PSAYU)
