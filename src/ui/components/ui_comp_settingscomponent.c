@@ -118,15 +118,6 @@ void ui_event_comp_settingsComponent_onChamberTemp(lv_event_t *e)
     }
 }
 
-void ui_event_comp_settingsComponent_clearAccesCodeCacheButton(lv_event_t *e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    if (event_code == LV_EVENT_CLICKED)
-    {
-        onSettingsClearAccesCodeCache(e);
-    }
-}
-
 // COMPONENT settingsComponent
 
 lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
@@ -440,22 +431,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
 
     lv_label_set_text_fmt(cui_unpairButton, LV_SYMBOL_SHUFFLE " Unlink [ %s ]", xTouchConfig.xTouchPrinterName);
 
-    lv_obj_t *cui_clearAccesCodeCacheButton;
-    cui_clearAccesCodeCacheButton = lv_label_create(cui_settingsComponent);
-    lv_obj_set_width(cui_clearAccesCodeCacheButton, lv_pct(100));
-    lv_obj_set_height(cui_clearAccesCodeCacheButton, LV_SIZE_CONTENT); /// 1
-    lv_label_set_text(cui_clearAccesCodeCacheButton, LV_SYMBOL_TRASH " Clear Access Code Cache");
-    lv_obj_add_flag(cui_clearAccesCodeCacheButton, LV_OBJ_FLAG_CLICKABLE); /// Flags
-    lv_obj_set_scrollbar_mode(cui_clearAccesCodeCacheButton, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_set_style_radius(cui_clearAccesCodeCacheButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(cui_clearAccesCodeCacheButton, lv_color_hex(0xFF682A), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(cui_clearAccesCodeCacheButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(cui_clearAccesCodeCacheButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(cui_clearAccesCodeCacheButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(cui_clearAccesCodeCacheButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(cui_clearAccesCodeCacheButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(cui_clearAccesCodeCacheButton, lv_color_hex(0x000), LV_PART_MAIN | LV_STATE_DEFAULT);
-
     lv_obj_t *cui_deviceTitle;
     cui_deviceTitle = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_deviceTitle, lv_pct(100));
@@ -693,7 +668,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
 
     children[UI_COMP_SETTINGSCOMPONENT_PAIR_TITLE] = cui_pairingTitle;
     children[UI_COMP_SETTINGSCOMPONENT_UNPAIRBUTTON] = cui_unpairButton;
-    children[UI_COMP_SETTINGSCOMPONENT_RESETSETTINGSBUTTON] = cui_clearAccesCodeCacheButton;
 
     children[UI_COMP_SETTINGSCOMPONENT_DEVICE_TITLE] = cui_deviceTitle;
     children[UI_COMP_SETTINGSCOMPONENT_AUXFAN] = cui_settings_auxFan;
@@ -714,7 +688,7 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     lv_obj_add_event_cb(cui_settingsComponent, del_component_child_event_cb, LV_EVENT_DELETE, children);
 
     lv_obj_add_event_cb(cui_unpairButton, ui_event_comp_settingsComponent_unpairButton, LV_EVENT_CLICKED, NULL);
-    lv_obj_add_event_cb(cui_clearAccesCodeCacheButton, ui_event_comp_settingsComponent_clearAccesCodeCacheButton, LV_EVENT_CLICKED, NULL);
+
     lv_obj_add_event_cb(cui_reseDeviceButton, ui_event_comp_settingsComponent_resetDeviceButton, LV_EVENT_CLICKED, NULL);
 
     lv_obj_add_event_cb(ui_settingsTFTOFFSlider, ui_event_comp_settingsComponent_onTFTOFF, LV_EVENT_ALL, NULL);

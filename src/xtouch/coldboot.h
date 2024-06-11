@@ -25,8 +25,8 @@ void xtouch_coldboot_check()
 {
     if (rtc_get_reset_reason(0) == POWERON_RESET)
     {
-        DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_paths_wifi);
-        int coldbootTimeout = wifiConfig.containsKey("coldboot") ? wifiConfig["coldboot"].as<int>() : 5000;
+        DynamicJsonDocument config = xtouch_filesystem_readJson(SD, xtouch_paths_config);
+        int coldbootTimeout = config.containsKey("coldboot") ? config["coldboot"].as<int>() : 5000;
         lv_label_set_text(introScreenCaption, LV_SYMBOL_POWER);
         lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0x555555), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_timer_handler();

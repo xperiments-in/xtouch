@@ -96,11 +96,6 @@ void onSettingsUnPair(lv_event_t *e)
 {
     ui_confirmPanel_show(LV_SYMBOL_WARNING " Unlink Printer", onSettingsUnPairConfirm);
 }
-void onSettingsClearAccesCodeCacheConfirm() { lv_msg_send(XTOUCH_SETTINGS_CLEAR_ACCESS_CODE_CACHE, NULL); }
-void onSettingsClearAccesCodeCache(lv_event_t *e)
-{
-    ui_confirmPanel_show(LV_SYMBOL_WARNING " Clear Access Code Cache", onSettingsClearAccesCodeCacheConfirm);
-}
 
 void onSettingsWOP(lv_event_t *e)
 {
@@ -152,7 +147,7 @@ void onNozzleUp(lv_event_t *e)
 void onNozzleDown(lv_event_t *e)
 {
     lv_msg_send(XTOUCH_COMMAND_EXTRUDE_DOWN, NULL);
-
+    
 }
 
 void onFilamentUnloadConfirm() { lv_msg_send(XTOUCH_COMMAND_UNLOAD_FILAMENT, NULL); }

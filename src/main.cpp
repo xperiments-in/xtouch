@@ -1,3 +1,4 @@
+#include <driver/i2s.h>
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include "xtouch/debug.h"
@@ -10,13 +11,12 @@
 #include "ui/ui.h"
 #include "xtouch/sdcard.h"
 #include "xtouch/hms.h"
-#include "xtouch/ssdp.h"
 
 #if defined(__XTOUCH_SCREEN_28__)
 #include "devices/2.8/screen.h"
 #endif
 
-#include "xtouch/pair.h"
+#include "xtouch/cloud.hpp"
 #include "xtouch/settings.h"
 #include "xtouch/net.h"
 #include "xtouch/firmware.h"
@@ -62,7 +62,17 @@ void setup()
 
   xtouch_screen_setupScreenTimer();
   xtouch_setupGlobalEvents();
-  xtouch_pair_check();
+  if (cloud.login())
+  {
+    if (!cloud.isPaired())
+    {
+      cloud.selectPrinter();
+    }
+    else
+    {
+      cloud.loadPair();
+    }
+  }
   xtouch_mqtt_setup();
   xtouch_chamber_timer_init();
 }

@@ -318,4 +318,20 @@ void xtouch_device_command_clean_print_error(void *s, lv_msg_t *m)
     }
 }
 
+// void xtouch_device_command_getPaCalibration()
+// {
+
+//     Serial.println("getPaCalibration");
+//     DynamicJsonDocument doc(1024);
+//     doc["print"]["command"] = "extrusion_cali_get";
+//     doc["print"]["sequence_id"] = "456";
+//     doc["print"]["filament_id"] = "";
+//     doc["print"]["nozzle_diameter"] = "0.4";
+
+//     // {"print":{"command":"extrusion_cali_get","filament_id":"","nozzle_diameter":"0.4","sequence_id":"20313","filaments":[],"reason":"success","result":"success"}}
+//     String result;
+//     serializeJson(doc, result);
+//     xtouch_device_publish(result);
+// }
+
 #endif

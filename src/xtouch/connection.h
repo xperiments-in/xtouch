@@ -3,21 +3,31 @@
 
 bool xtouch_wifi_setup()
 {
-    DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_paths_wifi);
+    DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_paths_config);
     if (wifiConfig.isNull() || !wifiConfig.containsKey("ssid") || !wifiConfig.containsKey("pwd"))
     {
-        lv_label_set_text(introScreenCaption, wifiConfig.isNull() ? LV_SYMBOL_SD_CARD " Missing wifi.json" : LV_SYMBOL_WARNING " Inaccurate wifi.json");
+        lv_label_set_text(introScreenCaption, wifiConfig.isNull() ? LV_SYMBOL_SD_CARD " Missing config.json" : LV_SYMBOL_WARNING " Inaccurate config.json");
         lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_timer_handler();
         lv_task_handler();
         return false;
     }
-    const char *ssid = wifiConfig["ssid"].as<const char *>();
-    const char *password = wifiConfig["pwd"].as<const char *>();
+
+    size_t ssidLength = base64::decodeLength(wifiConfig["ssid"].as<const char *>());
+    uint8_t ssidB64[ssidLength + 1]; // +1 for the null terminator
+    base64::decode(wifiConfig["ssid"].as<const char *>(), ssidB64);
+    ssidB64[ssidLength] = '\0'; // null-terminate the array
+
+    size_t pwdLength = base64::decodeLength(wifiConfig["pwd"].as<const char *>());
+    uint8_t ssidPWD[pwdLength + 1]; // +1 for the null terminator
+    base64::decode(wifiConfig["pwd"].as<const char *>(), ssidPWD);
+    ssidPWD[pwdLength] = '\0'; // null-terminate the array
+
+
     int timeout = wifiConfig.containsKey("timeout") ? wifiConfig["timeout"].as<int>() : 3000;
 
     WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
+    WiFi.begin((const char *)ssidB64, (const char *)ssidPWD);
     ConsoleInfo.println(F("[XTOUCH][CONNECTION] Connecting to WiFi .."));
 
     lv_label_set_text(introScreenCaption, LV_SYMBOL_WIFI " Connecting");

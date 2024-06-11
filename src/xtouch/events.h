@@ -8,29 +8,12 @@ void xtouch_events_onResetDevice(lv_msg_t *m)
 
 void xtouch_events_onUnPair(lv_msg_t *m)
 {
-    xtouch_ssdp_unpair();
-}
-void xtouch_events_onSSDP(lv_msg_t *m)
-{
-    xtouch_pair_loop_exit = true;
-
-    char selectedUSNTitle[64];
-    lv_roller_get_selected_str(ui_printerPairScreenRoller, selectedUSNTitle, 64);
-    String selectedUSNTitleString = String(selectedUSNTitle);
-    selectedUSNTitleString.trim();
-    String selectedUSN = selectedUSNTitleString.substring(selectedUSNTitleString.lastIndexOf(" ") + 1);
-    strcpy(xTouchConfig.xTouchSerialNumber, selectedUSN.c_str());
+    cloud.unpair();
 }
 
-void xtouch_events_onCodeEntered(lv_msg_t *m)
+void xtouch_events_onCloudSelect(lv_msg_t *m)
 {
-    xtouch_pair_loop_exit = true;
-}
-
-void xtouch_events_onClearAccesCodeCache(lv_msg_t *m)
-{
-    xtouch_ssdp_clear_pair_list();
-    ESP.restart();
+    xtouch_cloud_pair_loop_exit = true;
 }
 
 void xtouch_events_onBackLight(lv_msg_t *m)
@@ -102,9 +85,7 @@ void xtouch_setupGlobalEvents()
 {
     lv_msg_subscribe(XTOUCH_SETTINGS_RESET_DEVICE, (lv_msg_subscribe_cb_t)xtouch_events_onResetDevice, NULL);
     lv_msg_subscribe(XTOUCH_SETTINGS_UNPAIR, (lv_msg_subscribe_cb_t)xtouch_events_onUnPair, NULL);
-    lv_msg_subscribe(XTOUCH_SETTINGS_CLEAR_ACCESS_CODE_CACHE, (lv_msg_subscribe_cb_t)xtouch_events_onClearAccesCodeCache, NULL);
-    lv_msg_subscribe(XTOUCH_ON_SSDP, (lv_msg_subscribe_cb_t)xtouch_events_onSSDP, NULL);
-    lv_msg_subscribe(XTOUCH_ON_CODE_ENTERED, (lv_msg_subscribe_cb_t)xtouch_events_onCodeEntered, NULL);
+    lv_msg_subscribe(XTOUCH_ON_CLOUD_SELECT, (lv_msg_subscribe_cb_t)xtouch_events_onCloudSelect, NULL);
     lv_msg_subscribe(XTOUCH_SETTINGS_BACKLIGHT, (lv_msg_subscribe_cb_t)xtouch_events_onBackLight, NULL);
     lv_msg_subscribe(XTOUCH_SETTINGS_BACKLIGHT_SET, (lv_msg_subscribe_cb_t)xtouch_events_onBackLightSet, NULL);
     lv_msg_subscribe(XTOUCH_SETTINGS_TFTOFF_SET, (lv_msg_subscribe_cb_t)xtouch_events_onTFTTimerSet, NULL);

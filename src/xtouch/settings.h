@@ -23,7 +23,7 @@ void xtouch_settings_save(bool onlyRoot = false)
     printersSettings["auxFan"] = xTouchConfig.xTouchAuxFanEnabled;
     printersSettings["chamberFan"] = xTouchConfig.xTouchChamberFanEnabled;
 
-    DynamicJsonDocument printers = xtouch_ssdp_load_printer();
+    DynamicJsonDocument printers = cloud.loadPrinters();
     printers[xTouchConfig.xTouchSerialNumber]["settings"] = printersSettings;
     xtouch_filesystem_writeJson(SD, xtouch_paths_printers, printers);
 }
@@ -51,10 +51,10 @@ void xtouch_settings_loadSettings()
     xTouchConfig.xTouchWakeOnPrint = settings.containsKey("wop") ? settings["wop"].as<bool>() : true;
     xTouchConfig.xTouchChamberSensorReadingDiff = settings.containsKey("chamberTempDiff") ? settings["chamberTempDiff"].as<int8_t>() : 0;
 
-    if (xtouch_ssdp_is_paired())
+    if (cloud.isPaired())
     {
-        xtouch_ssdp_load_pair();
-        JsonObject currentPrinterSettings = xtouch_ssdp_load_printer()[xTouchConfig.xTouchSerialNumber]["settings"];
+        cloud.loadPair();
+        JsonObject currentPrinterSettings = cloud.loadPrinters()[xTouchConfig.xTouchSerialNumber]["settings"];
         xTouchConfig.xTouchChamberSensorEnabled = currentPrinterSettings.containsKey("chamberTemp") ? currentPrinterSettings["chamberTemp"].as<bool>() : false;
         xTouchConfig.xTouchAuxFanEnabled = currentPrinterSettings.containsKey("auxFan") ? currentPrinterSettings["auxFan"].as<bool>() : false;
         xTouchConfig.xTouchChamberFanEnabled = currentPrinterSettings.containsKey("chamberFan") ? currentPrinterSettings["chamberFan"].as<bool>() : false;
