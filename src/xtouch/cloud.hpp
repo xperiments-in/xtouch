@@ -369,7 +369,7 @@ public:
       setCurrentModel(devices[currentIndex]["dev_model_name"].as<String>());
       setPrinterName(devices[currentIndex]["name"].as<String>());
 
-      JsonObject currentPrinterSettings = load_printer()[xTouchConfig.xTouchSerialNumber]["settings"];
+      JsonObject currentPrinterSettings = loadPrinters()[xTouchConfig.xTouchSerialNumber]["settings"];
       xTouchConfig.xTouchChamberSensorEnabled = currentPrinterSettings.containsKey("chamberTemp") ? currentPrinterSettings["chamberTemp"].as<bool>() : false;
       xTouchConfig.xTouchAuxFanEnabled = currentPrinterSettings.containsKey("auxFan") ? currentPrinterSettings["auxFan"].as<bool>() : false;
       xTouchConfig.xTouchChamberFanEnabled = currentPrinterSettings.containsKey("chamberFan") ? currentPrinterSettings["chamberFan"].as<bool>() : false;
