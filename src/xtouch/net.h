@@ -29,20 +29,30 @@ int downloadFileToSDCard(const char *url, const char *fileName, void (*onProgres
             int responseSize = 0;
             int lastProgress = 0;
 
-            while (response->available())
+            // Define a buffer size (e.g., 512 bytes)
+            const int bufferSize = 512;
+            uint8_t buffer[bufferSize];
+            int bytesRead;
+
+            while ((bytesRead = response->readBytes(buffer, bufferSize)) > 0)
             {
                 int progress = (responseSize * 100) / responseTotalSize;
                 if (onProgress && progress != lastProgress)
                 {
                     onProgress(progress);
                 }
-                file.write(response->read());
-                responseSize++;
+
+                file.write(buffer, bytesRead);
+                responseSize += bytesRead;
                 lastProgress = progress;
             }
 
             file.close();
             success = true;
+        }
+        else
+        {
+            Serial.println("Failed to open file for writing");
         }
 
         if (otaMD5 != NULL && onMD5Check != NULL)
