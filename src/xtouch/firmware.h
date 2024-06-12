@@ -86,6 +86,10 @@ void xtouch_firmware_checkOnlineFirmwareUpdate(void)
         return;
     }
 
+    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Checking for OTA Update");
+    lv_timer_handler();
+    lv_task_handler();
+
     bool hasOTAConfigFile = downloadFileToSDCard(xtouch_paths_firmware_ota_file, xtouch_paths_firmware_ota_json);
 
     if (hasOTAConfigFile)
@@ -94,6 +98,10 @@ void xtouch_firmware_checkOnlineFirmwareUpdate(void)
         DynamicJsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_paths_firmware_ota_json);
         if (xtouch_firmware_semverNeedsUpdate(doc["version"]))
         {
+
+            lv_label_set_text_fmt(introScreenCaption, LV_SYMBOL_CHARGE " Downloading Update %d%%", 0);
+            lv_timer_handler();
+            lv_task_handler();
 
             bool xtouch_firmware_hasFirmwareUpdate = downloadFileToSDCard(
                 doc["url"],

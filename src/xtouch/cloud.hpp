@@ -7,6 +7,8 @@
 #include "./b64/arduino_base64.hpp"
 #include "types.h"
 #include "date.h"
+#include "bbl-certs.h"
+
 bool xtouch_cloud_pair_loop_exit = false;
 
 class BambuCloud
@@ -24,7 +26,7 @@ private:
     String url = _region == "China" ? "https://api.bambulab.cn/v1/user-service/user/login" : "https://api.bambulab.com/v1/user-service/user/login";
 
     HTTPClient http;
-    http.begin(url);
+    http.begin(url, getRegionCert());
     http.addHeader("Content-Type", "application/json");
 
     DynamicJsonDocument login(256);
@@ -48,6 +50,11 @@ private:
     DynamicJsonDocument doc(4096);
     deserializeJson(doc, response);
     return doc["accessToken"].as<String>();
+  }
+
+  const char *getRegionCert() const
+  {
+    return _region == "China" ? api_bambulab_cn_CA : api_bambulab_com_CA;
   }
 
   String _decodeString(String input)
@@ -139,7 +146,7 @@ public:
     String url = _region == "China" ? "https://api.bambulab.cn/v1/iot-service/api/user/bind" : "https://api.bambulab.com/v1/iot-service/api/user/bind";
 
     HTTPClient http;
-    http.begin(url);
+    http.begin(url, getRegionCert());
     http.addHeader("Authorization", "Bearer " + _auth_token);
     http.addHeader("Content-Type", "application/json");
 
@@ -172,7 +179,7 @@ public:
     String url = (_region == "China") ? "https://api.bambulab.cn/v1/iot-service/api/slicer/setting?version=undefined" : "https://api.bambulab.com/v1/iot-service/api/slicer/setting?version=undefined";
 
     HTTPClient http;
-    http.begin(url);
+    http.begin(url, getRegionCert());
     http.addHeader("Authorization", "Bearer " + _auth_token);
 
     int httpResponseCode = http.GET();
