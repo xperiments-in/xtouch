@@ -27,7 +27,12 @@ private:
     http.begin(url);
     http.addHeader("Content-Type", "application/json");
 
-    String data = "{\"account\":\"" + _email + "\",\"password\":\"" + _password + "\"}";
+    DynamicJsonDocument login(256);
+    login["account"] = _email;
+    login["password"] = _password;
+
+    String data;
+    serializeJson(login, data);
 
     int httpResponseCode = http.POST(data);
     if (httpResponseCode != 200)
