@@ -5,13 +5,21 @@
 #include <WiFiClient.h>
 #include <HTTPClient.h>
 #include <MD5Builder.h>
+#include "bbl-certs.h"
 
 int downloadFileToSDCard(const char *url, const char *fileName, void (*onProgress)(int) = NULL, void (*onMD5Check)(int) = NULL, const char *otaMD5 = NULL)
 {
+
+    WiFiClientSecure wifiClient;
+    wifiClient.setCACert(xperiments_in);
+
     HTTPClient http;
 
+    String forceHttpsUrl = url;
+    forceHttpsUrl.replace("http://", "https://");
+
     // Begin the HTTP request
-    http.begin(url);
+    http.begin(wifiClient, forceHttpsUrl);
 
     int httpCode = http.GET();
 
