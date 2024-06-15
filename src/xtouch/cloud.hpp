@@ -6,7 +6,7 @@
 #include <ArduinoJson.h>
 #include "./b64/arduino_base64.hpp"
 #include "types.h"
-#include "date.h"
+// #include "date.h"
 #include "bbl-certs.h"
 
 bool xtouch_cloud_pair_loop_exit = false;
@@ -353,6 +353,15 @@ public:
       setCurrentDevice(devices[0]["dev_id"].as<String>());
       setCurrentModel(devices[0]["dev_model_name"].as<String>());
       setPrinterName(devices[0]["name"].as<String>());
+
+
+      JsonObject currentPrinterSettings = loadPrinters()[xTouchConfig.xTouchSerialNumber]["settings"];
+      xTouchConfig.xTouchChamberSensorEnabled = currentPrinterSettings.containsKey("chamberTemp") ? currentPrinterSettings["chamberTemp"].as<bool>() : false;
+      xTouchConfig.xTouchAuxFanEnabled = currentPrinterSettings.containsKey("auxFan") ? currentPrinterSettings["auxFan"].as<bool>() : false;
+      xTouchConfig.xTouchChamberFanEnabled = currentPrinterSettings.containsKey("chamberFan") ? currentPrinterSettings["chamberFan"].as<bool>() : false;
+
+      savePrinterPair(devices[0]["dev_id"].as<String>(), devices[0]["dev_model_name"].as<String>(), devices[0]["name"].as<String>());
+
       return;
     }
 
@@ -363,7 +372,7 @@ public:
     {
       output = output + LV_SYMBOL_CHARGE + " " + v["dev_id"].as<String>() + "\n";
     }
-    Serial.println(output);
+
 
     if (!output.isEmpty())
     {
