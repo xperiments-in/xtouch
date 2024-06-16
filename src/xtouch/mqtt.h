@@ -21,12 +21,14 @@ String xtouch_mqtt_report_topic;
 #include "device.h"
 
 #define XTOUCH_MQTT_SERVER_TIMEOUT 20
+#define XTOUCH_MQTT_SERVER_PUSH_STATUS_TIMEOUT 15
 #define XTOUCH_MQTT_SERVER_JSON_PARSE_SIZE 8192
 
 /* ---------------------------------------------- */
 bool xtouch_mqtt_firstConnectionDone = false;
 int xtouch_mqtt_connection_timeout_count = 5;
 int xtouch_mqtt_connection_fail_count = 5;
+unsigned long long xtouch_mqtt_lastPushStatus = 0;
 
 XtouchAutoGrowBufferStream stream;
 
@@ -74,6 +76,7 @@ void xtouch_mqtt_update_slice_info(const char *project_id, const char *profile_i
 
 void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
 {
+    xtouch_mqtt_lastPushStatus = millis();
     ConsoleDebug.println(F("[XTouch][MQTT] ProcessPushStatus"));
 
     if (incomingJson != NULL && incomingJson.containsKey("print"))
@@ -599,7 +602,6 @@ void xtouch_mqtt_processPushStatus(JsonDocument &incomingJson)
     }
 }
 
-bool firstParseMessage = true;
 void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length, byte type = 0)
 {
 
@@ -616,6 +618,12 @@ void xtouch_mqtt_parseMessage(char *topic, byte *payload, unsigned int length, b
     // xtouch_debug_json(incomingJson);
     if (!deserializeError)
     {
+
+        if ((millis() - xtouch_mqtt_lastPushStatus) > (XTOUCH_MQTT_SERVER_PUSH_STATUS_TIMEOUT * 1000))
+        {
+            Serial.println(F("[XTouch][MQTT] Force Reconnect after no Push Status for 30s"));
+            xtouch_pubSubClient.disconnect();
+        }
 
         if (incomingJson.containsKey("print") && incomingJson["print"].containsKey("command"))
         {
@@ -741,6 +749,7 @@ void xtouch_mqtt_connect()
             xtouch_device_pushall();
             xtouch_device_get_version();
             xtouch_mqtt_onMqttReady();
+            xtouch_mqtt_lastPushStatus = millis();
             break;
         }
         else
