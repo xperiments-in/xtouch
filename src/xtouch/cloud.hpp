@@ -29,14 +29,9 @@ private:
     http.begin(url, getRegionCert());
     http.addHeader("Content-Type", "application/json");
 
-    DynamicJsonDocument login(256);
-    login["account"] = _email;
-    login["password"] = _password;
+    String payload = "{\"account\":\"" + _email + "\",\"password\":\"" + _password + "\"}";
 
-    String data;
-    serializeJson(login, data);
-
-    int httpResponseCode = http.POST(data);
+    int httpResponseCode = http.POST(payload);
     if (httpResponseCode != 200)
     {
       Serial.printf("Received error: %d\n", httpResponseCode);
