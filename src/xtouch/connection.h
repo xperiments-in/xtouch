@@ -1,6 +1,30 @@
 #ifndef _XLCD_CONNECTION
 #define _XLCD_CONNECTION
 
+#include "mbedtls/base64.h"
+
+String xtouch_wifi_setup_decodeString(String inputString)
+{
+    const unsigned char *input = (const unsigned char *)inputString.c_str();
+    size_t inputLength = strlen((const char *)input);
+
+    // Calculate the exact maximum length for the output buffer
+    size_t maxOutputLength = (inputLength * 3) / 4;
+    unsigned char output[maxOutputLength + 1]; // +1 for the null terminator
+    size_t outlen;
+
+    int ret = mbedtls_base64_decode(output, maxOutputLength, &outlen, input, inputLength);
+
+    if (ret == 0)
+    {
+        output[outlen] = '\0'; // Null-terminate the output
+        return String((char *)output);
+    }
+
+    Serial.println("Failed to decode base64");
+    return "";
+}
+
 bool xtouch_wifi_setup()
 {
     DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_paths_config);
@@ -13,21 +37,13 @@ bool xtouch_wifi_setup()
         return false;
     }
 
-    size_t ssidLength = base64::decodeLength(wifiConfig["ssid"].as<const char *>());
-    uint8_t ssidB64[ssidLength + 1]; // +1 for the null terminator
-    base64::decode(wifiConfig["ssid"].as<const char *>(), ssidB64);
-    ssidB64[ssidLength] = '\0'; // null-terminate the array
-
-    size_t pwdLength = base64::decodeLength(wifiConfig["pwd"].as<const char *>());
-    uint8_t ssidPWD[pwdLength + 1]; // +1 for the null terminator
-    base64::decode(wifiConfig["pwd"].as<const char *>(), ssidPWD);
-    ssidPWD[pwdLength] = '\0'; // null-terminate the array
-
+    String ssidB64String = xtouch_wifi_setup_decodeString(wifiConfig["ssid"].as<const char *>());
+    String ssidPWDString = xtouch_wifi_setup_decodeString(wifiConfig["pwd"].as<const char *>());
 
     int timeout = wifiConfig.containsKey("timeout") ? wifiConfig["timeout"].as<int>() : 3000;
 
     WiFi.mode(WIFI_STA);
-    WiFi.begin((const char *)ssidB64, (const char *)ssidPWD);
+    WiFi.begin(ssidB64String.c_str(), ssidPWDString.c_str());
     ConsoleInfo.println(F("[XTOUCH][CONNECTION] Connecting to WiFi .."));
 
     lv_label_set_text(introScreenCaption, LV_SYMBOL_WIFI " Connecting");

@@ -4,7 +4,7 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
-#include "./b64/arduino_base64.hpp"
+#include "mbedtls/base64.h"
 #include "types.h"
 // #include "date.h"
 #include "bbl-certs.h"
@@ -57,21 +57,34 @@ private:
     return _region == "China" ? api_bambulab_cn_CA : api_bambulab_com_CA;
   }
 
-  String _decodeString(String input)
+  String _decodeString(String inputString)
   {
-    size_t decodedLength = base64::decodeLength(input.c_str());
-    uint8_t decodedStr[decodedLength + 1]; // +1 for the null terminator
-    base64::decode(input.c_str(), decodedStr);
-    decodedStr[decodedLength] = '\0'; // null-terminate the array
+    const unsigned char *input = (const unsigned char *)inputString.c_str();
+    size_t inputLength = strlen((const char *)input);
 
-    return String((char *)decodedStr);
+    // Calculate the exact maximum length for the output buffer
+    size_t maxOutputLength = (inputLength * 3) / 4;
+    unsigned char output[maxOutputLength + 1]; // +1 for the null terminator
+    size_t outlen;
+
+    int ret = mbedtls_base64_decode(output, maxOutputLength, &outlen, input, inputLength);
+
+    if (ret == 0)
+    {
+      output[outlen] = '\0'; // Null-terminate the output
+      return String((char *)output);
+    }
+
+    Serial.println("Failed to decode base64");
+    return "";
   }
 
   String _getUserFromAuthToken()
   {
-    // User name is in 2nd portion of the auth token (delimited with periods)
-    int secondDot = _auth_token.indexOf('.', _auth_token.indexOf('.') + 1);
-    String b64_string = _auth_token.substring(_auth_token.indexOf('.') + 1, secondDot);
+    // User name is in the 2nd portion of the auth token (delimited with periods)
+    int firstDot = _auth_token.indexOf('.');
+    int secondDot = _auth_token.indexOf('.', firstDot + 1);
+    String b64_string = _auth_token.substring(firstDot + 1, secondDot);
 
     // String must be multiples of 4 chars in length. For decode pad with = character
     while (b64_string.length() % 4 != 0)
@@ -79,11 +92,35 @@ private:
       b64_string += "=";
     }
 
-    uint8_t jsonAuthToken[base64::decodeLength(b64_string.c_str())];
-    base64::decode(b64_string.c_str(), jsonAuthToken);
-    DynamicJsonDocument doc(1024);
-    deserializeJson(doc, jsonAuthToken);
-    return doc["username"].as<String>();
+    const unsigned char *input = (const unsigned char *)b64_string.c_str();
+    size_t inputLength = strlen((const char *)input);
+
+    // Calculate the exact maximum length for the output buffer
+    size_t maxOutputLength = (inputLength * 3) / 4;
+    unsigned char output[maxOutputLength + 1]; // +1 for the null terminator
+    size_t outlen;
+
+    int ret = mbedtls_base64_decode(output, maxOutputLength, &outlen, input, inputLength);
+
+    if (ret == 0)
+    {
+      output[outlen] = '\0'; // Null-terminate the output
+
+      DynamicJsonDocument doc(1024);
+      DeserializationError error = deserializeJson(doc, (const char *)output);
+
+      if (error)
+      {
+        Serial.print(F("deserializeJson() failed: "));
+        Serial.println(error.f_str());
+        return "";
+      }
+
+      return doc["username"].as<String>();
+    }
+
+    Serial.println("Failed to decode base64");
+    return "";
   }
 
 public:
@@ -354,7 +391,6 @@ public:
       setCurrentModel(devices[0]["dev_model_name"].as<String>());
       setPrinterName(devices[0]["name"].as<String>());
 
-
       JsonObject currentPrinterSettings = loadPrinters()[xTouchConfig.xTouchSerialNumber]["settings"];
       xTouchConfig.xTouchChamberSensorEnabled = currentPrinterSettings.containsKey("chamberTemp") ? currentPrinterSettings["chamberTemp"].as<bool>() : false;
       xTouchConfig.xTouchAuxFanEnabled = currentPrinterSettings.containsKey("auxFan") ? currentPrinterSettings["auxFan"].as<bool>() : false;
@@ -372,7 +408,6 @@ public:
     {
       output = output + LV_SYMBOL_CHARGE + " " + v["dev_id"].as<String>() + "\n";
     }
-
 
     if (!output.isEmpty())
     {
