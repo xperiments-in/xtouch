@@ -44,12 +44,7 @@ void fillScreenData(int screen)
 void loadScreen(int screen)
 {
     xTouchConfig.currentScreenIndex = screen;
-    lv_obj_t *current = lv_scr_act();
-    if (current != NULL)
-    {
-        lv_obj_clean(current);
-        lv_obj_del(current);
-    }
+    lv_obj_t *previousScreen = lv_scr_act();
 
     switch (screen)
     {
@@ -92,6 +87,12 @@ void loadScreen(int screen)
     if (screen >= 0 && screen < 5)
     {
         ui_sidebarComponent_set_active(screen);
+    }
+
+    if (previousScreen != NULL)
+    {
+        lv_obj_clean(previousScreen);
+        lv_obj_del(previousScreen);
     }
 }
 
