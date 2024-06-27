@@ -831,7 +831,8 @@ void xtouch_mqtt_setup()
     xtouch_wiFiClientSecure.flush();
     xtouch_wiFiClientSecure.stop();
 
-    xtouch_wiFiClientSecure.setCACert(cloud.getRegion() == "China" ? cn_mqtt_bambulab_com : us_mqtt_bambulab_com);
+    // xtouch_wiFiClientSecure.setCACert(cloud.getRegion() == "China" ? cn_mqtt_bambulab_com : us_mqtt_bambulab_com);
+    xtouch_wiFiClientSecure.setInsecure();
 
     xtouch_pubSubClient.setServer(cloud.getMqttCloudHost(), 8883);
     xtouch_pubSubClient.setBufferSize(2048); // 2KB for mqtt message JWT output

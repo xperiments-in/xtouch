@@ -26,7 +26,8 @@ private:
     String url = _region == "China" ? "https://api.bambulab.cn/v1/user-service/user/login" : "https://api.bambulab.com/v1/user-service/user/login";
 
     HTTPClient http;
-    http.begin(url, getRegionCert());
+    // http.begin(url, getRegionCert());
+    http.begin(url);
     http.addHeader("Content-Type", "application/json");
 
     String payload = "{\"account\":\"" + _email + "\",\"password\":\"" + _password + "\"}";
@@ -178,7 +179,8 @@ public:
     String url = _region == "China" ? "https://api.bambulab.cn/v1/iot-service/api/user/bind" : "https://api.bambulab.com/v1/iot-service/api/user/bind";
 
     HTTPClient http;
-    http.begin(url, getRegionCert());
+    // http.begin(url, getRegionCert());
+    http.begin(url);
     http.addHeader("Authorization", "Bearer " + _auth_token);
     http.addHeader("Content-Type", "application/json");
 
@@ -211,7 +213,8 @@ public:
     String url = (_region == "China") ? "https://api.bambulab.cn/v1/iot-service/api/slicer/setting?version=undefined" : "https://api.bambulab.com/v1/iot-service/api/slicer/setting?version=undefined";
 
     HTTPClient http;
-    http.begin(url, getRegionCert());
+    // http.begin(url, getRegionCert());
+    http.begin(url);
     http.addHeader("Authorization", "Bearer " + _auth_token);
 
     int httpResponseCode = http.GET();
