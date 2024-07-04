@@ -27,6 +27,7 @@ private:
 
     HTTPClient http;
     // http.begin(url, getRegionCert());
+    http.setTimeout(30000);
     http.begin(url);
     http.addHeader("Content-Type", "application/json");
 
