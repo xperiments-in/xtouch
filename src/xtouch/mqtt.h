@@ -10,6 +10,7 @@
 #include "autogrowstream.h"
 #include "bbl-certs.h"
 // #include "xtouch/ams-status.hpp"
+#include "xtouch/cloud.hpp"
 
 WiFiClientSecure xtouch_wiFiClientSecure;
 PubSubClient xtouch_pubSubClient(xtouch_wiFiClientSecure);
@@ -808,6 +809,7 @@ void xtouch_mqtt_connect()
                 }
                 cloud.clearDeviceList();
                 cloud.clearPairList();
+                cloud.clearTokens();
                 ESP.restart();
 
                 break;

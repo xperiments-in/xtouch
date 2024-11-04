@@ -25,6 +25,7 @@
 #include "xtouch/events.h"
 #include "xtouch/connection.h"
 #include "xtouch/coldboot.h"
+#include "xtouch/webserver.h"
 
 void xtouch_intro_show(void)
 {
@@ -62,8 +63,23 @@ void setup()
 
   xtouch_screen_setupScreenTimer();
   xtouch_setupGlobalEvents();
-  if (cloud.login())
+  if (!cloud.hasAuthTokens())
   {
+    cloud.mainLogin("");
+
+    if (!cloud.mainLogin(""))
+    {
+      xtouch_webserver_begin();
+    }
+    else
+    {
+      xtouch_mqtt_setup();
+    }
+  }
+  else
+  {
+    cloud.loadAuthTokens();
+
     if (!cloud.isPaired())
     {
       cloud.selectPrinter();
@@ -72,8 +88,8 @@ void setup()
     {
       cloud.loadPair();
     }
+    xtouch_mqtt_setup();
   }
-  xtouch_mqtt_setup();
   xtouch_chamber_timer_init();
 }
 
@@ -81,5 +97,6 @@ void loop()
 {
   lv_timer_handler();
   lv_task_handler();
-  xtouch_mqtt_loop();
+  if (cloud.loggedIn)
+    xtouch_mqtt_loop();
 }

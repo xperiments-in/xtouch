@@ -4,6 +4,16 @@
 
 [Discord Server](https://discord.gg/RytEDEgfR3)
 
+## NEW 5 inch Screen
+
+![image](readme-assets/xtouch_5.png)
+
+- The new 5-inch version is now available for purchase on AliExpress.
+- We're currently in the final stages of development.
+- You can find it at the following link:
+
+[BUY New 5inch Screen](https://s.click.aliexpress.com/e/_DBdoa6n)
+
 ## Table of Contents
 
 1. [Introduction](#introduction)

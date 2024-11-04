@@ -13,14 +13,14 @@ bool xtouch_cloud_pair_loop_exit = false;
 
 class BambuCloud
 {
+
 private:
   String _region;
-  String _email;
   String _username;
   String _auth_token;
   String _password;
 
-  String _getAuthToken()
+  String _getAuthToken(String verificationCode = "")
   {
     Serial.println("Getting accessToken from Bambu Cloud");
     String url = _region == "China" ? "https://api.bambulab.cn/v1/user-service/user/login" : "https://api.bambulab.com/v1/user-service/user/login";
@@ -31,7 +31,15 @@ private:
     http.begin(url);
     http.addHeader("Content-Type", "application/json");
 
-    String payload = "{\"account\":\"" + _email + "\",\"password\":\"" + _password + "\"}";
+    String payload;
+    if (verificationCode == "")
+    {
+      payload = "{\"account\":\"" + _email + "\",\"password\":\"" + _password + "\"}";
+    }
+    else
+    {
+      payload = "{\"account\":\"" + _email + "\",\"code\":\"" + verificationCode + "\"}";
+    }
 
     int httpResponseCode = http.POST(payload);
     if (httpResponseCode != 200)
@@ -46,6 +54,11 @@ private:
 
     DynamicJsonDocument doc(4096);
     deserializeJson(doc, response);
+
+    if (doc.containsKey("loginType") && doc["loginType"] == "verifyCode")
+    {
+      return "verifyCode";
+    }
     return doc["accessToken"].as<String>();
   }
 
@@ -121,7 +134,62 @@ private:
   }
 
 public:
-  bool login()
+  String _email;
+  bool loggedIn = false;
+  bool requestVerificationCodeRequested = false;
+  void requestVerificationCode()
+  {
+    if (requestVerificationCodeRequested)
+    {
+      return;
+    }
+    requestVerificationCodeRequested = true;
+    Serial.println("Requesting verification code from Bambu Cloud");
+    String url = _region == "China" ? "https://api.bambulab.cn/v1/user-service/user/sendemail/code" : "https://api.bambulab.com/v1/user-service/user/sendemail/code";
+
+    HTTPClient http;
+    // http.begin(url, getRegionCert());
+    http.begin(url);
+    http.addHeader("Content-Type", "application/json");
+
+    String payload = "{\"email\":\"" + _email + "\",\"type\":\"codeLogin\"}";
+    int httpResponseCode = http.POST(payload);
+    if (httpResponseCode != 200)
+    {
+      Serial.printf("Received error: %d\n", httpResponseCode);
+      http.end();
+      return;
+    }
+
+    String response = http.getString();
+    http.end();
+  }
+
+  bool mainLogin(String verificationCode)
+  {
+    if (login(verificationCode))
+    {
+      if (!isPaired())
+      {
+        selectPrinter();
+      }
+      else
+      {
+        loadPair();
+      }
+
+      loggedIn = true;
+      return true;
+    }
+
+    if (verificationCode == "")
+    {
+      requestVerificationCode();
+    }
+    return false;
+  }
+
+  bool login(String verificationCode = "")
   {
 
     lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Login BBL Cloud");
@@ -152,7 +220,34 @@ public:
     lv_task_handler();
     delay(32);
 
-    _auth_token = _getAuthToken();
+    if (verificationCode == "")
+    {
+      _auth_token = _getAuthToken();
+    }
+    else
+    {
+      _auth_token = _getAuthToken(verificationCode);
+    }
+
+    if (_auth_token == "verifyCode")
+    {
+      String gotoCode = "Go to http://" + WiFi.localIP().toString();
+      lv_label_set_text(introScreenCaption, gotoCode.c_str());
+      lv_timer_handler();
+      lv_task_handler();
+
+      return false;
+    }
+
+    if (_auth_token == "")
+    {
+      lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Invalid BBL Cloud credentials");
+      lv_timer_handler();
+      lv_task_handler();
+      delay(3000);
+
+      return false;
+    }
     _username = _getUserFromAuthToken();
 
     if (_auth_token == "" || _username == "")
@@ -166,6 +261,8 @@ public:
 
       return false;
     }
+
+    saveAuthTokens();
 
     lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Logged to BBL Cloud");
     lv_timer_handler();
@@ -495,6 +592,10 @@ public:
   {
     xtouch_filesystem_deleteFile(SD, xtouch_paths_pair);
   }
+  void clearTokens()
+  {
+    xtouch_filesystem_deleteFile(SD, xtouch_paths_tokens);
+  }
 
   void unpair()
   {
@@ -503,6 +604,33 @@ public:
     pairFile["paired"] = "";
     xtouch_filesystem_writeJson(SD, xtouch_paths_pair, pairFile);
     ESP.restart();
+  }
+
+  void saveAuthTokens()
+  {
+    DynamicJsonDocument doc(2048);
+    doc["authToken"] = _auth_token;
+    xtouch_filesystem_writeJson(SD, xtouch_paths_tokens, doc, false, 2048);
+    ESP.restart();
+  }
+
+  void loadAuthTokens()
+  {
+    ConsoleLog.println(ESP.getFreeHeap());
+    DynamicJsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_paths_tokens, false, 2048);
+    _auth_token = doc["authToken"].as<String>();
+    _username = _getUserFromAuthToken();
+    loggedIn = true;
+  }
+
+  bool hasAuthTokens()
+  {
+    if (!xtouch_filesystem_exist(SD, xtouch_paths_tokens))
+    {
+      return false;
+    }
+    DynamicJsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_paths_tokens, false, 2048);
+    return doc["authToken"].as<String>() != "";
   }
 };
 BambuCloud cloud;

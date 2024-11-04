@@ -9,6 +9,7 @@ const char *xtouch_paths_settings = "/xtouch/settings.json";
 const char *xtouch_paths_printers = "/xtouch/printer.json";
 const char *xtouch_paths_pair = "/xtouch/printer-pair.json";
 const char *xtouch_paths_touch = "/xtouch/touch.json";
+const char *xtouch_paths_tokens = "/xtouch/tokens.json";
 
 const char *xtouch_paths_firmware_ota_json = "/xtouch/ota.json";
 const char *xtouch_paths_firmware_ota_file = "https://xperiments.in/xtouch-bin/ota/ota.json";
