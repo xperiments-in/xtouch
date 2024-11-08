@@ -621,6 +621,11 @@ public:
     _auth_token = doc["authToken"].as<String>();
     _username = _getUserFromAuthToken();
     loggedIn = true;
+    DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(XTOUCH_FS, xtouch_paths_config);
+    _region = wifiConfig["cloud-region"].as<const char *>();
+    _email = _decodeString(wifiConfig["cloud-email"].as<String>());
+    _password = _decodeString(wifiConfig["cloud-password"].as<String>());
+    loggedIn = true;
   }
 
   bool hasAuthTokens()
