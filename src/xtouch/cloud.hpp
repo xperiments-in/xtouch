@@ -167,6 +167,7 @@ public:
 
   bool mainLogin(String verificationCode)
   {
+
     if (login(verificationCode))
     {
       if (!isPaired())
@@ -184,6 +185,7 @@ public:
 
     if (verificationCode == "")
     {
+
       requestVerificationCode();
     }
     return false;
@@ -273,6 +275,7 @@ public:
 
   JsonArray getDeviceList()
   {
+    Serial.println(_region);
     Serial.println("Getting device list from Bambu Cloud");
     String url = _region == "China" ? "https://api.bambulab.cn/v1/iot-service/api/user/bind" : "https://api.bambulab.com/v1/iot-service/api/user/bind";
 
@@ -620,6 +623,10 @@ public:
     DynamicJsonDocument doc = xtouch_filesystem_readJson(SD, xtouch_paths_tokens, false, 2048);
     _auth_token = doc["authToken"].as<String>();
     _username = _getUserFromAuthToken();
+    DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_paths_config);
+    _region = wifiConfig["cloud-region"].as<const char *>();
+    _email = _decodeString(wifiConfig["cloud-email"].as<String>());
+    _password = _decodeString(wifiConfig["cloud-password"].as<String>());
     loggedIn = true;
   }
 
