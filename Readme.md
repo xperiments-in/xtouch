@@ -204,8 +204,8 @@ The Chrome extension is an essential tool for generating the initial configurati
 1. On the web page, click the **"Connect"** button to establish a connection between your computer and the xtouch screen.
 2. From the list of available ports displayed, select the serial port assigned to your xtouch screen.
 3. Once connected, click the **"Install xtouch"** button to start the installation process.
-4. Upon completion, you will be redirected to [bambulab.com](https://www.bambulab.com) or [bambulab.cn](https://www.bambulab.cn).  
-   Ensure you are logged into your account before proceeding with provisioning.
+4. Upon completion, you will be redirected to [bambulab.com](https://www.bambulab.com) or [bambulab.cn](https://www.bambulab.cn).
+   > **Note:** Ensure you are logged into your account before proceeding with provisioning.
 
 ---
 
