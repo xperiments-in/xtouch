@@ -13,94 +13,136 @@ const $id = document.getElementById.bind(document);
 
 const xtouchScreensServers = [];
 
-$id("fetchMetadata").addEventListener("click", async () => {
-  // Get SSID and password from the input fields
-  const ssidValue = $id("ssid").value.trim();
-  const pwdValue = $id("password").value.trim();
+document.getElementById("main-container").style.display = "none";
 
-  // Update jsonData with ssid and password
-  jsonData.ssid = ssidValue;
-  jsonData.pwd = pwdValue;
+function validateForm() {
+  const form = document.querySelector("form");
+  let isValid = true;
+  const validationMessages = {
+    ssid: "SSID is required.",
+    password: "Password is required.",
+    ip: "IP address is required.",
+  };
+  form.querySelectorAll("input").forEach((input) => {
+    const errorElement = document.getElementById(input.name + "-error");
+    if (input.value.trim() === "") {
+      errorElement.textContent = validationMessages[input.name];
+      isValid = false;
+    } else {
+      errorElement.textContent = "";
+    }
+  });
 
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  jsonData["cloud-region"] = tab.url.includes("bambulab.cn")
-    ? "China"
-    : "World";
-
-  chrome.scripting.executeScript(
-    {
-      target: { tabId: tab.id },
-      func: () => {
-        const nextDataScript = document.getElementById("__NEXT_DATA__");
-        if (nextDataScript && nextDataScript.type === "application/json") {
-          const data = JSON.parse(nextDataScript.textContent);
-          const userData = data?.props?.pageProps?.session?.user;
-          if (userData) {
-            return userData;
-          } else {
-            return { error: "User data not found in __NEXT_DATA__" };
-          }
-        } else {
-          return { error: "__NEXT_DATA__ script not found or invalid." };
+  return isValid;
+}
+let refreshDone = false;
+document.addEventListener("DOMContentLoaded", () => {
+  $id("fetchMetadata").addEventListener("click", async () => {
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    if (!refreshDone) {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs[0]) {
+          // Ensure there's an active tab
+          chrome.tabs.reload(tabs[0].id);
+          setTimeout(() => {
+            refreshDone = true;
+            $id("fetchMetadata").click();
+          }, 500);
         }
-      },
-    },
-    (results) => {
-      if (chrome.runtime.lastError) {
-        console.error("Script injection error:", chrome.runtime.lastError);
-        alert("Failed to retrieve user data.");
-        return;
-      }
+      });
+      return;
+    }
 
-      const userData = results[0]?.result;
-      console.log(results);
-      if (userData?.error) {
-        $id("xtouch-login").style.display = "inline-block";
-      } else {
+    // Get SSID and password from the input fields
+    const ssidValue = $id("ssid").value.trim();
+    const pwdValue = $id("password").value.trim();
+
+    // Update jsonData with ssid and password
+    jsonData.ssid = ssidValue;
+    jsonData.pwd = pwdValue;
+
+    jsonData["cloud-region"] = tab.url.includes("bambulab.cn")
+      ? "China"
+      : "World";
+
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tab.id },
+        func: () => {
+          const nextDataScript = document.getElementById("__NEXT_DATA__");
+          if (nextDataScript && nextDataScript.type === "application/json") {
+            const data = JSON.parse(nextDataScript.textContent);
+            const userData = data?.props?.pageProps?.session?.user;
+            if (userData) {
+              return userData;
+            } else {
+              return { error: "User data not found in __NEXT_DATA__" };
+            }
+          } else {
+            return { error: "__NEXT_DATA__ script not found or invalid." };
+          }
+        },
+      },
+      (results) => {
+        if (chrome.runtime.lastError) {
+          console.error("Script injection error:", chrome.runtime.lastError);
+          document.getElementById("main-container").style.display = "none";
+          document.getElementById("main-login-container").style.display =
+            "block";
+
+          return;
+        }
+
+        const userData = results[0]?.result;
+
         jsonData["cloud-email"] = userData.account;
         jsonData["cloud-username"] = "u_" + userData.uidStr;
+
+        document.getElementById("main-container").style.display = "block";
+        document.getElementById("main-login-container").style.display = "none";
+        $id("fetchCookies").click();
       }
+    );
+  });
 
-      $id("fetchMetadata").style.display = "none";
-      $id("fetchCookies").style.display = "none";
-
-      // Trigger fetching cookies after fetching metadata
-      $id("fetchCookies").click();
-    }
-  );
-});
-
-$id("fetchCookies").addEventListener("click", async () => {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  jsonData["cloud-region"] = tab.url.includes("bambulab.cn")
-    ? "China"
-    : "World";
-
-  if (tab.url) {
-    chrome.cookies.getAll({}, async (cookies) => {
-      const filteredCookies = cookies.filter(
-        (e) => e.domain === "bambulab.com" && e.name === "token"
-      );
-
-      if (filteredCookies.length === 0) {
-        alert("No cookies found.");
-      } else {
-        const authToken = filteredCookies[0].value;
-
-        jsonData["cloud-authToken"] = authToken;
-        $id("downloadJson").style.display = "inline-block";
-      }
+  $id("fetchCookies").addEventListener("click", async () => {
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
     });
-  } else {
-    console.error("No active tab URL detected.");
-    alert("Unable to detect active tab URL.");
-  }
-});
 
-document.addEventListener("DOMContentLoaded", () => {
+    jsonData["cloud-region"] = tab.url.includes("bambulab.cn")
+      ? "China"
+      : "World";
+
+    if (tab.url) {
+      chrome.cookies.getAll({}, async (cookies) => {
+        const filteredCookies = cookies.filter(
+          (e) => e.domain === "bambulab.com" && e.name === "token"
+        );
+
+        if (filteredCookies.length === 0) {
+          document.getElementById("main-container").style.display = "none";
+          document.getElementById("main-login-container").style.display =
+            "block";
+        } else {
+          const authToken = filteredCookies[0].value;
+
+          jsonData["cloud-authToken"] = authToken;
+          $id("downloadJson").style.display = "inline-block";
+        }
+      });
+    } else {
+      console.error("No active tab URL detected.");
+    }
+  });
+
   // check if localStorage has jsonData
   const storedJsonData = localStorage.getItem("jsonData");
+
   if (storedJsonData) {
     const localJsonData = JSON.parse(storedJsonData);
     console.log(localJsonData);
@@ -114,27 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const downloadProvisioningJson = document.getElementById(
     "downloadProvisioningJson"
   );
-  const validationMessages = {
-    ssid: "SSID is required.",
-    password: "Password is required.",
-    ip: "IP address is required.",
-  };
-
-  function validateForm() {
-    let isValid = true;
-
-    form.querySelectorAll("input").forEach((input) => {
-      const errorElement = document.getElementById(input.name + "-error");
-      if (input.value.trim() === "") {
-        errorElement.textContent = validationMessages[input.name];
-        isValid = false;
-      } else {
-        errorElement.textContent = "";
-      }
-    });
-
-    return isValid;
-  }
 
   downloadJson.addEventListener("click", async (e) => {
     if (!validateForm()) {
@@ -151,24 +172,25 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       const ipValue = $id("ip").value.trim();
+      if (ipValue !== "0.0.0.0") {
+        try {
+          const response = await fetch(`http://${ipValue}/provision`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(jsonData),
+          });
 
-      try {
-        const response = await fetch(`http://${ipValue}/provision`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(jsonData),
-        });
-
-        if (!response.ok) {
+          if (!response.ok) {
+            document.getElementById("provision-error").style.display = "block";
+          } else {
+            document.getElementById("provision-error").style.display = "none";
+          }
+        } catch (error) {
+          console.error("Error posting data:", error);
           document.getElementById("provision-error").style.display = "block";
-        } else {
-          document.getElementById("provision-error").style.display = "none";
         }
-      } catch (error) {
-        console.error("Error posting data:", error);
-        document.getElementById("provision-error").style.display = "block";
       }
     }
   });
@@ -182,6 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
     a.download = "provisioning.json";
     a.click();
   });
-});
 
-$id("fetchMetadata").click();
+  $id("fetchMetadata").click();
+});
