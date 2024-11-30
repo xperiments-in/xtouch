@@ -143,7 +143,7 @@ Before beginning, ensure you have the following:
 5. **Chrome Browser Extension**
 
    - **Download the extension** from this link:  
-     **[Download Chrome Extension](https://xperiments.in/xtouch-bin/extensions/xtouch28.zip)**
+     **[Download Chrome Extension](https://github.com/xperiments/xtouch-bin/raw/refs/heads/main/extensions/xtouch28.zip)**
    - This extension is required for generating the initial configuration file and managing the xtouch screen remotely.
    - Save the downloaded file in a secure location, such as a dedicated "xtouch" folder in your Documents or on a backup drive.
 
@@ -371,7 +371,7 @@ If you prefer to manually update the firmware of your xtouch screen or if OTA up
 
 1. **Download the Update Firmware File**:
 
-   - Visit the official xtouch sebsite or the designated firmware update source to download the latest firmware update file. Ensure that you download this file with the [firmware.bin](https://xperiments.in/xtouch-bin/fw/firmware.bin) name.
+   - Visit the official xtouch sebsite or the designated firmware update source to download the latest firmware update file. Ensure that you download this file with the [firmware.bin](https://github.com/xperiments/xtouch-bin/raw/refs/heads/main/fw/firmware.bin) name.
 
 2. **Copy the Firmware File to the Root of the SD Card**:
 
