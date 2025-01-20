@@ -6,9 +6,7 @@
 
 ## NEW 5 inch Screen
 
-<a href="https://xperiments.in/xtouch-pro/">
 ![image](readme-assets/xtouch_5.png)
-</a>
 
 [https://xperiments.in/xtouch-pro/](https://xperiments.in/xtouch-pro/)
 [BUY New 5inch Screen](https://s.click.aliexpress.com/e/_DBdoa6n)
