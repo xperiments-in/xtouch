@@ -8,10 +8,12 @@
 
 ![image](readme-assets/xtouch_5.png)
 
+### xtouch-pro **NEW WEBSITE**
+
 - [https://xperiments.in/xtouch-pro/](https://xperiments.in/xtouch-pro/)
 - [BUY New 5inch Screen](https://s.click.aliexpress.com/e/_DBdoa6n)
 
-## Table of Contents
+## 2.8 - Table of Contents
 
 1. [Introduction](#introduction)
    - [Required Hardware](#required-hardware)
