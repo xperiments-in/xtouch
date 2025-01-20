@@ -6,12 +6,11 @@
 
 ## NEW 5 inch Screen
 
+<a href="https://xperiments.in/xtouch-pro/">
 ![image](readme-assets/xtouch_5.png)
+</a>
 
-- The new 5-inch version is now available for purchase on AliExpress.
-- We're currently in the final stages of development.
-- You can find it at the following link:
-
+[https://xperiments.in/xtouch-pro/](https://xperiments.in/xtouch-pro/)
 [BUY New 5inch Screen](https://s.click.aliexpress.com/e/_DBdoa6n)
 
 ## Table of Contents
