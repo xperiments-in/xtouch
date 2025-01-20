@@ -8,8 +8,8 @@
 
 ![image](readme-assets/xtouch_5.png)
 
-[https://xperiments.in/xtouch-pro/](https://xperiments.in/xtouch-pro/)
-[BUY New 5inch Screen](https://s.click.aliexpress.com/e/_DBdoa6n)
+- [https://xperiments.in/xtouch-pro/](https://xperiments.in/xtouch-pro/)
+- [BUY New 5inch Screen](https://s.click.aliexpress.com/e/_DBdoa6n)
 
 ## Table of Contents
 
