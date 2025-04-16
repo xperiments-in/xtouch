@@ -38,8 +38,6 @@ extern "C"
   void ui_controlScreen_screen_init(void);
   void ui_settingsScreen_screen_init(void);
   void ui_filamentScreen_screen_init(void);
-  void ui_accessCodeScreen_screen_init(void);
-  void ui_printerPairScreen_screen_init(void);
 
   lv_obj_t *introScreen;
   lv_obj_t *introScreenIcon;

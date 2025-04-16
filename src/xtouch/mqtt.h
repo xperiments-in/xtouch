@@ -10,7 +10,6 @@
 #include "autogrowstream.h"
 #include "bbl-certs.h"
 // #include "xtouch/ams-status.hpp"
-#include "xtouch/cloud.hpp"
 
 WiFiClientSecure xtouch_wiFiClientSecure;
 PubSubClient xtouch_pubSubClient(xtouch_wiFiClientSecure);
@@ -20,6 +19,7 @@ String xtouch_mqtt_report_topic;
 
 #include "ams.h"
 #include "device.h"
+#include "config.h"
 
 #define XTOUCH_MQTT_SERVER_TIMEOUT 20
 #define XTOUCH_MQTT_SERVER_PUSH_STATUS_TIMEOUT 15
@@ -42,6 +42,7 @@ void xtouch_mqtt_sendMsg(XTOUCH_MESSAGE message, unsigned long long data = 0)
 
 void xtouch_mqtt_topic_setup()
 {
+    DynamicJsonDocument mqttConfig = xtouch_load_config();
     String xtouch_device_topic = String("device/") + xTouchConfig.xTouchSerialNumber;
     xtouch_mqtt_request_topic = xtouch_device_topic + String("/request");
     xtouch_mqtt_report_topic = xtouch_device_topic + String("/report");
@@ -742,7 +743,7 @@ void xtouch_mqtt_connect()
     while (!xtouch_pubSubClient.connected())
     {
         String clientId = "XTOUCH-CLIENT-" + String(xtouch_mqtt_generateRandomKey(16));
-        if (xtouch_pubSubClient.connect(clientId.c_str(), cloud.getUsername().c_str(), cloud.getAuthToken().c_str()))
+        if (xtouch_pubSubClient.connect("clientId.c_str()", "bblp", xTouchConfig.xTouchAccessCode))
         {
             ConsoleInfo.println(F("[XTouch][MQTT] ---- CONNECTED ----"));
 
@@ -807,9 +808,9 @@ void xtouch_mqtt_connect()
                     lv_timer_handler();
                     lv_task_handler();
                 }
-                cloud.clearDeviceList();
-                cloud.clearPairList();
-                cloud.clearTokens();
+                // cloud.clearDeviceList();
+                // cloud.clearPairList();
+                // cloud.clearTokens();
                 ESP.restart();
 
                 break;
@@ -823,7 +824,7 @@ void xtouch_mqtt_connect()
 
 void xtouch_mqtt_setup()
 {
-    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Connecting BBL Cloud");
+    lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Connecting Printer");
     lv_timer_handler();
     lv_task_handler();
     delay(32);
@@ -833,10 +834,9 @@ void xtouch_mqtt_setup()
     xtouch_wiFiClientSecure.flush();
     xtouch_wiFiClientSecure.stop();
 
-    // xtouch_wiFiClientSecure.setCACert(cloud.getRegion() == "China" ? cn_mqtt_bambulab_com : us_mqtt_bambulab_com);
     xtouch_wiFiClientSecure.setInsecure();
 
-    xtouch_pubSubClient.setServer(cloud.getMqttCloudHost(), 8883);
+    xtouch_pubSubClient.setServer(xTouchConfig.xTouchHost, 8883);
     xtouch_pubSubClient.setBufferSize(2048); // 2KB for mqtt message JWT output
     xtouch_pubSubClient.setStream(stream);
     xtouch_pubSubClient.setCallback(xtouch_pubSubClient_streamCallback);

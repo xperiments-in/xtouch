@@ -149,6 +149,7 @@ extern "C"
         bool xTouchOTAEnabled;
         bool xTouchTFTFlip;
         bool xTouchTFTInvert;
+        char xTouchHost[16];
         char xTouchAccessCode[9];
         char xTouchSerialNumber[16];
         char xTouchPrinterModel[32];

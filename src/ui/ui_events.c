@@ -91,12 +91,6 @@ void onSettingsResetDevice(lv_event_t *e)
     ui_confirmPanel_show(LV_SYMBOL_WARNING " REBOOT", onSettingsResetDeviceConfirm);
 }
 
-void onSettingsUnPairConfirm() { lv_msg_send(XTOUCH_SETTINGS_UNPAIR, NULL); }
-void onSettingsUnPair(lv_event_t *e)
-{
-    ui_confirmPanel_show(LV_SYMBOL_WARNING " Unlink Printer", onSettingsUnPairConfirm);
-}
-
 void onSettingsWOP(lv_event_t *e)
 {
     xTouchConfig.xTouchWakeOnPrint = !xTouchConfig.xTouchWakeOnPrint;

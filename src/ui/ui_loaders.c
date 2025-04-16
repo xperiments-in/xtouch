@@ -77,14 +77,6 @@ void loadScreen(int screen)
         ui_settingsScreen_screen_init();
         lv_disp_load_scr(ui_settingsScreen);
         break;
-    case 5:
-        ui_printerPairScreen_screen_init();
-        lv_disp_load_scr(ui_printerPairScreen);
-        break;
-    case 6:
-        ui_accessCodeScreen_screen_init();
-        lv_disp_load_scr(ui_accessCodeScreen);
-        break;
     }
 
     fillScreenData(screen);

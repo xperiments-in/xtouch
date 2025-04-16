@@ -16,7 +16,6 @@
 #include "devices/2.8/screen.h"
 #endif
 
-#include "xtouch/cloud.hpp"
 #include "xtouch/settings.h"
 #include "xtouch/net.h"
 #include "xtouch/firmware.h"
@@ -25,7 +24,6 @@
 #include "xtouch/events.h"
 #include "xtouch/connection.h"
 #include "xtouch/coldboot.h"
-#include "xtouch/webserver.h"
 
 void xtouch_intro_show(void)
 {
@@ -63,29 +61,8 @@ void setup()
 
   xtouch_screen_setupScreenTimer();
   xtouch_setupGlobalEvents();
-  xtouch_webserver_begin();
 
-  if (!cloud.hasAuthTokens())
-  {
-    String gotoCode = "Provision at " + WiFi.localIP().toString();
-    lv_label_set_text(introScreenCaption, gotoCode.c_str());
-    lv_obj_set_style_text_color(introScreenCaption, lv_color_hex(0x00FF00), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_timer_handler();
-  }
-  else
-  {
-    cloud.loadAuthTokens();
-
-    if (!cloud.isPaired())
-    {
-      cloud.selectPrinter();
-    }
-    else
-    {
-      cloud.loadPair();
-    }
-    xtouch_mqtt_setup();
-  }
+  xtouch_mqtt_setup();
   xtouch_chamber_timer_init();
 }
 
@@ -93,6 +70,5 @@ void loop()
 {
   lv_timer_handler();
   lv_task_handler();
-  if (cloud.loggedIn)
-    xtouch_mqtt_loop();
+  xtouch_mqtt_loop();
 }

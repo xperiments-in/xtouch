@@ -5,7 +5,7 @@
 
 bool xtouch_wifi_setup()
 {
-    DynamicJsonDocument wifiConfig = xtouch_filesystem_readJson(SD, xtouch_paths_config);
+    DynamicJsonDocument wifiConfig = xtouch_load_config();
     if (wifiConfig.isNull() || !wifiConfig.containsKey("ssid") || !wifiConfig.containsKey("pwd"))
     {
         lv_label_set_text(introScreenCaption, wifiConfig.isNull() ? LV_SYMBOL_SD_CARD " Missing provisioning.json" : LV_SYMBOL_WARNING " Inaccurate provisioning.json");

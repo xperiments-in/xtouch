@@ -2,15 +2,6 @@
 #include "../ui.h"
 #include "../ui_msgs.h"
 
-void ui_event_comp_settingsComponent_unpairButton(lv_event_t *e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    if (event_code == LV_EVENT_CLICKED)
-    {
-        onSettingsUnPair(e);
-    }
-}
-
 void ui_event_comp_settingsComponent_resetDeviceButton(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -397,40 +388,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
         lv_obj_add_state(ui_settingsTFTFlipSwitch, LV_STATE_CHECKED);
     }
 
-    lv_obj_t *cui_pairingTitle;
-    cui_pairingTitle = lv_label_create(cui_settingsComponent);
-    lv_obj_set_width(cui_pairingTitle, lv_pct(100));
-    lv_obj_set_height(cui_pairingTitle, LV_SIZE_CONTENT); /// 40
-    lv_label_set_text(cui_pairingTitle, LV_SYMBOL_LIST " CONNECTED PRINTERS");
-    lv_obj_set_scrollbar_mode(cui_pairingTitle, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_set_style_text_font(cui_pairingTitle, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(cui_pairingTitle, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(cui_pairingTitle, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(cui_pairingTitle, 12, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(cui_pairingTitle, 12, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(cui_pairingTitle, lv_color_hex(0x333333), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(cui_pairingTitle, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(cui_pairingTitle, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(cui_pairingTitle, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(cui_pairingTitle, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    lv_obj_t *cui_unpairButton;
-    cui_unpairButton = lv_label_create(cui_settingsComponent);
-    lv_obj_set_width(cui_unpairButton, lv_pct(100));
-    lv_obj_set_height(cui_unpairButton, LV_SIZE_CONTENT);     /// 1
-    lv_obj_add_flag(cui_unpairButton, LV_OBJ_FLAG_CLICKABLE); /// Flags
-    lv_obj_set_scrollbar_mode(cui_unpairButton, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_set_style_radius(cui_unpairButton, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(cui_unpairButton, lv_color_hex(0xFF682A), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(cui_unpairButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(cui_unpairButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(cui_unpairButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(cui_unpairButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(cui_unpairButton, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(cui_unpairButton, lv_color_hex(0x000), LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    lv_label_set_text_fmt(cui_unpairButton, LV_SYMBOL_SHUFFLE " Unlink [ %s ]", xTouchConfig.xTouchPrinterName);
-
     lv_obj_t *cui_deviceTitle;
     cui_deviceTitle = lv_label_create(cui_settingsComponent);
     lv_obj_set_width(cui_deviceTitle, lv_pct(100));
@@ -665,10 +622,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
     children[UI_COMP_SETTINGSCOMPONENT_TFT_FLIP] = cui_settingsTFTFlip;
     children[UI_COMP_SETTINGSCOMPONENT_TFT_FLIP_LABEL] = cui_settingsTFTFlipLabel;
     children[UI_COMP_SETTINGSCOMPONENT_TFT_FLIP_INPUT] = ui_settingsTFTFlipSwitch;
-
-    children[UI_COMP_SETTINGSCOMPONENT_PAIR_TITLE] = cui_pairingTitle;
-    children[UI_COMP_SETTINGSCOMPONENT_UNPAIRBUTTON] = cui_unpairButton;
-
     children[UI_COMP_SETTINGSCOMPONENT_DEVICE_TITLE] = cui_deviceTitle;
     children[UI_COMP_SETTINGSCOMPONENT_AUXFAN] = cui_settings_auxFan;
     children[UI_COMP_SETTINGSCOMPONENT_AUXFAN_LABEL] = cui_settings_auxFanLabel;
@@ -686,8 +639,6 @@ lv_obj_t *ui_settingsComponent_create(lv_obj_t *comp_parent)
 
     lv_obj_add_event_cb(cui_settingsComponent, get_component_child_event_cb, LV_EVENT_GET_COMP_CHILD, children);
     lv_obj_add_event_cb(cui_settingsComponent, del_component_child_event_cb, LV_EVENT_DELETE, children);
-
-    lv_obj_add_event_cb(cui_unpairButton, ui_event_comp_settingsComponent_unpairButton, LV_EVENT_CLICKED, NULL);
 
     lv_obj_add_event_cb(cui_reseDeviceButton, ui_event_comp_settingsComponent_resetDeviceButton, LV_EVENT_CLICKED, NULL);
 
