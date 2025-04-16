@@ -111,7 +111,7 @@ The choice between USB and the JST 1.25 4-pin connector depends on your preferen
 
 # xtouch Screen Setup and Installation Guide
 
-This guide will walk you through the steps required to initialize and configure your xtouch screen for use with your 3D printer. **Google Chrome is required** for this process, as it supports the necessary tools and extensions.
+This guide will walk you through the steps required to initialize and configure your xtouch screen for use with your 3D printer.
 
 ---
 
@@ -119,75 +119,19 @@ This guide will walk you through the steps required to initialize and configure 
 
 Before beginning, ensure you have the following:
 
-1. **Computer with Google Chrome Installed**
-
-   - A laptop or desktop computer with Google Chrome installed is necessary for this process.  
-     Download Chrome from [https://www.google.com/chrome/](https://www.google.com/chrome/) if you don’t already have it.
+1. **Computer with Google Chrome Installed** (only for downloading the config file)
 
 2. **USB Cable**
 
-   - A USB cable compatible with your xtouch screen for connecting it to your computer.
-
 3. **Formatted FAT32 SD Card (≤ 32GB Recommended)**
 
-   - A microSD card with a capacity of **32GB or less**, formatted with the FAT32 file system.
-   - This is required for transferring the provisioning file during the first-time setup. Use a reliable SD card and ensure it is properly formatted to avoid issues.
+4. **xtouch.json Configuration File**
 
-4. **Install Drivers**  
-   If your computer does not recognize the xtouch screen, you may need to install the required CH340 drivers:
+   - Visit: **[https://xperiments.in/xtouch-bin/localOnly.html](https://xperiments.in/xtouch-bin/localOnly.html)**
+   - Fill in the required information (WiFi SSID, Password, and your BambuLab account details).
+   - Download the `xtouch.json` file and place it on the **root of the SD card**.
 
-   - [Download CH340 Drivers](https://www.wch.cn/download/CH341SER_ZIP.html)
-   - [CH340 Drivers Installation Tutorial](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all)
-
-5. **Chrome Browser Extension**
-
-   - **Download the extension** from this link:  
-     **[Download Chrome Extension](https://github.com/xperiments/xtouch-bin/raw/refs/heads/main/extensions/xtouch28.zip)**
-   - This extension is required for generating the initial configuration file and managing the xtouch screen remotely.
-   - Save the downloaded file in a secure location, such as a dedicated "xtouch" folder in your Documents or on a backup drive.
-
-6. **xtouch Online Installer**
-
-   - Access the installer page via this URL:  
-     **[https://xperiments.in/xtouch-bin](https://xperiments.in/xtouch-bin)**
-
-7. **Stable Power Supply**
-   - Ensure your xtouch screen is connected to a reliable power source during the setup process.
-
----
-
-## Step 3: Install the Chrome Extension
-
-The Chrome extension is an essential tool for generating the initial configuration file and managing the xtouch screen remotely, especially since the BambuLab token expires every three months. **It must be installed before proceeding with the online installer, as the installer will redirect you to BambuLab upon completion.**
-
-### Download and Install the Extension
-
-1. **Download the Extension**  
-   Click this link to download the Chrome extension:  
-   **[Download Chrome Extension](https://xperiments.in/xtouch-bin/extensions/xtouch28.zip)**
-
-2. **Save the Extension Securely**
-
-   - Save the downloaded `.zip` file in a safe location, such as a dedicated "xtouch" folder in your Documents or a backup drive.
-   - This ensures the files are not accidentally deleted.
-
-3. **Unzip the Extension**
-
-   - Extract the `.zip` file contents into the secure location.
-
-4. **Add the Extension to Chrome**
-
-   - Open **Google Chrome** and go to **chrome://extensions/**.
-   - Enable **Developer Mode** by toggling the switch in the top-right corner.
-   - Click **Load unpacked** and select the folder where you extracted the extension files.
-   - The extension will now be installed and visible in Chrome.
-
-5. **Pin the Extension for Easy Access**
-   - Click the **Extensions** icon (puzzle piece) in the top-right corner of Chrome.
-   - Find the xtouch extension in the list and click the **pin icon** next to it.
-   - The extension will now appear in the Chrome toolbar for quick and easy access.
-
----
+## No Chrome extensions, token logins, or cloud provisioning are needed anymore!
 
 ## Installation Process
 
@@ -204,90 +148,7 @@ The Chrome extension is an essential tool for generating the initial configurati
 2. From the list of available ports displayed, select the serial port assigned to your xtouch screen.
 3. Once connected, click the **"Install xtouch"** button to start the installation process.
 
-   > **Note:** Ensure you are logged into your account before proceeding with provisioning.
-
 ---
-
-## First-Time and Other Provisioning Using the Chrome Extension
-
-To manage the xtouch screen, you will need to provision it for both first-time setup and ongoing token updates every three months. **For the Chrome extension to work, users MUST be logged into [bambulab.com](https://www.bambulab.com) or [bambulab.cn](https://www.bambulab.cn) using their account.**
-
----
-
-### First-Time Provisioning
-
-When you first open the Chrome extension, follow these steps:
-
-1. **Fill in the Required Information**
-
-   - The extension will prompt you to enter the following details:
-     - **SSID**: Your Wi-Fi network name.
-     - **SSID Password**: Your Wi-Fi password.
-     - **IP**: This is pre-configured as `0.0.0.0` by default, which is correct for the first-time provisioning. Do not change this.
-
-2. **Provision the xtouch Screen**
-
-   - After filling in the SSID and password, click the **"Download provisioning file"** button.
-
-3. **Save and Insert the Provisioning File**
-
-   - Save the downloaded `provisioning.json` file to the root directory of your SD card.
-   - Insert the SD card into the xtouch screen and reboot it.
-
-4. **Verify Connection**
-   - Upon reboot, if everything is set up correctly, the xtouch screen will connect to your Wi-Fi network and BambuLab servers.
-
----
-
-### Token Renewal (Other Provisioning)
-
-Every three months, when the BambuLab token expires, the xtouch screen will clear its token data. You’ll see a message displayed on the screen with the following instructions:  
-**"Provision at xxx.xxx.xxx.xxx"**  
-This indicates the screen needs to be reprovisioned.
-
-#### Steps for Reprovisioning:
-
-1. **Login to BambuLab**
-
-   - Open [bambulab.com](https://www.bambulab.com) or [bambulab.cn](https://www.bambulab.cn) and log in to your account if you’re not already logged in.
-
-2. **Open the Chrome Extension**
-
-   - Launch the Chrome extension.
-
-3. **Enter the Screen’s IP Address**
-
-   - Enter the IP address displayed on the xtouch screen into the **IP** field of the extension.
-
-4. **Provision the xtouch Screen**
-
-   - Click the **"Provision xtouch"** button.
-   - The extension will send the required tokens to the xtouch screen.
-
-5. **Automatic Reboot**
-   - Within seconds, the xtouch screen will reboot automatically to apply the new configuration.
-
-### Linking Printer
-
-During the installation process, you will need to link your xtouch screen with your 3D printer. Follow these steps to successfully establish the connection:
-
-1. **Searching for Printers**:
-
-   - After powering on the touch screen, you will be greeted with a "Searching for printers" screen. The touch screen will scan for available printers.
-
-2. **Select a Printer to Link**:
-
-   - Once the scanning process is complete, you will be presented with a listing of the printers that were found. Select the printer you wish to link.
-
-3. **Click the Checkmark Button**:
-
-   - After selecting the desired printer, click the green checkmark button to initiate the linking process.
-
-4. **Success and Main Screen**:
-
-   - Upon successfully linking the touch screen with the printer, you will be redirected to the Main Screen. Your printer and touch screen are now connected and ready for use.
-
-By following these steps, you will be able to link your xtouch screen with your 3D printer seamlessly, ensuring a smooth user experience and easy access to all the features of the touch screen.
 
 ## Screens
 
@@ -325,10 +186,6 @@ This screen provides essential controls for managing your printer:
 - **Set Screen Sleep Time**: Set Screen Sleep Time: Adjusts the screen's inactivity timer. When the screen is idle for the specified time (in minutes), it enters sleep mode to save power. Set to 0 to keep the screen always active. During an active print job, the screen stays on for real-time monitoring.
 - **Invert Screen Colors**: Toggle to reverse screen colors. Useful for addressing compatibility issues with certain devices.
 - **Flip Screen**: Flip the screen orientation.
-
-#### PRINTERS
-
-- **Unlink Printer**: Disconnect the current printer from the touch screen. This allows you to switch between different printers seamlessly.
 
 #### XTOUCH
 
