@@ -10,7 +10,7 @@
 
 ### xtouch-pro **NEW WEBSITE**
 
-- [https://xperiments.in/xtouch-pro/](https://xperiments.in/xtouch-pro/)
+- [https://xtouch.pro/](https://xtouch.pro/)
 - [BUY New 5inch Screen](https://s.click.aliexpress.com/e/_DBdoa6n)
 
 ## 2.8 - Table of Contents
