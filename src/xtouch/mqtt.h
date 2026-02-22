@@ -859,9 +859,27 @@ void xtouch_mqtt_setup()
 
     if (xtouch_mqtt_isCloudMode())
     {
-        /* Cloud mode: validate TLS with Bambulab's root CA */
-        xtouch_wiFiClientSecure.setCACert(us_mqtt_bambulab_com);
-        ConsoleInfo.println(F("[XTouch][MQTT] Cloud mode – TLS certificate set"));
+        /* Cloud mode: pick the right root CA based on the configured MQTT host.
+         *   eu.mqtt.bambulab.com  → DigiCert CA  (same as US)
+         *   us.mqtt.bambulab.com  → DigiCert CA
+         *   cn.mqtt.bambulab.com  → DigiCert CA (CN variant)
+         */
+        String host = String(xTouchConfig.xTouchHost);
+        if (host.startsWith("cn."))
+        {
+            xtouch_wiFiClientSecure.setCACert(cn_mqtt_bambulab_com);
+            ConsoleInfo.println(F("[XTouch][MQTT] Cloud mode (CN) – TLS certificate set"));
+        }
+        else if (host.startsWith("eu."))
+        {
+            xtouch_wiFiClientSecure.setCACert(eu_mqtt_bambulab_com);
+            ConsoleInfo.println(F("[XTouch][MQTT] Cloud mode (EU) – TLS certificate set"));
+        }
+        else
+        {
+            xtouch_wiFiClientSecure.setCACert(us_mqtt_bambulab_com);
+            ConsoleInfo.println(F("[XTouch][MQTT] Cloud mode (US) – TLS certificate set"));
+        }
     }
     else
     {

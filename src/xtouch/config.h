@@ -21,12 +21,17 @@
     }
   }
 
-  Cloud mode (Bambulab Cloud MQTT – Global/EU/US region):
+  Cloud mode (Bambulab Cloud MQTT):
+  Choose the "host" that matches the region of your Bambulab account:
+    EU region  → eu.mqtt.bambulab.com
+    US region  → us.mqtt.bambulab.com
+    CN region  → cn.mqtt.bambulab.com
+
   {
     "ssid": "MyWifi",
     "pwd":  "secret",
     "mqtt": {
-      "host":         "us.mqtt.bambulab.com",
+      "host":         "eu.mqtt.bambulab.com",
       "accessCode":   "<your_bambulab_access_token>",
       "userId":       "<your_bambulab_user_id>",
       "serialNumber": "01S00C342600288",

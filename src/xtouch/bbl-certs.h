@@ -127,6 +127,9 @@ const char *cn_mqtt_bambulab_com =
     "p0sARNb+9i1R4Fg5zPNvHs2BbIve0vkwxAy+R4727qYzl3027w9jEFC6HMXRaDc=\n"
     "-----END CERTIFICATE-----\n";
 
+/* EU region uses the same DigiCert CA as the US region */
+const char *eu_mqtt_bambulab_com = us_mqtt_bambulab_com;
+
 const char *xperiments_in =
     "-----BEGIN CERTIFICATE-----\n"
     "MIIFazCCA1OgAwIBAgIRAIIQz7DSQONZRGPgu2OCiwAwDQYJKoZIhvcNAQELBQAw\n"
