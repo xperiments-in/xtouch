@@ -149,8 +149,8 @@ extern "C"
         bool xTouchOTAEnabled;
         bool xTouchTFTFlip;
         bool xTouchTFTInvert;
-        char xTouchHost[16];
-        char xTouchAccessCode[9];
+        char xTouchHost[64];       /* local IP  or  us.mqtt.bambulab.com */
+        char xTouchAccessCode[64]; /* 8-digit local code  or  cloud token */
         char xTouchSerialNumber[16];
         char xTouchPrinterModel[32];
         char xTouchPrinterName[32];
@@ -158,6 +158,9 @@ extern "C"
         int xTouchTFTOFFValue;
         bool xTouchWakeOnPrint;
         int currentScreenIndex;
+        /* ── Cloud MQTT fields (added for Bambulab Cloud support) ── */
+        char xTouchLanMode[8];     /* "local" (default) or "cloud" */
+        char xTouchUserId[32];     /* Bambulab user ID  (cloud only) */
     } XTouchConfig;
 
     XTouchConfig xTouchConfig;

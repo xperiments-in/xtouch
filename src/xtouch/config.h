@@ -6,27 +6,56 @@
 #include "paths.h"
 
 /*
-{
-  "ssid": "xperiments-2.4G",
-  "pwd": "viernes13",
-  "timeout": "3000",
-  "coldboot": "5000",
-  "mqtt": {
-    "host": "192.168.0.18",
-    "accessCode": "24660910",
-    "serialNumber": "01S00C342600288",
-    "printerModel": "P1P"
+  Local mode (default – direct LAN connection to the printer):
+  {
+    "ssid": "MyWifi",
+    "pwd":  "secret",
+    "timeout":  "3000",
+    "coldboot": "5000",
+    "mqtt": {
+      "host":         "192.168.1.42",
+      "accessCode":   "12345678",
+      "serialNumber": "01S00C342600288",
+      "printerModel": "P1P",
+      "lanMode":      "local"
+    }
   }
-}
+
+  Cloud mode (Bambulab Cloud MQTT – Global/EU/US region):
+  {
+    "ssid": "MyWifi",
+    "pwd":  "secret",
+    "mqtt": {
+      "host":         "us.mqtt.bambulab.com",
+      "accessCode":   "<your_bambulab_access_token>",
+      "userId":       "<your_bambulab_user_id>",
+      "serialNumber": "01S00C342600288",
+      "printerModel": "P1P",
+      "lanMode":      "cloud"
+    }
+  }
+
+  Get accessCode and userId from:
+    https://bambulab.com/api/v1/iot-service/api/user/bind
+  (log in to bambulab.com first, then call the API in your browser)
 */
 DynamicJsonDocument xtouch_load_config()
 {
     DynamicJsonDocument config = xtouch_filesystem_readJson(SD, xtouch_paths_config);
 
-    strcpy(xTouchConfig.xTouchAccessCode, config["mqtt"]["accessCode"].as<const char *>());
+    strcpy(xTouchConfig.xTouchAccessCode,   config["mqtt"]["accessCode"].as<const char *>());
     strcpy(xTouchConfig.xTouchSerialNumber, config["mqtt"]["serialNumber"].as<const char *>());
-    strcpy(xTouchConfig.xTouchHost, config["mqtt"]["host"].as<const char *>());
+    strcpy(xTouchConfig.xTouchHost,         config["mqtt"]["host"].as<const char *>());
     strcpy(xTouchConfig.xTouchPrinterModel, config["mqtt"]["printerModel"].as<const char *>());
+
+    /* ── Cloud fields (optional – default to local mode) ────────────── */
+    const char *lanMode = config["mqtt"]["lanMode"].as<const char *>();
+    strcpy(xTouchConfig.xTouchLanMode,
+           (lanMode && strlen(lanMode) > 0) ? lanMode : "local");
+
+    const char *userId = config["mqtt"]["userId"].as<const char *>();
+    strcpy(xTouchConfig.xTouchUserId,
+           (userId && strlen(userId) > 0) ? userId : "");
 
     return xtouch_filesystem_readJson(SD, xtouch_paths_config);
 }

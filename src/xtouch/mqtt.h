@@ -743,7 +743,24 @@ void xtouch_mqtt_connect()
     while (!xtouch_pubSubClient.connected())
     {
         String clientId = "XTOUCH-CLIENT-" + String(xtouch_mqtt_generateRandomKey(16));
-        if (xtouch_pubSubClient.connect("clientId.c_str()", "bblp", xTouchConfig.xTouchAccessCode))
+
+        /* ── Choose credentials based on connection mode ──────────────
+         *  Local : username="bblp",            password=8-digit access code
+         *  Cloud : username="u_<userId>",       password=cloud access token
+         * ─────────────────────────────────────────────────────────── */
+        String mqttUsername;
+        if (xtouch_mqtt_isCloudMode())
+        {
+            mqttUsername = String("u_") + xTouchConfig.xTouchUserId;
+        }
+        else
+        {
+            mqttUsername = "bblp";
+        }
+
+        if (xtouch_pubSubClient.connect(clientId.c_str(),
+                                        mqttUsername.c_str(),
+                                        xTouchConfig.xTouchAccessCode))
         {
             ConsoleInfo.println(F("[XTouch][MQTT] ---- CONNECTED ----"));
 
@@ -822,6 +839,12 @@ void xtouch_mqtt_connect()
     }
 }
 
+/* ── Helper: is the config set to cloud mode? ─────────────────────────── */
+bool xtouch_mqtt_isCloudMode()
+{
+    return strcmp(xTouchConfig.xTouchLanMode, "cloud") == 0;
+}
+
 void xtouch_mqtt_setup()
 {
     lv_label_set_text(introScreenCaption, LV_SYMBOL_CHARGE " Connecting Printer");
@@ -834,7 +857,18 @@ void xtouch_mqtt_setup()
     xtouch_wiFiClientSecure.flush();
     xtouch_wiFiClientSecure.stop();
 
-    xtouch_wiFiClientSecure.setInsecure();
+    if (xtouch_mqtt_isCloudMode())
+    {
+        /* Cloud mode: validate TLS with Bambulab's root CA */
+        xtouch_wiFiClientSecure.setCACert(us_mqtt_bambulab_com);
+        ConsoleInfo.println(F("[XTouch][MQTT] Cloud mode – TLS certificate set"));
+    }
+    else
+    {
+        /* Local mode: printer uses a self-signed cert – accept any */
+        xtouch_wiFiClientSecure.setInsecure();
+        ConsoleInfo.println(F("[XTouch][MQTT] Local mode – TLS insecure (self-signed)"));
+    }
 
     xtouch_pubSubClient.setServer(xTouchConfig.xTouchHost, 8883);
     xtouch_pubSubClient.setBufferSize(2048); // 2KB for mqtt message JWT output

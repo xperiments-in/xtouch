@@ -46,9 +46,13 @@ void xtouch_settings_loadSettings()
     xTouchConfig.xTouchAuxFanEnabled = settings.containsKey("auxFan") ? settings["auxFan"].as<bool>() : false;
     xTouchConfig.xTouchChamberFanEnabled = settings.containsKey("chamberFan") ? settings["chamberFan"].as<bool>() : false;
 
+#if defined(__XTOUCH_SCREEN_28__)
     bool isTFTFlipped = xtouch_screen_getTFTFlip();
     tft.setRotation(isTFTFlipped ? 3 : 1);
     x_touch_touchScreen.setRotation(isTFTFlipped ? 3 : 1);
+#elif defined(__XTOUCH_SCREEN_55__)
+    xtouch_screen_setupTFTFlip(); /* handles both display and GT911 rotation */
+#endif
     xtouch_screen_setBrightness(xTouchConfig.xTouchBacklightLevel);
 
     xtouch_screen_invertColors();
